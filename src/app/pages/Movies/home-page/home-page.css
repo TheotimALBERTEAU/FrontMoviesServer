@@ -1,0 +1,97 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  padding: 20px;
+}
+
+.movie-card {
+  height: 500px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+
+  /* Image de Couverture (BG) */
+  background-size: cover;
+  background-position: center;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px); /* Petit effet au survol */
+}
+
+/* --- 4. L'Effet de Dégradé (Le Fondu sur la Cover) --- */
+/* Cible le calque que nous avons nommé 'card-overlay' dans le HTML */
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+
+  /* Dégradé du haut (clair) vers le bas (sombre) pour lisibilité */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1) 0%,   /* Légèrement d'ombre en haut */
+    rgba(0, 0, 0, 0.4) 60%,  /* Devient plus sombre */
+    rgba(0, 0, 0, 0.9) 80%  /* Très sombre/noir en bas pour le texte */
+  );
+}
+
+/* --- 5. Contenu de la Carte (Positionnement) --- */
+.card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  /* 3/5 de padding supérieur pour pousser le contenu vers le bas */
+  padding: 30% 20px 20px;
+  color: white;
+  z-index: 2; /* S'assure que le texte est au-dessus du dégradé */
+
+  /* Utilise Flexbox pour un alignement vertical plus précis */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* --- 6. Styles des Éléments de Texte (Arial) --- */
+
+.movie-title {
+  font-size: 1.8em;
+  font-weight: bold;
+  margin: 0 0 5px 0;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.movie-genres {
+  font-size: 1em;
+  opacity: 0.8;
+  margin: 0 0 15px 0; /* Espace sous les styles */
+}
+
+/* Détails du bas (Année et Durée) */
+.movie-details-bottom {
+  font-size: 1em;
+  font-weight: 600;
+  opacity: 0.9;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.movie-details-bottom .separator {
+  margin: 0 8px;
+}

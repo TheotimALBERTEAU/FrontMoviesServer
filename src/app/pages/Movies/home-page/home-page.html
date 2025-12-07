@@ -1,0 +1,20 @@
+<div class="movies-grid">
+  @for (movie of movies; track movie._id) {
+    <div class="movie-card" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoMovie(movie.title)">
+
+      <div class="card-overlay"></div>
+
+      <div class="card-content">
+        <h3 class="movie-title">{{ movie.title}}</h3>
+
+        <p class="movie-genres">{{ movie.genre }}</p>
+
+        <div class="movie-details-bottom">
+          <span>{{ movie.duration }} min</span>
+          <span class="separator">|</span>
+          <span>{{ movie.year }}</span>
+        </div>
+      </div>
+    </div>
+  }
+</div>
