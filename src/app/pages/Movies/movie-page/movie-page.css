@@ -4,15 +4,160 @@
   padding: 0;
 }
 
-.movie-container {
-  display: flex;
+body {
+  background-color: #000;
+  color: #fff;
 }
 
-.center {
+.movie-container {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  flex-direction: column;
+  background-color: black;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.movie-player video {
   width: 100%;
   height: 100%;
+  min-height: 100vh;
+}
+
+.movie-player {
+  display: flex;
+  justify-content: center;
+
+  width: 95%;
+  height: 75%;
+
+  padding: 1vh;
+}
+
+.movie-desc {
+  /* Gardez le style existant */
+  display: flex;
+  flex-direction: row;
+  justify-content: start; /* On s'aligne à gauche */
+  align-items: flex-start; /* On aligne les éléments en haut */
+  width: 95vw;
+  padding: 20px 0; /* Un peu d'espace vertical */
+}
+
+.desc-left {
+  /* Doit être flex pour que l'image et l'info soient côte à côte */
+  display: flex;
+  flex-direction: row;
+  gap: 30px; /* Espace entre l'image et le texte */
+}
+
+.desc-left img {
+  width: 15vw;
+  /* Gardez la taille existante */
+}
+
+.desc-info {
+  display: flex;
+  flex-direction: column;
+  color: white; /* Assurez-vous que le texte soit visible sur un fond sombre */
+  max-width: 70vw; /* Pour éviter que le texte ne s'étire trop */
+}
+
+.desc-info h2 {
+  font-size: 2.5em; /* Grande taille pour le titre */
+  margin-bottom: 10px;
+}
+
+/* Ligne des infos principales */
+.info-line-top {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 0.9em;
+  color: #aaa; /* Couleur légèrement grise pour les infos secondaires */
+}
+
+.info-line-top span {
+  padding-right: 10px;
+  border-right: 1px solid #444; /* Séparateur vertical comme dans l'exemple */
+  margin-right: 10px;
+}
+
+.info-line-top span:last-child {
+  border-right: none; /* Pas de séparateur après le dernier élément */
+}
+
+/* Ligne des actions (Note et Boutons) */
+.actions-line {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Définition générale pour la ligne d'actions */
+.actions-line {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.rating-circle-container {
+  --size: 50px; /* Taille totale du cercle */
+  --thickness: 6px; /* Épaisseur de la ligne du cercle */
+  --main-color: #f7b733; /* Couleur de remplissage (Jaune/Or) */
+  --bg-color: #444; /* Couleur de fond du cercle (Gris foncé) */
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  margin-right: 30px;
+  position: relative;
+}
+
+/* Le cercle de remplissage lui-même */
+.rating-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background:
+    conic-gradient(
+      var(--main-color) 0deg,
+      var(--main-color) calc(var(--percentage) * 3.6deg), /* Remplissage basé sur le pourcentage */
+      var(--bg-color) calc(var(--percentage) * 3.6deg) /* Le reste est la couleur de fond */
+    );
+  mask: radial-gradient(
+    transparent calc(var(--size) / 2 - var(--thickness)), /* Intérieur transparent */
+    black calc(var(--size) / 2 - var(--thickness) + 1px) /* Extérieur noir (visible) */
+  );
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.rating-value {
+  /* AJOUTS IMPORTANTS pour centrer la note au milieu */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centrage parfait par rapport à l'élément lui-même */
+
+  color: #f7b733;
+  font-family: Arial, sans-serif;
+  line-height: 1;
+}
+/* Synopsis */
+.synopsis {
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* Détails supplémentaires (Pays, Genre, Distribution) */
+.additional-details p {
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+.additional-details span {
+  color: #aaa; /* Couleur légèrement grise pour les labels (Pays, Genre) */
+  display: inline-block;
+  min-width: 100px; /* Assure un alignement propre des deux-points */
 }

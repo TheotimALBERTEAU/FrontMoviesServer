@@ -1,3 +1,41 @@
 <div class="movie-container">
-  <video [src]="details.link" controls></video>
+  <div class="movie-player">
+    <video [src]="details.link" controls></video>
+  </div>
+  <div class="movie-desc">
+    <div class="desc-left">
+      <img [src]="details.cover" alt="cover">
+
+      <div class="desc-info">
+        <h2>{{details.title}}</h2>
+
+        <div class="info-line-top">
+          <span>FHD</span>
+          <span>{{details.duration}}</span>
+          <span>{{details.year}}</span>
+          <span>Publié: {{details.published}}</span>
+        </div>
+
+        <div class="actions-line">
+          <div class="rating-circle-container" [style.--percentage]="details.rating * 10">
+            <div class="rating-circle">
+            </div>
+            <span class="rating-value">{{details.rating}}</span>
+          </div>
+
+          <div class="buttons">
+          </div>
+        </div>
+
+        <p class="synopsis">{{details.synopsis}}</p>
+
+        <div class="additional-details">
+          <p><span>Genre</span>: {{details.genre}}</p>
+          <p><span>Date de sortie</span>: {{details.year}}</p>
+          <p><span>Réalisateur</span>: {{details.author}}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>

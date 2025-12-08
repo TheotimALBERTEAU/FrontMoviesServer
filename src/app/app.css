@@ -8,21 +8,29 @@
 
 .content-wrapper {
   padding-top: 5vh;
-
-  overflow: visible;
-
-  min-height: 100vh;
 }
 
 .header_container {
-  display: flex;
-  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 5vh; /* Hauteur de 3% de la hauteur de la fenêtre */
   z-index: 1000;
   /* Ajoutez une couleur de fond pour qu'il soit opaque */
+  background-color: #222;
+  color: white;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header {
+  display: flex; /* La balise <header> elle-même gère le Flexbox */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5vh;
+  z-index: 1000;
   background-color: #222;
   color: white;
   justify-content: space-between;
@@ -36,3 +44,4 @@
   height: 4vh;
   cursor: pointer;
 }
+
