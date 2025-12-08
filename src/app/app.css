@@ -4,6 +4,16 @@
   box-sizing: border-box;
 }
 
+/* app.component.css */
+
+.content-wrapper {
+  padding-top: 3vh;
+
+  overflow: visible;
+
+  min-height: 100vh;
+}
+
 .header_container {
   display: flex;
   position: fixed;
