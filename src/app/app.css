@@ -1,0 +1,20 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.header_container {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3vh; /* Hauteur de 3% de la hauteur de la fenêtre */
+  z-index: 1000;
+  /* Ajoutez une couleur de fond pour qu'il soit opaque */
+  background-color: #222;
+  color: white;
+  align-items: center;
+  justify-content: center;
+}

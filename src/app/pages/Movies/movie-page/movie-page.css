@@ -1,0 +1,10 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.movie-container {
+  display: flex;
+  padding-top: 5vh;
+}
