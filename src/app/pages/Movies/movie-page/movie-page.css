@@ -53,6 +53,7 @@ body {
 
 .desc-left img {
   width: 15vw;
+  margin-left: 7vw;
   /* Gardez la taille existante */
 }
 
@@ -60,7 +61,7 @@ body {
   display: flex;
   flex-direction: column;
   color: white; /* Assurez-vous que le texte soit visible sur un fond sombre */
-  max-width: 70vw; /* Pour éviter que le texte ne s'étire trop */
+  max-width: 80vw; /* Pour éviter que le texte ne s'étire trop */
 }
 
 .desc-info h2 {

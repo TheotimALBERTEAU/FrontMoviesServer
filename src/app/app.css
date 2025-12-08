@@ -4,10 +4,63 @@
   box-sizing: border-box;
 }
 
-/* app.component.css */
+body {
+  font-family: 'Inter', sans-serif;
+}
 
 .content-wrapper {
+  display: flex;
   padding-top: 5vh;
+
+  width: 100%;
+  min-height: calc(100vh - 5vh);
+  overflow-x: hidden;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 17vw;
+  height: 100%;
+  min-height: calc(100vh - 5vh);
+  color: white;
+  background: darkgrey;
+  position: fixed;
+}
+
+.main-content {
+  margin-left: 17vw;
+  width: calc(100vw - 17vw);
+}
+
+/* --- Styles des Liens de la Sidebar (APP.CSS) --- */
+
+/* Conteneur principal du lien */
+.sidebar-link {
+  /* Propriétés de Flexbox pour l'alignement horizontal */
+  display: flex;
+  align-items: center; /* Aligner verticalement l'icône et le texte */
+  text-decoration: none;
+  color: white;
+  height: 35px;
+  transition: background-color 0.2s;
+  width: 100%;
+  padding: 0 1vw;
+}
+
+/* Style de l'icône */
+.sidebar-link img {
+  width: 1.5vw;
+  padding: 0; /* Important : annuler les paddings spécifiques si l'icône est un enfant direct du lien */
+  margin-right: 10px; /* Espace entre l'icône et le texte */
+}
+
+/* Style du texte */
+.sidebar-txt {
+  font-size: 1em;
+  font-weight: 500;
+  white-space: nowrap; /* Empêche le texte de passer à la ligne s'il est trop long */
+  overflow: hidden; /* Cache le texte s'il ne rentre pas */
 }
 
 .header_container {
