@@ -1,6 +1,6 @@
 <div class="movies-grid">
   @for (movie of movies; track movie._id) {
-    <div class="movie-card" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoMovie(movie.title)">
+    <div class="movie-card" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoMovie(movie.slug)">
 
       <div class="card-overlay"></div>
 

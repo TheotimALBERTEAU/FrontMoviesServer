@@ -8,7 +8,7 @@ export class WatchMovie {
 
   constructor(private http: HttpClient) {}
 
-  getDetails() {
-    return this.http.get<any>('http://localhost:3000/movies');
+  getDetails(slug: string) {
+    return this.http.get<any>(`http://localhost:3000/movies/${slug}`);
   }
 }

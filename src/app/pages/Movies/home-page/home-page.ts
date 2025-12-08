@@ -26,7 +26,7 @@ export class HomePage {
     })
   }
 
-  onClickGoMovie(title: any) {
-    this.moviesService.goMovie(title);
+  onClickGoMovie(slug: any) {
+    this.moviesService.goMovie(slug);
   }
 }

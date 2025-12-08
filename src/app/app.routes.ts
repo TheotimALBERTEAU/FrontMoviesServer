@@ -4,5 +4,5 @@ import {MoviePage} from './pages/Movies/movie-page/movie-page';
 
 export const routes: Routes = [
   {path: 'movies', component: HomePage},
-  {path: 'movies/:title', component: MoviePage},
+  {path: 'movies/:slug', component: MoviePage},
 ];

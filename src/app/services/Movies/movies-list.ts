@@ -16,7 +16,7 @@ export class MoviesList {
     return this.http.get<any>('http://localhost:3000/movies');
   }
 
-  goMovie(movieTitle: any) {
-    this.router.navigate(['/movies/' + movieTitle]);
+  goMovie(movieSlug: any) {
+    this.router.navigate(['/movies/' + movieSlug]);
   }
 }
