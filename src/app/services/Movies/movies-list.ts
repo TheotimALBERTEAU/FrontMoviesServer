@@ -12,8 +12,10 @@ export class MoviesList {
               private router: Router) {
   }
 
+  public ApiUrl: string = 'https://hessflix.ddns.net:8443/api';
+
   getMovies(): Observable<any> {
-    return this.http.get<any>('http://localhost:3000/movies');
+    return this.http.get<any>(`${this.ApiUrl}/movies`);
   }
 
   goMovie(movieSlug: any) {

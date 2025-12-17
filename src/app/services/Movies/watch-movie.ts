@@ -8,7 +8,9 @@ export class WatchMovie {
 
   constructor(private http: HttpClient) {}
 
+  public ApiUrl: string = 'https://hessflix.ddns.net:8443/api';
+
   getDetails(slug: string) {
-    return this.http.get<any>(`http://localhost:3000/movies/${slug}`);
+    return this.http.get<any>(`${this.ApiUrl}/movies/${slug}`);
   }
 }
