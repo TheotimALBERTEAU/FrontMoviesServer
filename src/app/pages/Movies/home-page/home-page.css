@@ -7,9 +7,9 @@
 
 .movies-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, min(20vw));
+  grid-template-columns: repeat(auto-fill, min(18vw));
   gap: 30px;
-  padding: 20px;
+  padding-top: 20px;
   height: 100%;
   min-height: 100vh;
   background: linear-gradient(135deg, black 15%, #3F1717 100%);

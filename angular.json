@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/front-movies",
+            "outputPath": "dist/front-movies-server",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
@@ -60,10 +60,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "FrontMovies:build:production"
+              "buildTarget": "FrontMoviesServer:build:production"
             },
             "development": {
-              "buildTarget": "FrontMovies:build:development"
+              "buildTarget": "FrontMoviesServer:build:development"
             }
           },
           "defaultConfiguration": "development"
