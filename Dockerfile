@@ -1,12 +1,14 @@
-# Stage 1: Build
-FROM node:20-slim AS build
+FROM node:20-alpine AS development
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build --configuration=production
-
-# Stage 2: Serve avec Nginx
-FROM nginx:alpine
-COPY --from=build /app/dist/SitePerso/browser /usr/share/nginx/html
 EXPOSE 4200
+CMD ["npm", "start", "--", "--host", "0.0.0.0", "--configuration", "development"]
+
+# --- Stage 2 : Production (Nginx) ---
+FROM nginx:stable-alpine AS production
+COPY --from=development /app/dist/*/browser /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

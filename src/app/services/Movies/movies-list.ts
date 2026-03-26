@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'any',
@@ -12,7 +13,7 @@ export class MoviesList {
               private router: Router) {
   }
 
-  public ApiUrl: string = 'http://localhost:3000';
+  public ApiUrl: string = environment.apiUrl;
 
   getMovies(): Observable<any> {
     return this.http.get<any>(`${this.ApiUrl}/movies`);

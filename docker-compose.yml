@@ -1,4 +1,6 @@
 services:
   app:
-    build: .
-    container_name: movies-front-1
+    build:
+      context: .
+      target: production
+    container_name: front-movies
