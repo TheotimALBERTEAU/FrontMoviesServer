@@ -12,7 +12,7 @@ CMD ["npm", "start", "--", "--host", "0.0.0.0", "--configuration", "development"
 
 # --- Stage 2 : Production (Nginx) ---
 FROM nginx:stable-alpine AS production
-COPY --from=development /app/dist/*/browser /usr/share/nginx/html
+COPY --from=development /app/dist/*/browser /usr/share/nginx/html/hessflix
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
