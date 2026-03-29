@@ -14,12 +14,22 @@ export class HomePage {
               private cdr: ChangeDetectorRef) {}
 
   public movies : any[] = []
+  public progressedMovies : any[] = []
 
   ngOnInit() {
     this.moviesService.getMovies().subscribe({
       next: data => {
         if (data.code === "200") {
           this.movies = data.data;
+          this.cdr.detectChanges();
+        }
+      }
+    });
+    this.moviesService.getMoviesProgresses('69c9904855461fadd0530db7').subscribe({
+      next: data => {
+        if (data.code === "200") {
+          this.progressedMovies = data.data;
+          console.log(this.progressedMovies);
           this.cdr.detectChanges();
         }
       }

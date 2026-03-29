@@ -22,4 +22,8 @@ export class MoviesList {
   goMovie(movieSlug: any) {
     this.router.navigate(['/movies/' + movieSlug]);
   }
+
+  getMoviesProgresses(userId: any) {
+    return this.http.get<any>(`${this.ApiUrl}/users/show-progress/${userId}`);
+  }
 }

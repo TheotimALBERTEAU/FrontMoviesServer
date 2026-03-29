@@ -5,6 +5,87 @@
   font-family: Arial, sans-serif;
 }
 
+.progressed-movies-grid {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  overflow-x: auto; /* Permet le défilement horizontal si besoin */
+  background: linear-gradient(135deg, black 15%, #3F1717 100%);
+}
+
+.progressed-movies-card {
+  width: 250px; /* Largeur de la vignette */
+  flex-shrink: 0;
+  cursor: pointer;
+
+  .progressed-movies-card-background {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9; /* Force le format rectangulaire */
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #1a1a1a;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+}
+
+.progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.progress-bar {
+  height: 100%;
+  background: #e50914; /* Rouge de la barre de progression */
+}
+
+.movie-info {
+  margin-top: 10px;
+
+  h3 {
+    font-size: 0.9rem;
+    color: #fff;
+    margin: 0;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  p {
+    font-size: 0.8rem;
+    color: #808080;
+    margin: 4px 0;
+  }
+}
+
+/* Badge "Film" en bas à droite */
+.badge-type {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  color: #ccc;
+  border: 1px solid #444;
+}
+
 .movies-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, min(18vw));
@@ -42,8 +123,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-
-  /* Dégradé du haut (clair) vers le bas (sombre) pour lisibilité */
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0.1) 0%,   /* Légèrement d'ombre en haut */

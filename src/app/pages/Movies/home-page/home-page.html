@@ -1,3 +1,23 @@
+<div class="progressed-movies-grid">
+  @for (item of progressedMovies; track item.movieId._id) {
+    <div class="progressed-movies-card">
+      <div class="progressed-movies-card-content">
+        <div class="progressed-movies-card-background">
+          <img [src]="item.movieId.cover" [alt]="item.movieId.title" (click)="onClickGoMovie(item.movieId.slug)">
+
+          <div class="progress-container">
+            <div class="progress-bar" [style.width.%]="(item.currentTime / (item.movieId.duration * 60)) * 100"></div>
+          </div>
+        </div>
+      </div>
+      <div class="movie-info">
+        <h3>{{item.movieId.title}}</h3>
+        <p>{{item.movieId.genre}}</p>
+      </div>
+    </div>
+  }
+</div>
+
 <div class="movies-grid">
   @for (movie of movies; track movie._id) {
     <div class="movie-card" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoMovie(movie.slug)">
