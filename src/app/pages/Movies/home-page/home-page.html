@@ -1,40 +1,35 @@
-<div class="progressed-movies-grid">
-  @for (item of progressedMovies; track item.movieId._id) {
-    <div class="progressed-movies-card">
-      <div class="progressed-movies-card-content">
-        <div class="progressed-movies-card-background">
-          <img [src]="item.movieId.cover" [alt]="item.movieId.title" (click)="onClickGoMovie(item.movieId.slug)">
+<!--
+<section id="progressed-movies">
 
-          <div class="progress-container">
-            <div class="progress-bar" [style.width.%]="(item.currentTime / (item.movieId.duration * 60)) * 100"></div>
+</section>
+-->
+
+<section id="movies-grid">
+  <div class="movies-grid">
+    @for (movie of movies; track movie._id) {
+      <div class="movie-card" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoMovie(movie.slug)">
+
+        <div class="card-overlay"></div>
+
+        <div class="play-button">
+          <img src="Assets/Movies/play-button.png" alt="play-button">
+        </div>
+
+        <div class="card-content">
+          <h3 class="movie-title">{{ movie.title}}</h3>
+
+          <p class="movie-genres">{{ movie.genre }}</p>
+
+          <div class="movie-details-bottom">
+            <span>{{ movie.duration }} min</span>
+            <span class="separator">|</span>
+            <span>{{ movie.year }}</span>
+            <div class="movie-type">
+              <p>{{movie.type}}</p>
+            </div>
           </div>
         </div>
       </div>
-      <div class="movie-info">
-        <h3>{{item.movieId.title}}</h3>
-        <p>{{item.movieId.genre}}</p>
-      </div>
-    </div>
-  }
-</div>
-
-<div class="movies-grid">
-  @for (movie of movies; track movie._id) {
-    <div class="movie-card" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoMovie(movie.slug)">
-
-      <div class="card-overlay"></div>
-
-      <div class="card-content">
-        <h3 class="movie-title">{{ movie.title}}</h3>
-
-        <p class="movie-genres">{{ movie.genre }}</p>
-
-        <div class="movie-details-bottom">
-          <span>{{ movie.duration }} min</span>
-          <span class="separator">|</span>
-          <span>{{ movie.year }}</span>
-        </div>
-      </div>
-    </div>
-  }
-</div>
+    }
+  </div>
+</section>
