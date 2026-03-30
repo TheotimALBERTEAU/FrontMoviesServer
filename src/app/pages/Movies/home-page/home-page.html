@@ -7,26 +7,23 @@
 <section id="movies-grid">
   <div class="movies-grid">
     @for (movie of movies; track movie._id) {
-      <div class="movie-card" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoMovie(movie.slug)">
+      <div class="movie-card">
+        <div class="movie-card-background" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoMovie(movie.slug)">
 
-        <div class="card-overlay"></div>
+          <div class="card-overlay"></div>
 
-        <div class="play-button">
-          <img src="Assets/Movies/play-button.png" alt="play-button">
+          <div class="play-button">
+            <img src="Assets/Movies/play-button.png" alt="play-button">
+          </div>
         </div>
 
         <div class="card-content">
           <h3 class="movie-title">{{ movie.title}}</h3>
 
-          <p class="movie-genres">{{ movie.genre }}</p>
-
-          <div class="movie-details-bottom">
-            <span>{{ movie.duration }} min</span>
-            <span class="separator">|</span>
-            <span>{{ movie.year }}</span>
-            <div class="movie-type">
-              <p>{{movie.type}}</p>
-            </div>
+          <div class="movie-details-bar">
+            <div class="info-block main-genre">{{ movie.genre[0] }}</div>
+            <div class="info-block duration">{{ movie.duration }} min</div>
+            <div class="info-block type-indicator">{{ movie.type }}</div>
           </div>
         </div>
       </div>
