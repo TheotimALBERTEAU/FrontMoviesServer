@@ -1,32 +1,53 @@
-<!--
-<section id="progressed-movies">
+<section id="progressed-movies-grid" class="progressed-movies-grid">
+  @for (item of progressedMovies; track item.movieId) {
+    <div class="progressed-movie-card">
+      <div class="progressed-movie-card-background" [style.background-image]="'url(' + item.movieId.cover + ')'" (click)="onClickGoMovie(item.movieId.slug)">
 
-</section>
--->
+        <div class="card-overlay"></div>
 
-<section id="movies-grid">
-  <div class="movies-grid">
-    @for (movie of movies; track movie._id) {
-      <div class="movie-card">
-        <div class="movie-card-background" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoMovie(movie.slug)">
-
-          <div class="card-overlay"></div>
-
-          <div class="play-button">
-            <img src="Assets/Movies/play-button.png" alt="play-button">
-          </div>
+        <div class="play-button">
+          <img src="Assets/Movies/play-button.png" alt="play-button">
         </div>
 
-        <div class="card-content">
-          <h3 class="movie-title">{{ movie.title}}</h3>
 
-          <div class="movie-details-bar">
-            <div class="info-block main-genre">{{ movie.genre[0] }}</div>
-            <div class="info-block duration">{{ movie.duration }} min</div>
-            <div class="info-block type-indicator">{{ movie.type }}</div>
-          </div>
+        <div class="empty-progress-bar">
+          <div class="progress-bar" [style.width.%]="(item.currentTime / (item.movieId.duration * 60)) * 100"></div>
         </div>
       </div>
-    }
-  </div>
+
+      <div class="card-content">
+        <h3 class="movie-title">{{ item.movieId.title }}</h3>
+
+        <div class="movie-details-bar">
+          <div class="info-block main-genre">{{ item.movieId.genre[0] }}</div>
+          <div class="info-block type-indicator">{{ item.movieId.type }}</div>
+        </div>
+      </div>
+    </div>
+  }
+</section>
+
+<section id="movies-grid" class="movies-grid">
+  @for (movie of movies; track movie._id) {
+    <div class="movie-card">
+      <div class="movie-card-background" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoMovie(movie.slug)">
+
+        <div class="card-overlay"></div>
+
+        <div class="play-button">
+          <img src="Assets/Movies/play-button.png" alt="play-button">
+        </div>
+      </div>
+
+      <div class="card-content">
+        <h3 class="movie-title">{{ movie.title}}</h3>
+
+        <div class="movie-details-bar">
+          <div class="info-block main-genre">{{ movie.genre[0] }}</div>
+          <div class="info-block duration">{{ movie.duration }} min</div>
+          <div class="info-block type-indicator">{{ movie.type }}</div>
+        </div>
+      </div>
+    </div>
+  }
 </section>

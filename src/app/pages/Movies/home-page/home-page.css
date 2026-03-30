@@ -5,19 +5,69 @@
   font-family: Inter, sans-serif;
 }
 
+.progressed-movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, min(12vw));
+  justify-content: space-evenly;
+  height: 100%;
+  min-height: 20vmin;
+}
+
+.progressed-movie-card-background {
+  display: flex;
+  height: 7vw;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.progressed-movie-card:hover .play-button {
+  opacity: 1;
+}
+
+.progressed-movie-card:hover .card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.5) 80%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+}
+
+.empty-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0.3rem;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: red;
+}
+
 .movies-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, min(12vw));
+  max-width: 99vw;
   justify-content: space-around;
   height: 100%;
-  min-height: 100vh;
+  row-gap: 1vw;
 }
 
 .movie-card-background {
   display: flex;
   height: 18vw;
   border-radius: 10px;
-  overflow: hidden;
   position: relative;
   background-size: cover;
   background-position: center;
