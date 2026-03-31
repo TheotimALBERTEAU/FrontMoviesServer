@@ -1,6 +1,16 @@
 <header>
   <div class="header_container">
-    <img src="Assets/Logos/Logo-title-without-bg.png" alt="Logo-Title" (click)="OnClickGoHome()">
+    <div class="logo-section" (click)="OnClickGoHome()">
+      <img src="Assets/Logos/Logo-title-without-bg.png" alt="Senpai Stream Logo">
+    </div>
+
+    <div class="nav-actions">
+      <a class="login-link" (click)="OnClickGoLogin()">Se connecter</a>
+      <button class="signup-button" (click)="OnClickGoSignup()">
+        S'inscrire
+        <span class="arrow">→</span>
+      </button>
+    </div>
   </div>
 </header>
 

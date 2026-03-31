@@ -3,27 +3,63 @@
   padding: 0;
 }
 
-.header_container {
-  display: flex;
-  width: 100%;
-  height: 5vh;
-  background-color: rgba(32, 32, 32, 0.7);
-  justify-content: space-between;
-  align-items: center;
-}
-
 header {
   position: fixed;
   z-index: 1;
   width: 100%;
   height: 5vh;
+  background-color: #000000; /* Noir pur comme sur l'image */
+}
+
+.header_container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0;
 }
 
 .header_container img {
+  cursor: pointer;
+  height: 2.5vh; /* Ajusté pour tenir dans les 5vh du header */
+  width: auto;
+}
+
+.nav-actions {
   display: flex;
-  padding-left: 1vw;
-  width: 4vw;
-  height: 2vh;
+  align-items: center;
+  gap: 1.5vw;
+}
+
+.login-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-family: sans-serif;
+}
+
+.signup-button {
+  background-color: #e50914;
+  color: white;
+  border: none;
+  border-radius: 20px; /* Garde ton arrondi */
+  padding: 0.8vh 1.2vw; /* Dimensions basées sur tes unités */
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.signup-button:hover {
+  background-color: #b20710;
+}
+
+.arrow {
+  font-size: 1.1rem;
+  line-height: 0;
 }
 
 .content {

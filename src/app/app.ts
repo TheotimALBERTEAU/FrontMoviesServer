@@ -16,4 +16,12 @@ export class App {
   OnClickGoHome() {
     this.router.navigate(['/movies']);
   }
+
+  OnClickGoLogin() {
+    this.router.navigate(['/login']);
+  }
+
+  OnClickGoSignup() {
+    this.router.navigate(['/signup']);
+  }
 }
