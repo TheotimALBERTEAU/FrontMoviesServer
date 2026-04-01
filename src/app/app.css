@@ -4,7 +4,6 @@
   box-sizing: border-box;
 }
 
-/* --- OVERLAY SYSTEM --- */
 .search-overlay {
   position: fixed;
   top: 0;
@@ -53,7 +52,6 @@
   outline: none;
 }
 
-/* --- HEADER --- */
 header {
   position: fixed;
   z-index: 100;
@@ -77,7 +75,6 @@ header {
   cursor: pointer;
 }
 
-/* Barre "Factice" du header */
 .search-trigger {
   width: 400px;
   cursor: pointer;
@@ -116,7 +113,7 @@ header {
   width: 20px;
   height: 20px;
   border: 2px solid rgba(255, 255, 255, 0.1);
-  border-top: 2px solid #e50914; /* Couleur Netflix/Senpai */
+  border-top: 2px solid #e50914;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   margin-left: 10px;
@@ -137,33 +134,61 @@ header {
   box-shadow: 0 20px 40px rgba(0,0,0,0.6);
 }
 
-.results-label { color: #666; font-size: 0.8rem; margin-bottom: 15px; text-transform: uppercase; }
+.results-label {
+  color: #666;
+  font-size: 0.8rem;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
 
 .result-item {
   display: flex;
   gap: 15px;
-  padding: 10px;
+  padding: 10px 0;
   border-radius: 8px;
   cursor: pointer;
   transition: 0.2s;
 }
 
-.result-item:hover { background-color: #252525; }
+.result-item:hover .result-title {
+  text-decoration: underline;
+  color: #fff; /* Optionnel : un blanc plus vif au survol */
+}
 
-.result-poster { width: 50px; height: 75px; object-fit: cover; border-radius: 4px; }
+.result-poster {
+  width: 50px;
+  height: 75px;
+  object-fit: cover;
+  border-radius: 4px;
+}
 
-.result-title { color: #eee; font-weight: bold; margin-bottom: 5px; }
+.result-title {
+  color: #eee;
+  font-weight: bold;
+  margin-bottom: 5px;
+  transition: color 0.2s;
+}
 
-.result-desc { color: #888; font-size: 0.8rem; line-height: 1.3; }
+.result-desc {
+  color: #888;
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
 
 .see-all {
   text-align: center;
-  color: #e50914;
+  color: dimgray;
   padding-top: 15px;
   margin-top: 10px;
   border-top: 1px solid #333;
   font-size: 0.9rem;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.see-all:hover {
+  color: darkred;
+  text-decoration: underline;
 }
 
 .nav-actions {

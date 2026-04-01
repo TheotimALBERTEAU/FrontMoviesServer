@@ -19,6 +19,7 @@ export class App implements OnInit {
   public isProfileMenuOpen = false;
   public searchQuery = '';
   public results: any[] = [];
+  public isLoading = false;
 
   constructor(private router: Router,
               public authService: Auth,
@@ -65,17 +66,28 @@ export class App implements OnInit {
 
   onSearchChange(event: any) {
     if (this.searchQuery.length >= 2) {
+      this.isLoading = true; // On lance le chargement
+      this.results = []; // On vide les anciens résultats pendant le "load"
+
       this.moviesService.searchMovies(this.searchQuery).subscribe({
         next: (res) => {
           if (res && res.code === "200") {
-            this.results = res.data;
-            this.cdr.detectChanges();
+            // On attend 400ms (0.4s) avant d'afficher pour simuler le travail
+            setTimeout(() => {
+              this.results = res.data;
+              this.isLoading = false; // On arrête le chargement
+              this.cdr.detectChanges();
+            }, 400);
           }
         },
-        error: (err) => console.error("Erreur recherche :", err)
+        error: (err) => {
+          this.isLoading = false;
+          console.error("Erreur recherche :", err);
+        }
       });
     } else {
       this.results = [];
+      this.isLoading = false;
     }
   }
 

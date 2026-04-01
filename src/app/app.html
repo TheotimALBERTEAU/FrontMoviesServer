@@ -16,7 +16,7 @@
         <img [src]="movie.cover" class="result-poster">
         <div class="result-info">
           <p class="result-title">{{ movie.title }}</p>
-          <p class="result-desc">{{ movie.description | slice:0:80 }}...</p>
+          <p class="result-desc">{{ movie.synopsis | slice:0:80 }}...</p>
         </div>
       </div>
       <div class="see-all">Voir tous les résultats</div>
