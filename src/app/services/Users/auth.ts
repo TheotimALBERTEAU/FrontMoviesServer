@@ -38,4 +38,17 @@ export class Auth {
   isLoggedIn(): boolean {
     return !!this.currentUser;
   }
+
+  logout(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/users/logout`, {}, { withCredentials: true }).pipe(
+      tap(() => {
+        this.currentUser = null;
+        console.log("Utilisateur déconnecté localement");
+      }),
+      catchError((err) => {
+        this.currentUser = null;
+        return of(null);
+      })
+    );
+  }
 }

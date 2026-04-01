@@ -5,11 +5,23 @@
     </div>
 
     <div class="nav-actions">
-      <a class="login-link" (click)="OnClickGoLogin()">Se connecter</a>
-      <button class="signup-button" (click)="OnClickGoSignup()">
-        S'inscrire
-        <span class="arrow">→</span>
-      </button>
+      <ng-container *ngIf="!authService.isLoggedIn()">
+        <a class="login-link" (click)="OnClickGoLogin()">Se connecter</a>
+        <button class="signup-button" (click)="OnClickGoSignup()">
+          S'inscrire
+          <span class="arrow">→</span>
+        </button>
+      </ng-container>
+
+      <div class="profile-container" *ngIf="authService.isLoggedIn()" (click)="toggleProfileMenu()">
+        <img src="Assets/Users/HeadBar/profile-icon.svg" alt="Profil" class="profile-icon">
+      </div>
+
+      <div class="dropdown-menu" *ngIf="isProfileMenuOpen">
+        <div class="dropdown-item logout" (click)="onLogout()">
+          <span>Se déconnecter</span>
+        </div>
+      </div>
     </div>
   </div>
 </header>
