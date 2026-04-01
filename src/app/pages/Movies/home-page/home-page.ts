@@ -1,5 +1,6 @@
 import {Component, ChangeDetectorRef, ViewChild, ElementRef, HostListener} from '@angular/core';
 import {MoviesList} from '../../../services/Movies/movies-list';
+import {Auth} from '../../../services/Users/auth'
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -11,10 +12,11 @@ import { CommonModule } from '@angular/common';
 })
 export class HomePage {
   constructor(private moviesService: MoviesList,
+              public authService: Auth,
               private cdr: ChangeDetectorRef) {}
 
   public movies : any[] = []
-  public progressedMovies : any[] = []
+  public progressedMovies: any[] = [];
 
   ngOnInit() {
     this.moviesService.getMovies().subscribe({
@@ -25,19 +27,26 @@ export class HomePage {
         }
       }
     });
-    this.moviesService.getMoviesProgresses('69c9904855461fadd0530db7').subscribe({
-      next: data => {
-        if (data.code === "200") {
-          this.progressedMovies = data.data;
-          console.log(this.progressedMovies);
-          this.cdr.detectChanges();
-
-          setTimeout(() => {
-            this.checkButtons();
-          }, 0);
-        }
+    this.authService.checkAuth().subscribe(() => {
+      const userId = this.authService.getUserId();
+      console.log("ID envoyé à l'API :", userId);
+      if (userId) {
+        this.loadMovies(userId);
       }
-    })
+      this.cdr.detectChanges()
+    });
+  }
+
+  loadMovies(userId: string) {
+    this.moviesService.getMoviesProgresses(userId).subscribe((res: any) => {
+      if (res && res.code === "200") {
+        this.progressedMovies = res.data;
+      }
+      setTimeout(() => {
+        this.checkButtons();
+      }, 50);
+      this.cdr.detectChanges();
+    });
   }
 
   onClickGoMovie(slug: any) {

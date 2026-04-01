@@ -19,7 +19,7 @@ export class Login {
       "password": password,
     }
 
-    this.http.post(`${this.ApiUrl}/users/login`, infos).subscribe({
+    this.http.post(`${this.ApiUrl}/users/login`, infos, {withCredentials: true}).subscribe({
       next: (response: any) => {
         if (response.code == "200") {
           alert("Login successfull");

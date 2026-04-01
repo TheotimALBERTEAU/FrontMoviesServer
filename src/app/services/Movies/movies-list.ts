@@ -5,7 +5,7 @@ import {Router} from '@angular/router';
 import {environment} from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 
 export class MoviesList {
@@ -24,6 +24,6 @@ export class MoviesList {
   }
 
   getMoviesProgresses(userId: any) {
-    return this.http.get<any>(`${this.ApiUrl}/users/show-progress/${userId}`);
+    return this.http.get<any>(`${this.ApiUrl}/users/show-progress/${userId}`, { withCredentials: true });
   }
 }
