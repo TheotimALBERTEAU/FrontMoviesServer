@@ -1,0 +1,93 @@
+.signup-container {
+  max-width: 450px;
+  margin: 10vh auto;
+  padding: 40px;
+  background-color: rgba(0, 0, 0, 0.75);
+  border-radius: 8px;
+  color: #fff;
+}
+
+.signup-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #b3b3b3;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 15px;
+  background: #333;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 1rem;
+}
+
+.form-input:focus {
+  background: #454545;
+  outline: none;
+  box-shadow: inset 0 0 0 1px #e50914;
+}
+
+.toggle-icon {
+  position: absolute;
+  right: 15px;
+  width: 20px;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.action-container {
+  margin-top: 35px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  background-color: #e50914; /* Rouge Netflix */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #b20710;
+}
+
+.login-text {
+  margin-top: 20px;
+  color: #737373;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.login-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}

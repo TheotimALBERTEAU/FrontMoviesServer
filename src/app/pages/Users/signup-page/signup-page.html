@@ -1,0 +1,53 @@
+<div class="signup-container">
+  <h2 class="signup-title">Créer un compte</h2>
+
+  <div class="signup-form">
+    <div class="form-group">
+      <label class="form-label" for="form-pseudo">Pseudo</label>
+      <div class="input-wrapper">
+        <input class="form-input" id="form-pseudo" [(ngModel)]="pseudo" type="text" placeholder="Choisissez un pseudo">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="form-email">E-mail</label>
+      <div class="input-wrapper">
+        <input class="form-input" id="form-email" [(ngModel)]="email" type="text" placeholder="Entrez votre e-mail">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="form-password">Mot de passe</label>
+      <div class="input-wrapper">
+        <input class="form-input" id="form-password" [(ngModel)]="password" [type]="signupService.passwordInputType" placeholder="Créez un mot de passe">
+        <img
+          class="toggle-icon"
+          (click)="signupService.toggleVisibility('password')"
+          [src]="signupService.passwordInputType === 'password' ? '/Assets/Users/Connection/unshowed-password.svg' : '/Assets/Users/Connection/showed-password.svg'"
+          alt="Toggle Visibility">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="form-confirm">Confirmer le mot de passe</label>
+      <div class="input-wrapper">
+        <input class="form-input" id="form-confirm" [(ngModel)]="passwordConfirm" [type]="signupService.confirmInputType" placeholder="Répétez le mot de passe">
+        <img
+          class="toggle-icon"
+          (click)="signupService.toggleVisibility('confirm')"
+          [src]="signupService.confirmInputType === 'password' ? '/Assets/Users/Connection/unshowed-password.svg' : '/Assets/Users/Connection/showed-password.svg'"
+          alt="Toggle Visibility">
+      </div>
+    </div>
+  </div>
+
+  <div class="action-container">
+    <button class="btn-primary" (click)="onClickSignup()">
+      S'inscrire <span class="arrow">→</span>
+    </button>
+  </div>
+
+  <p class="login-text">
+    Déjà un compte ? <a (click)="onClickGoLogin()" class="login-link">Se connecter</a>
+  </p>
+</div>

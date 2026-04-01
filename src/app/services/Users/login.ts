@@ -30,16 +30,11 @@ export class Login {
       }
     })
   }
-
   public passwordInputType: 'password' | 'text' = 'password';
-
-  public confirmInputType: 'password' | 'text' = 'password';
 
   public togglePasswordVisibility(field: 'password' | 'confirm'): void {
     if (field === 'password') {
       this.passwordInputType = this.passwordInputType === 'password' ? 'text' : 'password';
-    } else if (field === 'confirm') {
-      this.confirmInputType = this.confirmInputType === 'password' ? 'text' : 'password';
     }
   }
 }
