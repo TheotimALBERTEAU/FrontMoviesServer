@@ -1,6 +1,7 @@
 import {Component, HostListener, signal, ElementRef} from '@angular/core';
-import { RouterOutlet, Router } from '@angular/router';import { CommonModule } from '@angular/common'; // Obligatoire pour *ngIf
-import { Auth } from './services/Users/auth'; // Vérifie le chemin de ton service
+import { RouterOutlet, Router } from '@angular/router';import { CommonModule } from '@angular/common';
+import { Auth } from './services/Users/auth';
+import {ChangeDetectorRef} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -12,13 +13,27 @@ import { Auth } from './services/Users/auth'; // Vérifie le chemin de ton servi
 export class App {
   constructor(private router: Router,
               public authService: Auth,
-              private eRef: ElementRef) {
+              private eRef: ElementRef,
+              private cdr: ChangeDetectorRef) {
+  }
+
+  ngOnInit() {
+    this.authService.authChanged.subscribe(() => {
+      setTimeout(() => {
+        this.cdr.detectChanges();
+      }, 0);
+    });
+    this.authService.checkAuth().subscribe();
   }
 
   @HostListener('document:click', ['$event'])
-  clickout(event: any) {
-    if (!this.eRef.nativeElement.contains(event.target)) {
+  onDocumentClick(event: MouseEvent) {
+    const targetElement = event.target as HTMLElement;
+    if (this.isProfileMenuOpen && !targetElement.closest('.profile-container')) {
       this.isProfileMenuOpen = false;
+      setTimeout(() => {
+        this.cdr.detectChanges();
+      }, 0);
     }
   }
 
@@ -46,6 +61,9 @@ export class App {
     this.authService.logout().subscribe(() => {
       this.isProfileMenuOpen = false;
       this.router.navigate(['/login']);
+      setTimeout(() => {
+        this.cdr.detectChanges();
+      }, 100);
     });
   }
 }
