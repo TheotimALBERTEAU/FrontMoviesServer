@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {WatchMovie} from '../../../services/Movies/watch-movie';
@@ -32,4 +32,18 @@ export class MoviePage {
         })
       }
     }
+
+  public movieProgress: number = 1200;
+
+  @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLVideoElement>;
+
+  onMetadataLoaded() {
+    const video = this.videoPlayer.nativeElement;
+
+    if (this.movieProgress > 0) {
+      video.currentTime = this.movieProgress;
+      console.log(`Reprise de la lecture à : ${this.movieProgress}s`);
+      video.play().catch(err => console.log("Lecture auto bloquée par le navigateur"));
+    }
+  }
 }
