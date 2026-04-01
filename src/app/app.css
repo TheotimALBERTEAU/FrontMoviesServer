@@ -1,29 +1,169 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
+/* --- OVERLAY SYSTEM --- */
+.search-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.search-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.central-search-container {
+  margin-top: 15vh;
+  width: 650px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.central-search-bar {
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  padding: 15px 25px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border: 1px solid #333;
+}
+
+.central-search-bar input {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  width: 100%;
+  outline: none;
+}
+
+/* --- HEADER --- */
 header {
   position: fixed;
-  z-index: 1;
+  z-index: 100;
   width: 100%;
   height: 4rem;
   background-color: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
 }
 
 .header_container {
   display: flex;
   width: 100%;
-  height: 100%;
+  padding: 0 2vw;
   justify-content: space-between;
   align-items: center;
 }
 
-.header_container img {
+.logo-section img {
+  height: 35px;
   cursor: pointer;
-  height: 2.5vh;
-  width: auto;
-  margin-left: 1vw;
+}
+
+/* Barre "Factice" du header */
+.search-trigger {
+  width: 400px;
+  cursor: pointer;
+}
+
+.search-bar-placeholder {
+  background-color: #121212;
+  border-radius: 30px;
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #666;
+  font-size: 0.9rem;
+  border: 1px solid transparent;
+  transition: 0.2s;
+}
+
+.search-bar-placeholder:hover {
+  background-color: #1a1a1a;
+  border-color: #333;
+}
+
+.search-icon {
+  width: 18px;
+  filter: opacity(0.6);
+}
+
+.search-shortcut {
+  margin-left: auto;
+  color: #444;
+  font-size: 0.7rem;
+}
+
+.search-loader {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top: 2px solid #e50914; /* Couleur Netflix/Senpai */
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.search-results-container {
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  padding: 20px;
+  max-height: 60vh;
+  overflow-y: auto;
+  border: 1px solid #333;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+.results-label { color: #666; font-size: 0.8rem; margin-bottom: 15px; text-transform: uppercase; }
+
+.result-item {
+  display: flex;
+  gap: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.result-item:hover { background-color: #252525; }
+
+.result-poster { width: 50px; height: 75px; object-fit: cover; border-radius: 4px; }
+
+.result-title { color: #eee; font-weight: bold; margin-bottom: 5px; }
+
+.result-desc { color: #888; font-size: 0.8rem; line-height: 1.3; }
+
+.see-all {
+  text-align: center;
+  color: #e50914;
+  padding-top: 15px;
+  margin-top: 10px;
+  border-top: 1px solid #333;
+  font-size: 0.9rem;
+  cursor: pointer;
 }
 
 .nav-actions {

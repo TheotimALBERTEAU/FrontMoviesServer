@@ -1,7 +1,41 @@
-<header>
+<div class="search-overlay" [class.active]="isSearchOpen" (click)="closeSearch()">
+  <div class="central-search-container" *ngIf="isSearchOpen" (click)="$event.stopPropagation()">
+    <div class="central-search-bar">
+      <img src="Assets/Movies/search-icon.svg" class="search-icon">
+      <input type="text"
+             #centralInput
+             placeholder="Rechercher des films, séries, animés .."
+             [(ngModel)]="searchQuery"
+             (input)="onSearchChange($event)">
+    </div>
+    <div class="search-loader" *ngIf="isLoading"></div>
+
+    <div class="search-results-container" *ngIf="results.length > 0">
+      <p class="results-label">Résultats</p>
+      <div class="result-item" *ngFor="let movie of results" (click)="moviesService.goMovie(movie.slug); closeSearch()">
+        <img [src]="movie.cover" class="result-poster">
+        <div class="result-info">
+          <p class="result-title">{{ movie.title }}</p>
+          <p class="result-desc">{{ movie.description | slice:0:80 }}...</p>
+        </div>
+      </div>
+      <div class="see-all">Voir tous les résultats</div>
+    </div>
+  </div>
+</div>
+
+<header [class.search-active]="isSearchOpen">
   <div class="header_container">
     <div class="logo-section" (click)="OnClickGoHome()">
       <img src="Assets/Logos/Logo-title-without-bg.png" alt="Senpai Stream Logo">
+    </div>
+
+    <div class="search-trigger" (click)="openSearch()">
+      <div class="search-bar-placeholder">
+        <img src="Assets/Movies/search-icon.svg" class="search-icon">
+        <span>Rechercher des films, séries, animés ..</span>
+        <span class="search-shortcut">Ctrl + Q</span>
+      </div>
     </div>
 
     <div class="nav-actions">
@@ -17,7 +51,6 @@
         <div class="profile-container" (click)="toggleProfileMenu()">
           <img src="Assets/Users/HeadBar/profile-icon.svg" class="profile-icon">
         </div>
-
         <div class="dropdown-menu" *ngIf="isProfileMenuOpen">
           <div class="dropdown-item" (click)="onLogout()">Se déconnecter</div>
         </div>
