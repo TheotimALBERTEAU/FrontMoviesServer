@@ -3,6 +3,8 @@
     <video #videoPlayer
            [src]="details.link"
            (loadedmetadata)="onMetadataLoaded()"
+           (play)="startProgressTimer()"
+           (pause)="saveProgress(); stopProgressTimer()"
            controls>
     </video>
   </div>

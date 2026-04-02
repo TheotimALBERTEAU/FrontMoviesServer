@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {WatchMovie} from '../../../services/Movies/watch-movie';
@@ -22,6 +22,7 @@ export class MoviePage {
 
   public details: any = [];
   public movieProgress = 0;
+  private progressInterval: any;
 
   ngOnInit() {
     const movieSlug = this.activatedRoute.snapshot.paramMap.get('slug');
@@ -73,5 +74,41 @@ export class MoviePage {
 
   onMetadataLoaded() {
     this.applyProgressToVideo();
+  }
+
+  startProgressTimer() {
+    this.stopProgressTimer();
+    this.progressInterval = setInterval(() => {
+      this.saveProgress();
+    }, 30000);
+  }
+
+  stopProgressTimer() {
+    if (this.progressInterval) {
+      clearInterval(this.progressInterval);
+    }
+  }
+
+  @HostListener('window:beforeunload')
+  @HostListener('window:popstate')
+  onPageExit() {
+    this.saveProgress();
+  }
+
+  ngOnDestroy() {
+    this.stopProgressTimer();
+    this.saveProgress();
+  }
+
+  saveProgress() {
+    if (!this.videoPlayer || !this.details || !this.authService.currentUser) return;
+
+    const video = this.videoPlayer.nativeElement;
+    const currentTime = Math.floor(video.currentTime);
+    const duration = Math.floor(video.duration);
+
+    const finalTime = (currentTime / duration > 0.95) ? 0 : currentTime;
+
+    this.authService.updateProgress(this.details._id, finalTime)
   }
 }

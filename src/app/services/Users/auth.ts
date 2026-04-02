@@ -54,6 +54,19 @@ export class Auth {
     );
   }
 
+  updateProgress(movieId: string, currentTime: number): void {
+    const body = {
+      userId: this.currentUser._id,
+      movieId: movieId,
+      currentTime: currentTime
+    };
+
+    this.http.post(`${this.apiUrl}/users/update-progress`, body, {withCredentials: true})
+      .subscribe({
+        error: (err) => console.error("Erreur sync progression", err)
+      });
+  }
+
   isLoggedIn(): boolean {
     return !!this.currentUser;
   }
@@ -64,7 +77,7 @@ export class Auth {
         this.currentUser = null;
         console.log("Utilisateur déconnecté localement");
       }),
-      catchError((err) => {
+      catchError(() => {
         this.currentUser = null;
         return of(null);
       })
