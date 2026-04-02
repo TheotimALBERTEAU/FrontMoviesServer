@@ -37,6 +37,23 @@ export class Auth {
     return this.currentUser ? this.currentUser.id : null;
   }
 
+  getUserProgress(): Observable<any> {
+    const userId = this.getUserId();
+    if (!userId) return of(null);
+
+    return this.http.get(`${this.apiUrl}/users/show-progress/${userId}`, { withCredentials: true }).pipe(
+      tap((res: any) => {
+        if (res && res.code === "200") {
+          this.currentUser.progress = res.data;
+        }
+      }),
+      catchError((err) => {
+        console.error("Erreur récup progression:", err);
+        return of(null);
+      })
+    );
+  }
+
   isLoggedIn(): boolean {
     return !!this.currentUser;
   }
