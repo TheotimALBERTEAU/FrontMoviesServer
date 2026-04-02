@@ -261,9 +261,10 @@ header {
   background-color: #b20710;
 }
 
-.arrow {
-  font-size: 1.1rem;
-  line-height: 0;
+.icon-svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  display: block;
 }
 
 .profile-container {

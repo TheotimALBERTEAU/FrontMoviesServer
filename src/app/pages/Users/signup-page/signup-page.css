@@ -76,14 +76,14 @@
 }
 
 .login-text {
-  margin-top: 20px;
-  color: #737373;
-  font-size: 0.95rem;
+  margin-top: 1.5rem;
   text-align: center;
+  font-size: 0.9rem;
+  color: gray;
 }
 
 .login-link {
-  color: #fff;
+  color: darkred;
   text-decoration: none;
   font-weight: 500;
 }
