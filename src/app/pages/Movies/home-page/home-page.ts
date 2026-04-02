@@ -15,18 +15,9 @@ export class HomePage {
               public authService: Auth,
               private cdr: ChangeDetectorRef) {}
 
-  public movies : any[] = []
   public progressedMovies: any[] = [];
 
   ngOnInit() {
-    this.moviesService.getMovies().subscribe({
-      next: data => {
-        if (data.code === "200") {
-          this.movies = data.data;
-          this.cdr.detectChanges();
-        }
-      }
-    });
     this.authService.checkAuth().subscribe(() => {
       const userId = this.authService.getUserId();
       if (userId) {

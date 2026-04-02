@@ -1,1 +1,27 @@
-<p>movie-list-page works!</p>
+<section id="movies-grid">
+  <h3 class="title"> Les Films Disponibles : </h3>
+  <div class="movies-grid">
+    @for (movie of movies; track movie._id) {
+      <div class="movie-card">
+        <div class="movie-card-background" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoMovie(movie.slug)">
+
+          <div class="card-overlay"></div>
+
+          <div class="play-button">
+            <img src="Assets/Movies/play-button.png" alt="play-button">
+          </div>
+        </div>
+
+        <div class="card-content">
+          <h3 class="movie-title">{{ movie.title}}</h3>
+
+          <div class="movie-details-bar">
+            <div class="info-block main-genre">{{ movie.genre[0] }}</div>
+            <div class="info-block duration">{{ movie.duration }} min</div>
+            <div class="info-block type-indicator">{{ movie.type }}</div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</section>
