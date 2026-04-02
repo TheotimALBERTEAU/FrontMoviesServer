@@ -55,8 +55,9 @@ export class Auth {
   }
 
   updateProgress(movieId: string, currentTime: number): void {
+
     const body = {
-      userId: this.currentUser._id,
+      userId: this.currentUser.id,
       movieId: movieId,
       currentTime: currentTime
     };
