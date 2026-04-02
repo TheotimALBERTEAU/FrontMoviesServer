@@ -29,7 +29,6 @@ export class HomePage {
     });
     this.authService.checkAuth().subscribe(() => {
       const userId = this.authService.getUserId();
-      console.log("ID envoyé à l'API :", userId);
       if (userId) {
         this.loadMovies(userId);
       }

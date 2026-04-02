@@ -45,16 +45,12 @@ export class MoviePage {
 
   private loadMovieProgress() {
     const user = this.authService.currentUser;
-    console.log("User progress : ", this.authService.currentUser.progress);
-    console.log("Progress : ", user.progress.find((p: any) => p.movieId._id === this.details._id));
 
     if (user && user.progress && this.details) {
       const record = user.progress.find((p: any) => p.movieId._id === this.details._id);
-      console.log("Record : ", record)
 
       if (record) {
         this.movieProgress = record.currentTime;
-        console.log("Progression appliquée :", this.movieProgress);
         if (this.videoPlayer) {
           this.applyProgressToVideo();
         }
@@ -66,7 +62,7 @@ export class MoviePage {
     const video = this.videoPlayer.nativeElement;
     if (this.movieProgress > 0) {
       video.currentTime = this.movieProgress;
-      video.play().catch(() => console.log("Play bloqué"));
+      video.play().catch(() => console.error("Play bloqué"));
     }
   }
 

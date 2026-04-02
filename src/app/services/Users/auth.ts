@@ -16,10 +16,8 @@ export class Auth {
   checkAuth(): Observable<any> {
     return this.http.get(`${this.apiUrl}/users/me`, { withCredentials: true }).pipe(
       tap((res: any) => {
-        console.log("Réponse de /me :", res);
         if (res && res.code === "200") {
           this.currentUser = res.data;
-          console.log("Utilisateur stocké dans le service :", this.currentUser);
           this.authChanged.emit(this.currentUser);
         } else {
           this.currentUser = null;
@@ -76,7 +74,6 @@ export class Auth {
     return this.http.post(`${this.apiUrl}/users/logout`, {}, { withCredentials: true }).pipe(
       tap(() => {
         this.currentUser = null;
-        console.log("Utilisateur déconnecté localement");
       }),
       catchError(() => {
         this.currentUser = null;
