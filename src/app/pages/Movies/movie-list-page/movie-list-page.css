@@ -11,31 +11,42 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
-  padding: 40px 0;
+  gap: 1.5rem;
+  padding: 3rem 0;
 }
 
 .nav-btn {
   background-color: #1f1f1f;
-  color: white;
-  border: 1px solid #333;
-  padding: 10px 24px;
-  border-radius: 25px; /* Bouton arrondi comme sur ton image */
+  color: rgba(255, 255, 255, 0.5);
+  border: 0;
+  padding: 1rem 2rem;
+  border-radius: 2rem;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1rem;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
 .nav-btn:hover {
-  background-color: #2a2a2a;
-  border-color: #e50914;
+  background-color: darkred;
+  color: white;
+}
+
+.icon-svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  display: block;
+}
+
+.nav-btn:hover .icon-svg {
+  color: white;
 }
 
 .movie-card {
-  width: 100%; /* La carte occupe toute sa cellule */
-  min-width: 0; /* Empêche le contenu de forcer une largeur */
+  width: 100%;
+  min-width: 0;
 }
 
 .movie-card-background {

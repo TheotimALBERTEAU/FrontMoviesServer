@@ -3,12 +3,11 @@
   top: 4rem;
   left: 0;
   bottom: 0;
-  width: 15rem;
+  width: 13rem;
   background-color: rgba(0, 0, 0, 0.95);
-  border-right: 1px solid #1a1a1a;
   transition: width 0.3s ease;
-  z-index: 999999999;
   overflow: hidden;
+  padding: 0 1rem;
 }
 
 .sidebar.collapsed {
@@ -27,6 +26,7 @@
 .nav-item:hover {
   color: #fff;
   background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
 }
 
 .nav-icon {
