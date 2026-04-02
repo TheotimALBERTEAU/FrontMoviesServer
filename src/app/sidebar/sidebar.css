@@ -1,0 +1,53 @@
+.sidebar {
+  position: fixed;
+  top: 4rem;
+  left: 0;
+  bottom: 0;
+  width: 15rem;
+  background-color: rgba(0, 0, 0, 0.95);
+  border-right: 1px solid #1a1a1a;
+  transition: width 0.3s ease;
+  z-index: 999999999;
+  overflow: hidden;
+}
+
+.sidebar.collapsed {
+  width: 4.5rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  text-decoration: none;
+  color: #888;
+  white-space: nowrap;
+}
+
+.nav-item:hover, .nav-item.active {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-icon {
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-right: 1.2rem;
+  filter: invert(0.7);
+  flex-shrink: 0;
+}
+
+.active .nav-icon {
+  filter: invert(1) sepia(100%) saturate(500%) hue-rotate(320deg);
+}
+
+.nav-text {
+  transition: opacity 0.2s;
+  font-family: sans-serif;
+  font-size: 0.95rem;
+}
+
+.sidebar.collapsed .nav-text {
+  opacity: 0;
+  pointer-events: none;
+}

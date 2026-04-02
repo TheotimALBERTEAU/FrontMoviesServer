@@ -26,8 +26,14 @@
 
 <header [class.search-active]="isSearchOpen">
   <div class="header_container">
-    <div class="logo-section" (click)="OnClickGoHome()">
-      <img src="Assets/Logos/Logo-title-without-bg.png" alt="Senpai Stream Logo">
+    <div class="left-section">
+      <button class="menu-btn" (click)="sidebarService.toggle()">
+        <img src="Assets/Sidebar/menu-icon.svg" alt="Menu">
+      </button>
+
+      <div class="logo-section" (click)="OnClickGoHome()">
+        <img src="Assets/Logos/Logo-title-without-bg.png" alt="Hessflix Logo">
+      </div>
     </div>
 
     <div class="search-trigger" (click)="openSearch()">
@@ -59,6 +65,8 @@
   </div>
 </header>
 
-<div class="content">
+<app-sidebar></app-sidebar>
+
+<div class="content" [class.sidebar-collapsed]="sidebarService.isCollapsed()">
   <router-outlet />
 </div>

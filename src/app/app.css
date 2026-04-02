@@ -65,9 +65,46 @@ header {
 .header_container {
   display: flex;
   width: 100%;
-  padding: 0 2vw;
+  padding: 0 1rem;
   justify-content: space-between;
   align-items: center;
+}
+
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  transition: filter 0.2s ease;
+}
+
+.menu-btn:hover img {
+  filter: brightness(0.7);
+}
+
+.menu-btn img {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.content {
+  padding-top: 4rem;
+  margin-left: 15rem;
+  transition: margin-left 0.3s ease;
+  min-height: 100vh;
+  width: auto;
+}
+
+.content.sidebar-collapsed {
+  margin-left: 4.5rem;
 }
 
 .logo-section img {

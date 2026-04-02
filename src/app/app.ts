@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Auth } from './services/Users/auth';
 import { MoviesList } from './services/Movies/movies-list';
+import { SidebarService } from './services/sidebar';
+import {Sidebar} from './sidebar/sidebar';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, FormsModule],
+  imports: [RouterOutlet, CommonModule, FormsModule, Sidebar],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -24,7 +26,8 @@ export class App implements OnInit {
   constructor(private router: Router,
               public authService: Auth,
               private cdr: ChangeDetectorRef,
-              public moviesService: MoviesList,) {
+              public moviesService: MoviesList,
+              public sidebarService: SidebarService) {
   }
 
   ngOnInit() {
@@ -91,7 +94,7 @@ export class App implements OnInit {
     }
   }
 
-  OnClickGoHome() { this.router.navigate(['/movies']); }
+  OnClickGoHome() { this.router.navigate(['/']); }
   OnClickGoLogin() { this.router.navigate(['/login']); }
   OnClickGoSignup() { this.router.navigate(['/signup']); }
   toggleProfileMenu() { this.isProfileMenuOpen = !this.isProfileMenuOpen; }
