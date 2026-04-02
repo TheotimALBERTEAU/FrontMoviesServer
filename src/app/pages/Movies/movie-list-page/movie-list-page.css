@@ -1,16 +1,46 @@
 .movies-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, min(12vw));
-  max-width: 99vw;
-  justify-content: space-around;
-  height: 100%;
-  gap: 1rem;
-  padding: 0 0 0 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(11%, 1fr));
+  width: 100%;
+  gap: 1.5rem;
+  padding: 0 2rem 2rem 2rem;
+  box-sizing: border-box;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  padding: 40px 0;
+}
+
+.nav-btn {
+  background-color: #1f1f1f;
+  color: white;
+  border: 1px solid #333;
+  padding: 10px 24px;
+  border-radius: 25px; /* Bouton arrondi comme sur ton image */
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.nav-btn:hover {
+  background-color: #2a2a2a;
+  border-color: #e50914;
+}
+
+.movie-card {
+  width: 100%; /* La carte occupe toute sa cellule */
+  min-width: 0; /* Empêche le contenu de forcer une largeur */
 }
 
 .movie-card-background {
   display: flex;
-  height: 18vw;
+  aspect-ratio: 2/3;
   border-radius: 10px;
   position: relative;
   background-size: cover;
