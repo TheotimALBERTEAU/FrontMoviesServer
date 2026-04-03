@@ -1,3 +1,18 @@
+<div class="genres-selection-container">
+  @for (genre of genresButtons; track genre.id) {
+    <div class="genre-card" (click)="onClickGoGenre(genre.label)">
+      <div class="genre-text">
+        <h3 class="genre-label">{{ genre.label }}</h3>
+        <p class="genre-count">{{ genre.count }} films et séries</p>
+      </div>
+
+      <div class="genre-image-container">
+        <img [src]="genre.cover" class="genre-cover-skewed" alt="">
+      </div>
+    </div>
+  }
+</div>
+
 @if (authService.isLoggedIn() && progressedMovies.length > 0) {
   <div class="slider-wrapper">
     <h3 class="title"> Reprenez votre lecture : </h3>

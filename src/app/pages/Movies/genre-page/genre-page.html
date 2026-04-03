@@ -1,1 +1,43 @@
-<p>genre-page works!</p>
+<section id="movies-grid">
+  <h3 class="title"> Films : {{ genreTitle }} </h3>
+
+  <div class="movies-grid">
+    @for (movie of displayedMovies; track movie._id) {
+      <div class="movie-card">
+        <div class="movie-card-background" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoMovie(movie.slug)">
+          <div class="card-overlay"></div>
+          <div class="play-button">
+            <img src="Assets/Movies/play-button.png" alt="play-button">
+          </div>
+        </div>
+
+        <div class="card-content">
+          <div class="movie-details-bar">
+            <div class="duration">{{ movie.duration }} min {{movie.year}}</div>
+          </div>
+          <h3 class="movie-title">{{ movie.title}}</h3>
+          <div class="movie-details-bar">
+            <div class="main-genre">{{ movie.genre[0] }}</div>
+            <div class="info-block type-indicator">{{ movie.type }}</div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="pagination-container" *ngIf="moviesByGenre.length > pageSize">
+    <button class="nav-btn" (click)='prevPage()' *ngIf="currentPage > 1">
+      <svg class="icon-svg" viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 18l-8-8 8-8" />
+      </svg>
+      <span>Précédent</span>
+    </button>
+
+    <button class="nav-btn" (click)='nextPage()' *ngIf="hasNext()">
+      <span>Suivant</span>
+      <svg class="icon-svg" viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18l8-8-8-8" />
+      </svg>
+    </button>
+  </div>
+</section>

@@ -1,7 +1,9 @@
-import {Component, ChangeDetectorRef, ViewChild, ElementRef, HostListener} from '@angular/core';
+import {Component, ChangeDetectorRef, ViewChild, ElementRef, HostListener, OnInit } from '@angular/core';
 import {MoviesList} from '../../../services/Movies/movies-list';
 import {Auth} from '../../../services/Users/auth'
 import { CommonModule } from '@angular/common';
+import {GenreService} from '../../../services/Movies/genre-service';
+import {forkJoin} from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -10,20 +12,29 @@ import { CommonModule } from '@angular/common';
   templateUrl: './home-page.html',
   styleUrl: './home-page.css',
 })
-export class HomePage {
+export class HomePage implements OnInit {
   constructor(private moviesService: MoviesList,
+              private genreService: GenreService,
               public authService: Auth,
               private cdr: ChangeDetectorRef) {}
 
   public progressedMovies: any[] = [];
+  public genresButtons: any[] = [];
 
   ngOnInit() {
+    const categories = ['Action', 'Animation', 'Comedy', 'Crime', 'Horror'];
+
     this.authService.checkAuth().subscribe(() => {
       const userId = this.authService.getUserId();
       if (userId) {
         this.loadMovies(userId);
       }
       this.cdr.detectChanges()
+    });
+    const requests = categories.map(name => this.genreService.getGenreMetadata(name));
+    forkJoin(requests).subscribe(results => {
+      this.genresButtons = results;
+      this.cdr.detectChanges();
     });
   }
 
@@ -41,6 +52,10 @@ export class HomePage {
 
   onClickGoMovie(slug: any) {
     this.moviesService.goMovie(slug);
+  }
+
+  onClickGoGenre(genre: any) {
+    this.moviesService.goGenre(genre.toLowerCase())
   }
 
   @ViewChild('slider') slider!: ElementRef;

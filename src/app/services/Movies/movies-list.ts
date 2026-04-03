@@ -23,6 +23,10 @@ export class MoviesList {
     this.router.navigate(['/movies/watch' + movieSlug]);
   }
 
+  goGenre(genre: any) {
+    this.router.navigate(['/genre/' + genre]);
+  }
+
   getMoviesProgresses(userId: any) {
     return this.http.get<any>(`${this.ApiUrl}/users/show-progress/${userId}`, { withCredentials: true });
   }
