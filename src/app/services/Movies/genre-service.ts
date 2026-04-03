@@ -19,11 +19,19 @@ export class GenreService {
     return this.getMoviesByGenre(genreName).pipe(
       map(res => {
         const movies = res.data || [];
+        const count = movies.length;
+
+        let randomCover = 'Assets/Movies/default-cover.png';
+        if (count > 0) {
+          // Génère un index entre 0 et (nombre de films - 1)
+          const randomIndex = Math.floor(Math.random() * count);
+          randomCover = movies[randomIndex].cover;
+        }
         return {
           id: genreName.toLowerCase(),
           label: genreName,
           count: movies.length,
-          cover: movies.length > 0 ? movies[0].cover : 'Assets/Movies/default-cover.png'
+          cover: randomCover,
         };
       })
     );
