@@ -8,7 +8,7 @@
 .genre-card {
   background: #1a1a1a;
   border-radius: 12px;
-  height: 100px;
+  height: 5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -38,17 +38,21 @@
   position: relative;
   width: 4rem;
   height: 5rem;
-  top: 1.5rem;
+  top: 2rem;
 }
 
 .genre-cover-skewed {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 4px;
-  /* L'effet magique d'inclinaison */
-  transform: rotate(15deg) translate(10px, 5px);
+  border-radius: 0.4rem;
+  transform: rotate(12deg);
   box-shadow: -5px 5px 15px rgba(0,0,0,0.5);
+  transition: transform 0.2s ease-in-out;
+}
+
+.genre-card:hover .genre-cover-skewed {
+  transform: rotate(0) translate(-2px, -2px);
 }
 
 .movies-grid {
