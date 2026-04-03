@@ -1,9 +1,9 @@
-import {Component, ChangeDetectorRef, ViewChild, ElementRef, HostListener, OnInit } from '@angular/core';
+import {Component, ChangeDetectorRef, ViewChild, ElementRef, HostListener, OnInit, OnDestroy} from '@angular/core';
 import {MoviesList} from '../../../services/Movies/movies-list';
 import {Auth} from '../../../services/Users/auth'
 import { CommonModule } from '@angular/common';
 import {GenreService} from '../../../services/Movies/genre-service';
-import {forkJoin} from 'rxjs';
+import {forkJoin, interval, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -12,7 +12,7 @@ import {forkJoin} from 'rxjs';
   templateUrl: './home-page.html',
   styleUrl: './home-page.css',
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
   constructor(private moviesService: MoviesList,
               private genreService: GenreService,
               public authService: Auth,
@@ -20,6 +20,11 @@ export class HomePage implements OnInit {
 
   public progressedMovies: any[] = [];
   public genresButtons: any[] = [];
+  public heroMovies: any[] = [];
+  public currentIndex: number = 0;
+  public progress: number = 0;
+  private autoPlaySub?: Subscription;
+
 
   ngOnInit() {
     const categories = ['Action', 'Animation', 'Comedy', 'Crime', 'Horror'];
@@ -31,11 +36,41 @@ export class HomePage implements OnInit {
       }
       this.cdr.detectChanges()
     });
+    this.moviesService.getMovies().subscribe(res => {
+      this.heroMovies = res.data.slice(0, 2);
+      this.startTimer();
+    });
     const requests = categories.map(name => this.genreService.getGenreMetadata(name));
     forkJoin(requests).subscribe(results => {
       this.genresButtons = results;
       this.cdr.detectChanges();
     });
+  }
+
+  startTimer() {
+    this.progress = 0;
+    if (this.autoPlaySub) this.autoPlaySub.unsubscribe();
+    this.autoPlaySub = interval(50).subscribe(() => {
+      this.progress += 3;
+      this.cdr.detectChanges();
+      if (this.progress >= 100) {
+        this.nextSlide();
+      }
+    });
+  }
+
+  nextSlide() {
+    this.currentIndex = (this.currentIndex + 1) % this.heroMovies.length;
+    this.startTimer();
+  }
+
+  prevSlide() {
+    this.currentIndex = (this.currentIndex - 1 + this.heroMovies.length) % this.heroMovies.length;
+    this.startTimer();
+  }
+
+  ngOnDestroy() {
+    if (this.autoPlaySub) this.autoPlaySub.unsubscribe();
   }
 
   loadMovies(userId: string) {

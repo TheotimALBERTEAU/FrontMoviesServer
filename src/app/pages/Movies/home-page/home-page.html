@@ -1,3 +1,48 @@
+<section class="hero-carousel" *ngIf="heroMovies.length > 0">
+  <div class="hero-slide"
+       [style.background-image]="'url(' + heroMovies[currentIndex].cover + ')'"
+       (click)="onClickGoMovie(heroMovies[currentIndex].slug)">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <h1 class="hero-title">{{ heroMovies[currentIndex].title }}</h1>
+
+      <div class="hero-meta">
+        <span class="badge">FHD</span>
+        <span>{{ heroMovies[currentIndex].duration }} min</span>
+        <span>{{ heroMovies[currentIndex].year }}</span>
+      </div>
+
+      <p class="hero-synopsis">{{ heroMovies[currentIndex].synopsis }}</p>
+
+      <button class="btn-watch">Regarder maintenant</button>
+    </div>
+
+    <div class="hero-nav">
+      <button class="nav-arrow" (click)="$event.stopPropagation(); prevSlide()">
+        <svg class="icon-svg" viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 18l-8-8 8-8" />
+        </svg>
+      </button>
+      <button class="nav-arrow" (click)="$event.stopPropagation(); nextSlide()">
+        <svg class="icon-svg" viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18l8-8-8-8" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="hero-indicators">
+      @for (movie of heroMovies; track $index) {
+        <div class="indicator-track" [class.active]="$index === currentIndex">
+          <div class="indicator-fill"
+               [style.width.%]="$index === currentIndex ? progress : 0">
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
 <div class="genres-selection-container">
   @for (genre of genresButtons; track genre.id) {
     <div class="genre-card" (click)="onClickGoGenre(genre.label)">
