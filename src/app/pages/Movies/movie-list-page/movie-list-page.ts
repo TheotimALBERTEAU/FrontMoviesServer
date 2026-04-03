@@ -1,6 +1,8 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {MoviesList} from '../../../services/Movies/movies-list';
 import {CommonModule} from '@angular/common';
+import {GenreService} from '../../../services/Movies/genre-service';
+import {forkJoin} from 'rxjs';
 
 @Component({
   selector: 'app-movie-list-page',
@@ -11,14 +13,18 @@ import {CommonModule} from '@angular/common';
 export class MovieListPage implements OnInit {
   public movies : any[] = []
   public displayedMovies: any[] = [];
+  public genresButtons: any[] = [];
 
   public currentPage = 1;
   public pageSize = 32;
 
   constructor(private moviesService: MoviesList,
-              private cdr: ChangeDetectorRef) {}
+              private cdr: ChangeDetectorRef,
+              private genreService: GenreService,) {}
 
   ngOnInit() {
+    const categories = ['Action', 'Animation', 'Comedy', 'Crime', 'Horror'];
+
     this.moviesService.getMovies().subscribe({
       next: data => {
         if (data.code === "200") {
@@ -26,6 +32,11 @@ export class MovieListPage implements OnInit {
           this.updateDisplay();
         }
       }
+    });
+    const requests = categories.map(name => this.genreService.getGenreMetadata(name));
+    forkJoin(requests).subscribe(results => {
+      this.genresButtons = results;
+      this.cdr.detectChanges();
     });
   }
 
@@ -57,5 +68,9 @@ export class MovieListPage implements OnInit {
 
   onClickGoMovie(slug: any) {
     this.moviesService.goMovie(slug);
+  }
+
+  onClickGoGenre(genre: any) {
+    this.moviesService.goGenre(genre.toLowerCase())
   }
 }

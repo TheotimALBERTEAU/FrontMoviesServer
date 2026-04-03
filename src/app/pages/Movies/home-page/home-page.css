@@ -42,8 +42,9 @@
 
 .genre-image-container {
   position: relative;
-  width: 60px;
-  height: 80px;
+  width: 4rem;
+  height: 5rem;
+  top: 1.5rem;
 }
 
 .genre-cover-skewed {
