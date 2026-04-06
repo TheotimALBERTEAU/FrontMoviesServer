@@ -18,6 +18,21 @@
       <button class="btn-watch">Regarder maintenant</button>
     </div>
 
+    <button class="btn-pause" (click)="togglePause($event)">
+
+      @if (!isPaused) {
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="9" y1="5" x2="9" y2="19" />
+          <line x1="15" y1="5" x2="15" y2="19" />
+        </svg>
+      } @else {
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      }
+
+    </button>
+
     <div class="hero-nav">
       <button class="nav-arrow" (click)="$event.stopPropagation(); prevSlide()">
         <svg class="icon-svg" viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">

@@ -108,6 +108,38 @@
   z-index: 5;
 }
 
+.btn-pause {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 15;
+
+  width: 3.5rem;
+  height: 3.5rem;
+
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.btn-pause:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.btn-pause svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 .nav-arrow {
   background: rgba(0, 0, 0, 0.2);
   color: white;

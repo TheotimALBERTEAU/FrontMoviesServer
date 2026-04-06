@@ -54,7 +54,6 @@ export class App implements OnInit {
   openSearch() {
     this.isSearchOpen = true;
     this.cdr.detectChanges();
-    // Focus automatique sur la barre centrale
     setTimeout(() => {
       this.centralInput?.nativeElement.focus();
     }, 50);
@@ -69,16 +68,15 @@ export class App implements OnInit {
 
   onSearchChange(event: any) {
     if (this.searchQuery.length >= 2) {
-      this.isLoading = true; // On lance le chargement
-      this.results = []; // On vide les anciens résultats pendant le "load"
+      this.isLoading = true;
+      this.results = [];
 
       this.moviesService.searchMovies(this.searchQuery).subscribe({
         next: (res) => {
           if (res && res.code === "200") {
-            // On attend 400ms (0.4s) avant d'afficher pour simuler le travail
             setTimeout(() => {
               this.results = res.data;
-              this.isLoading = false; // On arrête le chargement
+              this.isLoading = false;
               this.cdr.detectChanges();
             }, 400);
           }
@@ -97,6 +95,10 @@ export class App implements OnInit {
   OnClickGoHome() { this.router.navigate(['/']); }
   OnClickGoLogin() { this.router.navigate(['/login']); }
   OnClickGoSignup() { this.router.navigate(['/signup']); }
+  onClickGoSearchPage(query: string) {
+    this.router.navigate([`/search/${query}`]);
+    this.closeSearch()
+  }
   toggleProfileMenu() { this.isProfileMenuOpen = !this.isProfileMenuOpen; }
   onLogout() {
     this.authService.logout().subscribe(() => {

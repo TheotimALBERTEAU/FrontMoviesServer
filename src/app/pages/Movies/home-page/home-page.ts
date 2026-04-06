@@ -24,6 +24,7 @@ export class HomePage implements OnInit, OnDestroy {
   public currentIndex: number = 0;
   public progress: number = 0;
   private autoPlaySub?: Subscription;
+  public isPaused: boolean = false;
 
 
   ngOnInit() {
@@ -47,14 +48,21 @@ export class HomePage implements OnInit, OnDestroy {
     });
   }
 
+  togglePause(event: Event) {
+    event.stopPropagation();
+    this.isPaused = !this.isPaused;
+  }
+
   startTimer() {
     this.progress = 0;
     if (this.autoPlaySub) this.autoPlaySub.unsubscribe();
     this.autoPlaySub = interval(50).subscribe(() => {
-      this.progress += 3;
-      this.cdr.detectChanges();
-      if (this.progress >= 100) {
-        this.nextSlide();
+      if (!this.isPaused) {
+        this.progress += 3;
+        this.cdr.detectChanges();
+        if (this.progress >= 100) {
+          this.nextSlide();
+        }
       }
     });
   }
