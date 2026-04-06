@@ -4,6 +4,8 @@ import {ActivatedRoute} from '@angular/router';
 import {WatchMovie} from '../../../services/Movies/watch-movie';
 import {ChangeDetectorRef} from '@angular/core';
 import {Auth} from '../../../services/Users/auth';
+import {last} from 'rxjs';
+import {MoviesList} from '../../../services/Movies/movies-list';
 
 @Component({
   selector: 'app-movie-page',
@@ -17,7 +19,8 @@ export class MoviePage {
               private activatedRoute: ActivatedRoute,
               private watchMovie: WatchMovie,
               private authService: Auth,
-              private cdr: ChangeDetectorRef) {
+              private cdr: ChangeDetectorRef,
+              private moviesService: MoviesList) {
   }
 
   public details: any = [];
@@ -106,5 +109,11 @@ export class MoviePage {
     const finalTime = (currentTime / duration > 0.95) ? 0 : currentTime;
 
     this.authService.updateProgress(this.details._id, finalTime)
+  }
+
+  protected readonly last = last;
+
+  onClickGoGenre(genre: any) {
+    this.moviesService.goGenre(genre.toLowerCase())
   }
 }

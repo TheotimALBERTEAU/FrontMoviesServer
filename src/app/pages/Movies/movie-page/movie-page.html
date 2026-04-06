@@ -1,46 +1,63 @@
 <div class="movie-container">
   <div class="movie-player">
-    <video #videoPlayer
-           [src]="details.link"
-           (loadedmetadata)="onMetadataLoaded()"
-           (play)="startProgressTimer()"
-           (pause)="saveProgress(); stopProgressTimer()"
-           controls>
-    </video>
+    <video #videoPlayer [src]="details.link" controls></video>
   </div>
+
   <div class="movie-desc">
-    <div class="desc-left">
-      <img [src]="details.cover" alt="cover">
+    <div class="content-wrapper">
+      <div class="poster-side">
+        <img [src]="details.cover" [alt]="details.title">
+      </div>
 
-      <div class="desc-info">
-        <h2>{{details.title}}</h2>
-
-        <div class="info-line-top">
-          <span>FHD</span>
-          <span>{{details.duration}}</span>
-          <span>{{details.year}}</span>
+      <div class="info-side">
+        <div class="header-info">
+          <h2>{{details.title}}</h2>
+          <div class="meta-line">
+            <span>{{details.duration}} min</span>
+            <span>{{details.year}}</span>
+          </div>
         </div>
 
         <div class="actions-line">
           <div class="rating-circle-container" [style.--percentage]="details.rating * 10">
-            <div class="rating-circle">
-            </div>
+            <div class="rating-circle"></div>
             <span class="rating-value">{{details.rating}}</span>
-          </div>
-
-          <div class="buttons">
           </div>
         </div>
 
         <p class="synopsis">{{details.synopsis}}</p>
 
-        <div class="additional-details">
-          <p><span>Genre</span>: {{details.genre}}</p>
-          <p><span>Date de sortie</span>: {{details.year}}</p>
-          <p><span>Réalisateur</span>: {{details.author}}</p>
+        <div class="specs-grid">
+          <div class="spec-item">
+            <span class="label">Genre</span>
+            <div class="value genre-container">
+              @for (genre of details.genre; track genre; let last = $last) {
+                <span class="genre-item" (click)="onClickGoGenre(genre)">
+                  {{ genre }}{{ !last ? ',' : ''}}
+                </span>
+              }
+            </div>
+          </div>
+          <div class="spec-item">
+            <span class="label">Date de sortie</span>
+            <span class="value">{{details.year}}</span>
+          </div>
+          <div class="spec-item">
+            <span class="label">Réalisateur</span>
+            <span class="value">{{details.author}}</span>
+          </div>
+          <div class="spec-item">
+            <span class="label">Distribution</span>
+            <div class="value casting-container">
+              @for (actor of details.casting; track actor; let last = $last) {
+                <span class="actor-name">
+                  {{ actor.name }}{{ !last ? ', ' : '' }}
+                </span>
+              }
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
   </div>
 </div>
