@@ -1,1 +1,30 @@
+<section id="actors-page">
+  <h2 class="page-title">Acteurs</h2>
 
+  <div class="actors-grid">
+    @for (actor of displayedActors; track actor._id) {
+      <div class="actor-card" (click)="onClickGoActor(actor.slug)">
+        <div class="actor-image-wrapper">
+          <img [src]="actor.profile_picture" [alt]="actor.name">
+        </div>
+        <h3 class="actor-name">{{ actor.name }}</h3>
+      </div>
+    }
+  </div>
+
+  <div class="pagination-container" *ngIf="actors.length > pageSize">
+    <button class="nav-btn" (click)='prevPage()' *ngIf="currentPage > 1">
+      <svg class="icon-svg" viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 18l-8-8 8-8" />
+      </svg>
+      <span>Précédent</span>
+    </button>
+
+    <button class="nav-btn" (click)='nextPage()' *ngIf="hasNext()">
+      <span>Suivant</span>
+      <svg class="icon-svg" viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18l8-8-8-8" />
+      </svg>
+    </button>
+  </div>
+</section>
