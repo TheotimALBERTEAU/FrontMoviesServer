@@ -14,17 +14,17 @@
 /* Grille d'acteurs : 8 colonnes sur grand écran comme sur la ref */
 .actors-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 2rem;
   width: 100%;
 }
 
 .actor-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.3s ease;
 }
 
 .actor-card:hover {
@@ -34,7 +34,7 @@
 .actor-image-wrapper {
   width: 100%;
   aspect-ratio: 1 / 1; /* Format carré parfait */
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
   background-color: #1a1a1a;
   margin-bottom: 0.8rem;
