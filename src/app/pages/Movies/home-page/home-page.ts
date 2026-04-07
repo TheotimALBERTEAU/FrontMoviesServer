@@ -28,7 +28,7 @@ export class HomePage implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    const categories = ['Action', 'Animation', 'Comedy', 'Crime', 'Horror'];
+    const categories = ['Action', 'Animation', 'Comédie', 'Crime', 'Horreur'];
 
     this.authService.checkAuth().subscribe(() => {
       const userId = this.authService.getUserId();

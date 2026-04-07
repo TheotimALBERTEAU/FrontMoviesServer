@@ -23,7 +23,7 @@ export class MovieListPage implements OnInit {
               private genreService: GenreService,) {}
 
   ngOnInit() {
-    const categories = ['Action', 'Animation', 'Comedy', 'Crime', 'Horror'];
+    const categories = ['Action', 'Animation', 'Comédie', 'Crime', 'Horreur'];
 
     this.moviesService.getMovies().subscribe({
       next: data => {
