@@ -1,0 +1,136 @@
+.actor-container {
+  padding: 40px 20px;
+  background-color: #000;
+  color: white;
+  min-height: 100vh;
+}
+
+.actor-header {
+  display: flex;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+}
+
+.main-photo {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.quick-info h3 {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+.quick-info p {
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.quick-info span {
+  color: #777;
+  font-weight: 600;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+}
+
+.actor-name {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+section {
+  margin-bottom: 40px;
+}
+
+section h3 {
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+.biography p {
+  color: #bbb;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Grille "Connu pour" */
+.movies-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 15px;
+}
+
+.mini-card {
+  cursor: pointer;
+}
+
+.mini-card img {
+  width: 100%;
+  aspect-ratio: 2/3;
+  border-radius: 6px;
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+
+.mini-meta {
+  font-size: 0.8rem;
+}
+
+.mini-meta .year { color: #777; }
+.mini-meta .m-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Liste filmographie type IMDb */
+.film-list {
+  background: #111;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.film-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid #222;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.film-row:hover {
+  background: #1a1a1a;
+}
+
+.f-year {
+  width: 50px;
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.f-dot {
+  width: 8px;
+  height: 8px;
+  border: 1px solid #777;
+  border-radius: 50%;
+  margin: 0 20px;
+}
+
+.f-title {
+  font-weight: 500;
+  font-size: 0.95rem;
+}

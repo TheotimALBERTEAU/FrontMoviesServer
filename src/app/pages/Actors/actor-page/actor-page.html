@@ -1,1 +1,50 @@
-<p>actor-page works!</p>
+<div class="actor-container">
+  <div class="actor-header">
+    <div class="sidebar">
+      <img [src]="actor.profile_picture" [alt]="actor.name" class="main-photo">
+
+      <div class="quick-info">
+        <h3>Aperçu</h3>
+        <p><span>Genre</span> {{ actor.gender || 'Non spécifié' }}</p>
+        <p><span>Anniversaire</span> {{ actor.birthdate | date:'dd MMMM yyyy' }}</p>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <h1 class="actor-name">{{ actor.name }}</h1>
+
+      <section class="biography">
+        <h3>Biographie</h3>
+        <p [class.truncated]="true">{{ actor.biography }}</p>
+      </section>
+
+      <section class="known-for">
+        <h3>Connu pour</h3>
+        <div class="movies-row">
+          @for (movie of actorMovies.slice(0, 6); track movie._id) {
+            <div class="mini-card" (click)="onClickGoMovie(movie.slug)">
+              <img [src]="movie.cover" [alt]="movie.title">
+              <div class="mini-meta">
+                <span class="year">{{ movie.year }}</span>
+                <p class="m-title">{{ movie.title }}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+
+      <section class="filmography">
+        <h3>Acteur</h3>
+        <div class="film-list">
+          @for (movie of actorMovies; track movie._id) {
+            <div class="film-row" (click)="onClickGoMovie(movie.slug)">
+              <span class="f-year">{{ movie.year }}</span>
+              <span class="f-dot"></span>
+              <span class="f-title">{{ movie.title }}</span>
+            </div>
+          }
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
