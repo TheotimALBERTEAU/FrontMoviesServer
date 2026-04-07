@@ -7,26 +7,48 @@
   background-color: rgba(0, 0, 0, 0.95);
   transition: width 0.3s ease;
   overflow: hidden;
-  padding: 0 1rem;
+  padding: 1rem; /* Ajusté pour un meilleur espacement global */
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar.collapsed {
   width: 4.5rem;
 }
 
+/* Conteneur de navigation pour utiliser Flexbox */
+.sidebar-nav {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Style du trait de séparation */
+.sidebar-divider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1); /* Trait fin et discret */
+  margin: 1rem 0.5rem;
+  transition: opacity 0.3s;
+}
+
 .nav-item {
   display: flex;
   align-items: center;
-  padding: 1rem 1.5rem;
+  padding: 1rem 0.8rem; /* Ajusté pour l'alignement icône/bord */
   text-decoration: none;
   color: #888;
   white-space: nowrap;
+  transition: all 0.2s;
 }
 
-.nav-item:hover {
+.nav-item:hover, .nav-item.active {
   color: #fff;
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 10px;
+}
+
+.nav-item.active .nav-icon {
+  filter: invert(1); /* L'icône devient blanche quand active */
 }
 
 .nav-icon {
@@ -43,7 +65,9 @@
   font-size: 0.95rem;
 }
 
-.sidebar.collapsed .nav-text {
+/* Gestion de la sidebar repliée */
+.sidebar.collapsed .nav-text,
+.sidebar.collapsed .sidebar-divider {
   opacity: 0;
   pointer-events: none;
 }

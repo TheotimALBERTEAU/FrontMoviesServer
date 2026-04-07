@@ -1,8 +1,19 @@
 <aside class="sidebar" [class.collapsed]="sidebarService.isCollapsed()">
   <nav class="sidebar-nav">
-    <a routerLink="/movies" routerLinkActive="active" class="nav-item">
-      <img src="Assets/Sidebar/movies-icon.svg" class="nav-icon">
-      <span class="nav-text">Films</span>
-    </a>
+    <div class="nav-group">
+      <a routerLink="/movies" class="nav-item">
+        <img src="Assets/Sidebar/movies-icon.svg" class="nav-icon" alt="movies-icon">
+        <span class="nav-text">Films</span>
+      </a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="nav-group low-group">
+      <a routerLink="/actors" class="nav-item">
+        <img src="Assets/Sidebar/actors-icon.svg" class="nav-icon" alt="actors-icon">
+        <span class="nav-text">Acteurs</span>
+      </a>
+    </div>
   </nav>
 </aside>
