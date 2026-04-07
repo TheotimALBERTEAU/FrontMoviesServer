@@ -1,6 +1,6 @@
 import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {WatchMovie} from '../../../services/Movies/watch-movie';
 import {ChangeDetectorRef} from '@angular/core';
 import {Auth} from '../../../services/Users/auth';
@@ -20,7 +20,8 @@ export class MoviePage {
               private watchMovie: WatchMovie,
               private authService: Auth,
               private cdr: ChangeDetectorRef,
-              private moviesService: MoviesList) {
+              private moviesService: MoviesList,
+              private router: Router,) {
   }
 
   public details: any = [];
@@ -115,5 +116,9 @@ export class MoviePage {
 
   onClickGoGenre(genre: any) {
     this.moviesService.goGenre(genre.toLowerCase())
+  }
+
+  onClickGoActor(actorSlug: any) {
+    this.router.navigate(['/actor/', actorSlug]);
   }
 }

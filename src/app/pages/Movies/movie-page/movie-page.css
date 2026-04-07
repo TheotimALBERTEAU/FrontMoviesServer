@@ -130,6 +130,7 @@ body {
 .actor-name {
   padding-right: 0.4rem;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .actor-name:hover {
@@ -139,6 +140,13 @@ body {
 .value {
   color: #fff;
   line-height: 1.4;
+}
+
+.genre-item, .actor-name, .spec-item .value {
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+  display: inline-block;
 }
 
 .value.casting {

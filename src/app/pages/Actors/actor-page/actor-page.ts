@@ -12,7 +12,7 @@ import {DatePipe} from '@angular/common';
   templateUrl: './actor-page.html',
   styleUrl: './actor-page.css',
 })
-export class ActorPage {
+export class ActorPage implements OnInit {
   public actor: any = [];
   public actorMovies: any[] = [];
 
@@ -32,20 +32,17 @@ export class ActorPage {
             this.actor = data.data;
             console.log(this.actor.profile_picture);
           }
+          this.cdr.detectChanges();
         }
       });
       this.loadActorData(actorSlug);
-      this.cdr.detectChanges();
     }
   }
 
   loadActorData(slug: string) {
     this.actorService.getMoviesByActor(slug).subscribe(res => {
-      this.actor = res.data;
-
-      this.actorService.getMoviesByActor(this.actor.slug).subscribe(movieRes => {
-        this.actorMovies = movieRes.data;
-      });
+      this.actorMovies = res.data;
+      this.cdr.detectChanges();
     });
   }
 

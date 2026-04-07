@@ -50,7 +50,7 @@
             <span class="label">Distribution</span>
             <div class="value casting-container">
               @for (actor of details.casting; track actor; let last = $last) {
-                <span class="actor-name">
+                <span class="actor-name" (click)="onClickGoActor(actor.slug)">
                   {{ actor.name }}{{ !last ? ', ' : '' }}
                 </span>
               }
