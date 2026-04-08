@@ -1,39 +1,51 @@
 <section id="movies-grid">
   <h3 class="title">
-    Résultats de la recherche pour : {{ query }}
+    Résultats de la recherche pour: "{{ query }}"
   </h3>
 
-  <div class="movies-grid">
-    @for (movie of resultsMoviesList; track movie._id) {
-      <div class="movie-card">
-        <div class="movie-card-background"
-             [style.background-image]="'url(' + movie.cover + ')'"
-             (click)="onClickGoMovie(movie.slug)">
-
-          <div class="card-overlay"></div>
-
-          <div class="play-button">
-            <img src="Assets/Movies/play-button.png" alt="play-button">
+  <div *ngIf="resultsMoviesList.length > 0">
+    <h4 class="section-subtitle">Films:</h4>
+    <div class="movies-grid">
+      @for (movie of resultsMoviesList; track movie._id) {
+        <div class="movie-card">
+          <div class="movie-card-background"
+               [style.background-image]="'url(' + movie.cover + ')'"
+               (click)="onClickGoMovie(movie.slug)">
+            <div class="card-overlay"></div>
+            <div class="play-button">
+              <img src="Assets/Movies/play-button.png" alt="play-button">
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="movie-details-bar">
+              <div class="duration">{{ movie.duration }} min {{ movie.year }}</div>
+            </div>
+            <h3 class="movie-title">{{ movie.title }}</h3>
+            <div class="movie-details-bar">
+              <div class="main-genre">{{ movie.genre[0] }}</div>
+              <div class="info-block type-indicator">{{ movie.type }}</div>
+            </div>
           </div>
         </div>
-
-        <div class="card-content">
-          <div class="movie-details-bar">
-            <div class="duration">{{ movie.duration }} min {{ movie.year }}</div>
-          </div>
-
-          <h3 class="movie-title">{{ movie.title }}</h3>
-
-          <div class="movie-details-bar">
-            <div class="main-genre">{{ movie.genre[0] }}</div>
-            <div class="info-block type-indicator">{{ movie.type }}</div>
-          </div>
-        </div>
-      </div>
-    }
+      }
+    </div>
   </div>
 
-  <div class="no-results" *ngIf="resultsMoviesList.length === 0">
-    <p>Aucun film ne correspond à votre recherche.</p>
+  <div *ngIf="resultsActorsList.length > 0" class="actors-section">
+    <h4 class="section-subtitle">Acteurs:</h4>
+    <div class="actors-grid">
+      @for (actor of resultsActorsList; track actor._id) {
+        <div class="actor-card" (click)="onClickGoActor(actor.slug)">
+          <div class="actor-photo-wrapper">
+            <img [src]="actor.profile_picture" [alt]="actor.name" class="actor-photo">
+          </div>
+          <p class="actor-name">{{ actor.name }}</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="no-results" *ngIf="resultsMoviesList.length === 0 && resultsActorsList.length === 0">
+    <p>Aucun résultat ne correspond à votre recherche pour "{{ query }}".</p>
   </div>
 </section>
