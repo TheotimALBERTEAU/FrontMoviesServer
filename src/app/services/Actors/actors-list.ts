@@ -21,4 +21,8 @@ export class ActorsList {
   goActor(actorSlug: any) {
     this.router.navigate(['/actor/' + actorSlug]);
   }
+
+  searchActors(query: string): Observable<any> {
+    return this.http.get(`${this.ApiUrl}/actors/search?q=${query}`);
+  }
 }
