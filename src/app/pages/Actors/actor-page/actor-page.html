@@ -36,19 +36,24 @@
       <section class="filmography">
         <h3>Filmographie</h3>
         <div class="film-list">
-          @for (movie of actorMovies; track movie._id) {
-            <div class="film-row" (click)="onClickGoMovie(movie.slug)">
-              <span class="f-year">{{ movie.year }}</span>
+          @for (group of groupedFilmography; track group.year) {
+            <div class="year-group">
+              <span class="f-year">{{ group.year }}</span>
               <span class="f-dot"></span>
 
-              <div class="f-poster">
-                <img [src]="movie.cover" [alt]="movie.title">
-              </div>
-
-              <div class="f-info">
-                <span class="f-title">{{ movie.title }}</span>
-                @if (movie.character) {
-                  <span class="f-character">... {{ movie.character }}</span>
+              <div class="group-movies">
+                @for (movie of group.movies; track movie._id) {
+                  <div class="film-row" (click)="onClickGoMovie(movie.slug)">
+                    <div class="f-poster">
+                      <img [src]="movie.cover" [alt]="movie.title">
+                    </div>
+                    <div class="f-info">
+                      <span class="f-title">{{ movie.title }}</span>
+                      @if (movie.character) {
+                        <span class="f-character">... {{ movie.character }}</span>
+                      }
+                    </div>
+                  </div>
                 }
               </div>
             </div>

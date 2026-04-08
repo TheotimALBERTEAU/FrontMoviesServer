@@ -123,52 +123,57 @@ section h3 {
   background: #111;
   border-radius: 10px;
   border: 1px solid #222;
-  overflow: hidden;
 }
 
-.film-row {
+.year-group {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding: 10px 20px;
   border-bottom: 1px solid #222;
-  cursor: pointer;
-  transition: background 0.2s;
-  user-select: none; /* Empêche la sélection de texte */
 }
 
-.film-row:last-child {
+.year-group:last-child {
   border-bottom: none;
-}
-
-.film-row:hover {
-  background: #1a1a1a;
 }
 
 .f-year {
   width: 45px;
   color: #777;
   font-size: 0.95rem;
-  font-variant-numeric: tabular-nums;
+  margin: 1.7rem 0;
 }
 
 .f-dot {
   width: 6px;
   height: 6px;
-  background: transparent;
   border: 1px solid #444;
   border-radius: 50%;
-  margin: 0 15px;
+  margin: 2rem 15px 0 0;
   flex-shrink: 0;
+}
+
+.group-movies {
+  flex: 1;
+}
+
+.film-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.film-row:hover {
+  text-decoration: underline;
 }
 
 .f-poster {
   width: 36px;
   height: 52px;
   margin-right: 15px;
-  flex-shrink: 0;
-  background: #222;
   border-radius: 4px;
   overflow: hidden;
+  background: #222;
 }
 
 .f-poster img {
@@ -181,22 +186,16 @@ section h3 {
   display: flex;
   gap: 10px;
   align-items: baseline;
-  overflow: hidden;
 }
 
 .f-title {
   font-weight: 600;
-  font-size: 1rem;
   color: #fff;
-  white-space: nowrap;
 }
 
 .f-character {
   color: #888;
   font-size: 0.9rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* Responsive */

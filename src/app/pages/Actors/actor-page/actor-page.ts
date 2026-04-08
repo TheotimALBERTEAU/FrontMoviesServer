@@ -4,6 +4,11 @@ import {ActivatedRoute} from '@angular/router';
 import {MoviesList} from '../../../services/Movies/movies-list';
 import {DatePipe} from '@angular/common';
 
+interface GroupedFilmography {
+  year: string;
+  movies: any[];
+}
+
 @Component({
   selector: 'app-actor-page',
   imports: [
@@ -15,6 +20,7 @@ import {DatePipe} from '@angular/common';
 export class ActorPage implements OnInit {
   public actor: any = [];
   public actorMovies: any[] = [];
+  public groupedFilmography: GroupedFilmography[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -42,8 +48,25 @@ export class ActorPage implements OnInit {
   loadActorData(slug: string) {
     this.actorService.getMoviesByActor(slug).subscribe(res => {
       this.actorMovies = res.data;
+      this.processFilmography(res.data);
       this.cdr.detectChanges();
     });
+  }
+
+  processFilmography(movies: any[]) {
+    const sorted = [...movies].sort((a, b) => Number(b.year) - Number(a.year));
+
+    const groups = sorted.reduce((acc: GroupedFilmography[], movie) => {
+      const lastGroup = acc[acc.length - 1];
+      if (lastGroup && lastGroup.year === movie.year.toString()) {
+        lastGroup.movies.push(movie);
+      } else {
+        acc.push({ year: movie.year.toString(), movies: [movie] });
+      }
+      return acc;
+    }, []);
+
+    this.groupedFilmography = groups;
   }
 
   onClickGoMovie(slug: string) {
