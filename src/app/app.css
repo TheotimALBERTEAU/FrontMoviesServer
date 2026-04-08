@@ -177,10 +177,6 @@ header {
   margin: 1rem 0;
 }
 
-.result-container {
-  border-bottom: 1px solid #333;
-}
-
 .result-item {
   display: flex;
   gap: 15px;

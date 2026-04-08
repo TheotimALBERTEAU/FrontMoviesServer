@@ -10,8 +10,8 @@
     </div>
     <div class="search-loader" *ngIf="isLoading"></div>
 
-    <div class="search-results-container" *ngIf="results.length > 0">
-      <div class="result-container">
+    <div class="search-results-container" *ngIf="results.length > 0 || actorsResults.length > 0">
+      <div class="result-container" *ngIf="results.length > 0">
         <p class="results-label">Résultats</p>
         <div class="result-item" *ngFor="let movie of results" (click)="moviesService.goMovie(movie.slug); closeSearch()">
           <img [src]="movie.cover" class="result-poster">
@@ -22,7 +22,7 @@
         </div>
       </div>
 
-      <div class="result-container">
+      <div class="result-container" *ngIf="actorsResults.length > 0">
         <p class="results-label">Acteurs</p>
         <div class="result-item" *ngFor="let actor of actorsResults" (click)="actorsService.goActor(actor.slug); closeSearch()">
           <img [src]="actor.profile_picture" class="result-poster">

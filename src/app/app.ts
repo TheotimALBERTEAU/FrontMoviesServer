@@ -1,4 +1,4 @@
-import { Component, HostListener, signal, ElementRef, ViewChild, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, HostListener, ElementRef, ViewChild, ChangeDetectorRef, OnInit } from '@angular/core';
 import { RouterOutlet, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -7,6 +7,7 @@ import { MoviesList } from './services/Movies/movies-list';
 import { SidebarService } from './services/sidebar';
 import {Sidebar} from './sidebar/sidebar';
 import {ActorsList} from './services/Actors/actors-list';
+import {forkJoin} from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -66,48 +67,32 @@ export class App implements OnInit {
     this.isSearchOpen = false;
     this.searchQuery = '';
     this.results = [];
+    this.actorsResults = [];
     this.cdr.detectChanges();
   }
 
   onSearchChange(event: any) {
     if (this.searchQuery.length >= 2) {
       this.isLoading = true;
-      this.results = [];
-      this.actorsResults = [];
 
-      this.moviesService.searchMovies(this.searchQuery).subscribe({
+      forkJoin({
+        movies: this.moviesService.searchMovies(this.searchQuery),
+        actors: this.actorsService.searchActors(this.searchQuery)
+      }).subscribe({
         next: (res) => {
-          if (res && res.code === "200") {
-            setTimeout(() => {
-              this.results = res.data;
-              this.isLoading = false;
-              this.cdr.detectChanges();
-            }, 400);
-          }
+          this.results = res.movies.code === "200" ? res.movies.data : [];
+          this.actorsResults = res.actors.code === "200" ? res.actors.data : [];
+          console.log(this.actorsResults);
+
+          this.isLoading = false;
+          this.cdr.detectChanges();
         },
         error: (err) => {
           this.isLoading = false;
-          console.error("Erreur recherche :", err);
-        }
-      });
-      this.actorsService.searchActors(this.searchQuery).subscribe({
-        next: (res) => {
-          if (res && res.code === "200") {
-            setTimeout(() => {
-              this.actorsResults = res.data;
-              console.log(this.actorsResults);
-              this.isLoading = false;
-              this.cdr.detectChanges();
-            }, 400);
-          }
-        },
-        error: (err) => {
-          this.isLoading = false;
-          console.error("Erreur recherche :", err);
+          console.error("Erreur de recherche combinée :", err);
           this.cdr.detectChanges();
         }
       });
-
     } else {
       this.results = [];
       this.actorsResults = [];
