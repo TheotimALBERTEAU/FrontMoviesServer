@@ -1,58 +1,111 @@
 <div class="genres-selection-container">
-  @for (genre of genresButtons; track genre.id) {
-    <div class="genre-card" (click)="onClickGoGenre(genre.label)">
-      <div class="genre-text">
-        <h3 class="genre-label">{{ genre.label }}</h3>
-        <p class="genre-count">{{ genre.count }} films et séries</p>
+  <div class="genre-card" *ngFor="let genre of genresButtons" (click)="onClickGoGenre(genre.label)">
+    <div class="genre-text">
+      <h3 class="genre-label">{{ genre.label }}</h3>
+      <p class="genre-count">{{ genre.count }} films et séries</p>
+    </div>
+    <div class="genre-image-container">
+      <img [src]="genre.cover" class="genre-cover-skewed" alt="">
+    </div>
+  </div>
+</div>
+
+<div class="filters-toolbar">
+  <div class="filter-group" (click)="openFilter = (openFilter === 'type' ? null : 'type')">
+    <span class="filter-label">Type</span>
+    <span class="active-val" *ngIf="activeFilters.type">{{activeFilters.type}}</span>
+    <img src="Assets/Movies/filter-icon.svg" class="filter-icon">
+    <div class="dropdown-menu" *ngIf="openFilter === 'type'" (click)="$event.stopPropagation()">
+      <div class="options-grid">
+        <button *ngFor="let t of dynamicOptions.types" [class.selected]="activeFilters.type === t" (click)="toggleFilterValue('type', t)">{{t}}</button>
       </div>
-
-      <div class="genre-image-container">
-
-        <img [src]="genre.cover" class="genre-cover-skewed" alt="">
+      <div class="dropdown-footer">
+        <button class="apply-btn" (click)="submitFilters()">Appliquer</button>
+        <button class="clear-btn" (click)="clearCategory('type')">Clear</button>
       </div>
     </div>
-  }
+  </div>
+
+  <div class="filter-group" (click)="openFilter = (openFilter === 'genre' ? null : 'genre')">
+    <span class="filter-label">Genre</span>
+    <span class="active-val" *ngIf="activeFilters.genre.length">{{activeFilters.genre.length}}</span>
+    <img src="Assets/Movies/filter-icon.svg" class="filter-icon">
+    <div class="dropdown-menu genre-wide" *ngIf="openFilter === 'genre'" (click)="$event.stopPropagation()">
+      <div class="options-grid">
+        <button *ngFor="let g of dynamicOptions.genres" [class.selected]="activeFilters.genre.includes(g)" (click)="toggleGenre(g)">{{g}}</button>
+      </div>
+      <div class="dropdown-footer">
+        <button class="apply-btn" (click)="submitFilters()">Appliquer</button>
+        <button class="clear-btn" (click)="clearCategory('genre')">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-group" (click)="openFilter = (openFilter === 'release' ? null : 'release')">
+    <span class="filter-label">Date de sortie</span>
+    <span class="active-val" *ngIf="activeFilters.release">{{activeFilters.release}}</span>
+    <img src="Assets/Movies/filter-icon.svg" class="filter-icon">
+    <div class="dropdown-menu" *ngIf="openFilter === 'release'" (click)="$event.stopPropagation()">
+      <div class="options-grid">
+        <button *ngFor="let y of dynamicOptions.years" [class.selected]="activeFilters.release === y" (click)="toggleFilterValue('release', y)">{{y}}</button>
+      </div>
+      <div class="dropdown-footer">
+        <button class="apply-btn" (click)="submitFilters()">Appliquer</button>
+        <button class="clear-btn" (click)="clearCategory('release')">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-group" (click)="openFilter = (openFilter === 'rating' ? null : 'rating')">
+    <span class="filter-label">IMDb</span>
+    <span class="active-val" *ngIf="activeFilters.vote_average">{{activeFilters.vote_average}}.0</span>
+    <img src="Assets/Movies/filter-icon.svg" class="filter-icon">
+    <div class="dropdown-menu" *ngIf="openFilter === 'rating'" (click)="$event.stopPropagation()">
+      <div class="options-grid">
+        <button *ngFor="let r of [10,9,8,7,6,5,4]" [class.selected]="activeFilters.vote_average === r.toString()" (click)="toggleFilterValue('vote_average', r.toString())">{{r}}</button>
+      </div>
+      <div class="dropdown-footer">
+        <button class="apply-btn" (click)="submitFilters()">Appliquer</button>
+        <button class="clear-btn" (click)="clearCategory('vote_average')">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-group sort-container" (click)="openFilter = (openFilter === 'sort' ? null : 'sort')">
+    <span class="filter-label blue-text">{{sortLabels[activeFilters.sort]}}</span>
+    <img src="Assets/Movies/sort-icon.svg" class="sort-icon">
+    <div class="dropdown-menu right-aligned" *ngIf="openFilter === 'sort'" (click)="$event.stopPropagation()">
+      <div class="sort-option" (click)="activeFilters.sort = 'random'; submitFilters()">Aléatoire</div>
+      <div class="sort-option" (click)="activeFilters.sort = 'created_at'; submitFilters()">Plus récent</div>
+      <div class="sort-option" (click)="activeFilters.sort = 'release_year'; submitFilters()">Date de sortie</div>
+      <div class="sort-option" (click)="activeFilters.sort = 'top_rated'; submitFilters()">Mieux notés</div>
+      <div class="separator"></div>
+      <div class="sort-option" (click)="activeFilters.sort = 'az'; submitFilters()">Nom A-Z</div>
+      <div class="sort-option" (click)="activeFilters.sort = 'za'; submitFilters()">Nom Z-A</div>
+    </div>
+  </div>
 </div>
 
 <section id="movies-grid">
-  <h3 class="title"> Films </h3>
   <div class="movies-grid">
-    @for (movie of displayedMovies; track movie._id) {
-      <div class="movie-card">
-        <div class="movie-card-background" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoMovie(movie.slug)">
-          <div class="card-overlay"></div>
-          <div class="play-button">
-            <img src="Assets/Movies/play-button.png" alt="play-button">
-          </div>
-        </div>
-
-        <div class="card-content">
-          <div class="movie-details-bar">
-            <div class="duration">{{ movie.duration }} min {{movie.year}}</div>
-          </div>
-          <h3 class="movie-title">{{ movie.title}}</h3>
-          <div class="movie-details-bar">
-            <div class="main-genre">{{ movie.genre[0] }}</div>
-            <div class="info-block type-indicator">{{ movie.type }}</div>
-          </div>
+    <div class="movie-card" *ngFor="let movie of displayedMovies">
+      <div class="movie-card-background" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoMovie(movie.slug)">
+        <div class="card-overlay"></div>
+        <div class="play-button"><img src="Assets/Movies/play-button.png"></div>
+      </div>
+      <div class="card-content">
+        <div class="movie-details-bar"><div class="duration">{{ movie.duration }} min {{movie.year}}</div></div>
+        <h3 class="movie-title">{{ movie.title}}</h3>
+        <div class="movie-details-bar">
+          <div class="main-genre">{{ movie.genre[0] }}</div>
+          <div class="info-block type-indicator">{{ movie.type }}</div>
         </div>
       </div>
-    }
+    </div>
   </div>
 
-  <div class="pagination-container" *ngIf="movies.length > pageSize">
-    <button class="nav-btn" (click)='prevPage()' *ngIf="currentPage > 1">
-      <svg class="icon-svg" viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M15 18l-8-8 8-8" />
-      </svg>
-      <span>Précédent</span>
-    </button>
-
-    <button class="nav-btn" (click)='nextPage()' *ngIf="hasNext()">
-      <span>Suivant</span>
-      <svg class="icon-svg" viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M9 18l8-8-8-8" />
-      </svg>
-    </button>
+  <div class="pagination-container" *ngIf="filteredMovies.length > pageSize">
+    <button class="nav-btn" (click)='prevPage()' *ngIf="currentPage > 1">Précédent</button>
+    <button class="nav-btn" (click)='nextPage()' *ngIf="hasNext()">Suivant</button>
   </div>
 </section>
