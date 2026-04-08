@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import { SidebarService } from '../services/sidebar';
 
 @Component({
@@ -9,5 +9,14 @@ import { SidebarService } from '../services/sidebar';
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
-  constructor(public sidebarService: SidebarService) {}
+  constructor(public sidebarService: SidebarService,
+              public router: Router,) {}
+
+  onClickGoMovies(): void {
+    this.router.navigate(['/movies']);
+  }
+
+  onClickGoActors(): void {
+    this.router.navigate(['/actors']);
+  }
 }
