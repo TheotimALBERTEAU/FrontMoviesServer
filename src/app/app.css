@@ -172,10 +172,13 @@ header {
 }
 
 .results-label {
-  color: #666;
+  color: #777;
   font-size: 0.8rem;
-  margin-bottom: 15px;
-  text-transform: uppercase;
+  margin: 1rem 0;
+}
+
+.result-container {
+  border-bottom: 1px solid #333;
 }
 
 .result-item {
@@ -217,7 +220,6 @@ header {
   color: dimgray;
   padding-top: 15px;
   margin-top: 10px;
-  border-top: 1px solid #333;
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s ease;

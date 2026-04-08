@@ -11,14 +11,28 @@
     <div class="search-loader" *ngIf="isLoading"></div>
 
     <div class="search-results-container" *ngIf="results.length > 0">
-      <p class="results-label">Résultats</p>
-      <div class="result-item" *ngFor="let movie of results" (click)="moviesService.goMovie(movie.slug); closeSearch()">
-        <img [src]="movie.cover" class="result-poster">
-        <div class="result-info">
-          <p class="result-title">{{ movie.title }}</p>
-          <p class="result-desc">{{ movie.synopsis | slice:0:80 }}...</p>
+      <div class="result-container">
+        <p class="results-label">Résultats</p>
+        <div class="result-item" *ngFor="let movie of results" (click)="moviesService.goMovie(movie.slug); closeSearch()">
+          <img [src]="movie.cover" class="result-poster">
+          <div class="result-info">
+            <p class="result-title">{{ movie.title }}</p>
+            <p class="result-desc">{{ movie.synopsis | slice:0:80 }}...</p>
+          </div>
         </div>
       </div>
+
+      <div class="result-container">
+        <p class="results-label">Acteurs</p>
+        <div class="result-item" *ngFor="let actor of actorsResults" (click)="actorsService.goActor(actor.slug); closeSearch()">
+          <img [src]="actor.profile_picture" class="result-poster">
+          <div class="result-info">
+            <p class="result-title">{{ actor.name }}</p>
+            <p class="result-desc">{{ actor.biography | slice:0:80 }}...</p>
+          </div>
+        </div>
+      </div>
+
       <div class="see-all" (click)="onClickGoSearchPage(searchQuery)">Voir tous les résultats</div>
     </div>
   </div>

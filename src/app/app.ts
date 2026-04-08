@@ -6,6 +6,7 @@ import { Auth } from './services/Users/auth';
 import { MoviesList } from './services/Movies/movies-list';
 import { SidebarService } from './services/sidebar';
 import {Sidebar} from './sidebar/sidebar';
+import {ActorsList} from './services/Actors/actors-list';
 
 @Component({
   selector: 'app-root',
@@ -21,13 +22,15 @@ export class App implements OnInit {
   public isProfileMenuOpen = false;
   public searchQuery = '';
   public results: any[] = [];
+  public actorsResults: any[] = [];
   public isLoading = false;
 
   constructor(private router: Router,
               public authService: Auth,
               private cdr: ChangeDetectorRef,
               public moviesService: MoviesList,
-              public sidebarService: SidebarService) {
+              public sidebarService: SidebarService,
+              public actorsService: ActorsList) {
   }
 
   ngOnInit() {
@@ -70,6 +73,7 @@ export class App implements OnInit {
     if (this.searchQuery.length >= 2) {
       this.isLoading = true;
       this.results = [];
+      this.actorsResults = [];
 
       this.moviesService.searchMovies(this.searchQuery).subscribe({
         next: (res) => {
@@ -86,9 +90,29 @@ export class App implements OnInit {
           console.error("Erreur recherche :", err);
         }
       });
+      this.actorsService.searchActors(this.searchQuery).subscribe({
+        next: (res) => {
+          if (res && res.code === "200") {
+            setTimeout(() => {
+              this.actorsResults = res.data;
+              console.log(this.actorsResults);
+              this.isLoading = false;
+              this.cdr.detectChanges();
+            }, 400);
+          }
+        },
+        error: (err) => {
+          this.isLoading = false;
+          console.error("Erreur recherche :", err);
+          this.cdr.detectChanges();
+        }
+      });
+
     } else {
       this.results = [];
+      this.actorsResults = [];
       this.isLoading = false;
+      this.cdr.detectChanges();
     }
   }
 
