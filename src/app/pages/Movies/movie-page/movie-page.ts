@@ -6,10 +6,14 @@ import {ChangeDetectorRef} from '@angular/core';
 import {Auth} from '../../../services/Users/auth';
 import {last} from 'rxjs';
 import {MoviesList} from '../../../services/Movies/movies-list';
+import {CommonModule} from '@angular/common';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-movie-page',
-  imports: [],
+  imports: [
+    CommonModule,
+  ],
   templateUrl: './movie-page.html',
   styleUrl: './movie-page.css',
 })
@@ -21,12 +25,15 @@ export class MoviePage {
               private authService: Auth,
               private cdr: ChangeDetectorRef,
               private moviesService: MoviesList,
-              private router: Router,) {
+              private router: Router,
+              private sanitizer: DomSanitizer) {
   }
 
   public details: any = [];
   public movieProgress = 0;
   private progressInterval: any;
+  public isTrailerOpen = false;
+  public safeTrailerUrl: SafeResourceUrl | undefined;
 
   ngOnInit() {
     const movieSlug = this.activatedRoute.snapshot.paramMap.get('slug');
@@ -113,6 +120,25 @@ export class MoviePage {
   }
 
   protected readonly last = last;
+
+  openTrailer() {
+    this.isTrailerOpen = true;
+    let url = this.details.trailer;
+    if (url.includes('youtube.com/watch?v=')) {
+      url = url.replace('watch?v=', 'embed/');
+    } else if (url.includes('youtu.be/')) {
+      url = url.replace('youtu.be/', 'youtube.com/embed/');
+    }
+
+    const finalUrl = `${url}?autoplay=1&mute=1`;
+    this.safeTrailerUrl = this.sanitizer.bypassSecurityTrustResourceUrl(finalUrl);
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeTrailer() {
+    this.isTrailerOpen = false;
+    document.body.style.overflow = 'auto';
+  }
 
   onClickGoGenre(genre: any) {
     this.moviesService.goGenre(genre.toLowerCase())
