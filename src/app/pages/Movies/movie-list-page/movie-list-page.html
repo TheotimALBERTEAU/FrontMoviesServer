@@ -72,7 +72,7 @@
   </div>
 
   <div class="filter-group sort-container" (click)="openFilter = (openFilter === 'sort' ? null : 'sort')">
-    <span class="filter-label blue-text">{{sortLabels[activeFilters.sort]}}</span>
+    <span class="filter-label">{{sortLabels[activeFilters.sort]}}</span>
     <img src="Assets/Movies/sort-icon.svg" class="sort-icon">
     <div class="dropdown-menu right-aligned" *ngIf="openFilter === 'sort'" (click)="$event.stopPropagation()">
       <div class="sort-option" (click)="activeFilters.sort = 'random'; submitFilters()">Aléatoire</div>
@@ -105,7 +105,18 @@
   </div>
 
   <div class="pagination-container" *ngIf="filteredMovies.length > pageSize">
-    <button class="nav-btn" (click)='prevPage()' *ngIf="currentPage > 1">Précédent</button>
-    <button class="nav-btn" (click)='nextPage()' *ngIf="hasNext()">Suivant</button>
+    <button class="nav-btn" (click)='prevPage()' *ngIf="currentPage > 1">
+      <svg class="icon-svg" viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 18l-8-8 8-8" />
+      </svg>
+      <span>Précédent</span>
+    </button>
+
+    <button class="nav-btn" (click)='nextPage()' *ngIf="hasNext()">
+      <span>Suivant</span>
+      <svg class="icon-svg" viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18l8-8-8-8" />
+      </svg>
+    </button>
   </div>
 </section>

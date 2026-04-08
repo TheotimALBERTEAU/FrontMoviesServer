@@ -90,13 +90,47 @@
   position: relative;
 }
 
-.filter-label { color: #ccc; font-size: 0.9rem; font-weight: 500; }
-.active-val { background: #2a2a2a; color: white; padding: 2px 8px; border-radius: 6px; font-size: 0.8rem; }
-.filter-icon { width: 14px; height: 14px; opacity: 0.6; transition: 0.2s; }
-.sort-icon { width: 16px; height: 16px; opacity: 0.6; transition: 0.2s; }
-.filter-group:hover .filter-icon { opacity: 1; }
-.sort-container { margin-left: auto; }
-.blue-text { color: #3182ce; }
+.filter-label {
+  color: #ccc;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.active-val {
+  background: #2a2a2a;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+.filter-icon {
+  width: 14px;
+  height: 14px;
+  opacity: 0.6;
+  transition: 0.2s;
+}
+
+.sort-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+  transition: 0.2s;
+}
+
+.filter-group:hover .filter-icon {
+  opacity: 1;
+}
+
+.sort-container {
+  margin-left: auto;
+  padding: 0.5rem;
+  border-radius: 0.4rem;
+}
+
+.sort-container:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
 
 .dropdown-menu {
   position: absolute;

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, HostListener, OnInit} from '@angular/core';
 import { MoviesList } from '../../../services/Movies/movies-list';
 import { CommonModule } from '@angular/common';
 import { GenreService } from '../../../services/Movies/genre-service';
@@ -13,9 +13,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './movie-list-page.css',
 })
 export class MovieListPage implements OnInit {
-  public allMovies: any[] = [];         // Source brute
-  public filteredMovies: any[] = [];    // Résultat des filtres
-  public displayedMovies: any[] = [];   // Résultat de la pagination
+  public allMovies: any[] = [];
+  public filteredMovies: any[] = [];
+  public displayedMovies: any[] = [];
   public genresButtons: any[] = [];
 
   public currentPage = 1;
@@ -44,8 +44,16 @@ export class MovieListPage implements OnInit {
     private cdr: ChangeDetectorRef,
     private genreService: GenreService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private eRef: ElementRef,
   ) {}
+
+  @HostListener('document:click', ['$event'])
+  clickout(event: any) {
+    if (!this.eRef.nativeElement.querySelector('.filters-toolbar').contains(event.target)) {
+      this.openFilter = null;
+    }
+  }
 
   ngOnInit() {
     const categories = ['Action', 'Animation', 'Comédie', 'Crime', 'Horreur'];
@@ -84,7 +92,6 @@ export class MovieListPage implements OnInit {
     this.dynamicOptions.types = Array.from(types).sort();
     this.dynamicOptions.genres = Array.from(genres).sort();
 
-    // Années : >= 2000 on garde, < 2000 = "Ancien"
     const uniqueYears = Array.from(years).sort((a, b) => b - a);
     const yearLabels = uniqueYears.map(y => y >= 2000 ? y.toString() : 'Ancien');
     this.dynamicOptions.years = Array.from(new Set(yearLabels));
@@ -128,9 +135,7 @@ export class MovieListPage implements OnInit {
 
   applyFilters() {
     let result = [...this.allMovies];
-
     if (this.activeFilters.type) result = result.filter(m => m.type === this.activeFilters.type);
-
     if (this.activeFilters.genre.length) {
       result = result.filter(m => this.activeFilters.genre.some(g => m.genre.includes(g)));
     }
@@ -151,7 +156,6 @@ export class MovieListPage implements OnInit {
       });
     }
 
-    // Tri
     if (this.activeFilters.sort === 'random') {
       result = result.sort(() => Math.random() - 0.5);
     }
