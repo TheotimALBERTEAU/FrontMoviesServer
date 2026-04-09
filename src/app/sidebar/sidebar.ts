@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import {Router, RouterLink, RouterLinkActive} from '@angular/router';
+import {Router} from '@angular/router';
 import { SidebarService } from '../services/sidebar';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })

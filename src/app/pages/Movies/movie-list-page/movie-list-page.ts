@@ -63,8 +63,15 @@ export class MovieListPage implements OnInit {
         if (data.code === "200") {
           this.allMovies = data.data;
           this.generateDynamicOptions();
+
           this.route.queryParams.subscribe(params => {
-            this.syncFilters(params);
+
+            this.activeFilters.type = params['type'] || 'Film';
+            this.activeFilters.genre = params['genre'] || '';
+            this.activeFilters.release = params['release'] || '';
+            this.activeFilters.vote_average = params['vote_average'] || '';
+            this.activeFilters.sort = params['sort'] || 'created_at';
+
             this.applyFilters();
           });
         }
