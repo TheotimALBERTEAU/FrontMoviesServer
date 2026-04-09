@@ -67,7 +67,8 @@ export class MovieListPage implements OnInit {
           this.route.queryParams.subscribe(params => {
 
             this.activeFilters.type = params['type'] || 'Film';
-            this.activeFilters.genre = params['genre'] || '';
+            const genreParam = params['genre'];
+            this.activeFilters.genre = genreParam ? genreParam.split(',') : [];
             this.activeFilters.release = params['release'] || '';
             this.activeFilters.vote_average = params['vote_average'] || '';
             this.activeFilters.sort = params['sort'] || 'created_at';
