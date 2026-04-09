@@ -19,7 +19,7 @@ body {
   box-sizing: border-box;
 }
 
-.movie-player video {
+.movie-player iframe {
   width: 100%;
   height: 100%;
 }
@@ -34,7 +34,7 @@ body {
   margin: 2vh auto;
 }
 
-.movie-player video {
+.movie-player iframe {
   width: 100%;
   height: 100%;
   object-fit: contain;

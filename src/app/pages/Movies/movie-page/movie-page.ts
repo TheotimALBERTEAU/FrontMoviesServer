@@ -8,11 +8,13 @@ import {last} from 'rxjs';
 import {MoviesList} from '../../../services/Movies/movies-list';
 import {CommonModule} from '@angular/common';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import { SafePipe} from '../../../safe-pipe';
 
 @Component({
   selector: 'app-movie-page',
   imports: [
     CommonModule,
+    SafePipe,
   ],
   templateUrl: './movie-page.html',
   styleUrl: './movie-page.css',
