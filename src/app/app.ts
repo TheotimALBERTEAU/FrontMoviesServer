@@ -8,12 +8,11 @@ import { SidebarService } from './services/sidebar';
 import {Sidebar} from './sidebar/sidebar';
 import {ActorsList} from './services/Actors/actors-list';
 import {forkJoin} from 'rxjs';
-import {SafePipe} from './safe-pipe';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, FormsModule, Sidebar, SafePipe],
+  imports: [RouterOutlet, CommonModule, FormsModule, Sidebar],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
