@@ -18,6 +18,6 @@ export class SeriesList {
   }
 
   goSerie(slug: string) {
-    this.router.navigate(['/series/view/', slug]);
+    this.router.navigate(['/series/', slug]);
   }
 }

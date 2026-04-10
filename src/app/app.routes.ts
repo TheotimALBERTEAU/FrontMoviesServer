@@ -9,12 +9,14 @@ import {SearchPage} from './pages/Movies/search-page/search-page';
 import {ActorsListPage} from './pages/Actors/actors-list-page/actors-list-page';
 import {ActorPage} from './pages/Actors/actor-page/actor-page';
 import {SerieListPage} from './pages/Series/serie-list-page/serie-list-page';
+import {SeriePage} from './pages/Series/serie-page/serie-page';
 
 export const routes: Routes = [
   {path: '', component: HomePage},
   {path: 'movies', component: MovieListPage},
   {path: 'movies/:slug', component: MoviePage},
   {path: 'series', component: SerieListPage},
+  {path: 'series/:slug', component: SeriePage},
   {path: 'login', component: LoginPage},
   {path: 'signup', component: SignupPage},
   { path: 'genre/:type', component: GenrePage },

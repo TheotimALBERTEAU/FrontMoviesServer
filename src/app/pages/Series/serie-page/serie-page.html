@@ -1,1 +1,70 @@
-<p>serie-page works!</p>
+<div class="series-container">
+  <div class="series-content-header">
+    <div class="content-wrapper">
+
+      <div class="poster-side">
+        <img [src]="details.cover" [alt]="details.title" class="main-poster">
+        <button class="play-button" (click)="playFirstEpisode()">
+          Regarder le premier épisode
+        </button>
+      </div>
+
+      <div class="info-side">
+        <div class="header-info">
+          <span class="series-label">Loki</span> <h1>{{details.title}}</h1>
+
+          <div class="meta-line">
+            <span class="badge">HD</span>
+            <span>{{details.year}}</span>
+            <span class="publish-date">Publié il y a {{details.addedTime}}</span>
+          </div>
+        </div>
+
+        <div class="actions-line">
+          <div class="rating-circle-container" [style.--percentage]="details.rating * 10">
+            <div class="rating-circle"></div>
+            <span class="rating-value">{{details.rating}}</span>
+          </div>
+
+          <div class="secondary-actions">
+            <button class="icon-btn"><i class="plus-icon"></i></button>
+            <button class="icon-btn"><i class="share-icon"></i></button>
+            <div class="like-dislike">
+              <button class="like-btn">👍 {{details.likes}}</button>
+              <button class="dislike-btn">👎</button>
+            </div>
+          </div>
+        </div>
+
+        <p class="synopsis">{{details.synopsis}}</p>
+
+        <div class="specs-grid">
+          <div class="spec-item">
+            <span class="label">Genre</span>
+            <div class="value genre-container">
+              @for (genre of details.genre; track genre; let last = $last) {
+                <span class="genre-item" (click)="onClickGoGenre(genre)">
+                  {{ genre }}{{ !last ? ',' : ''}}
+                </span>
+              }
+            </div>
+          </div>
+          <div class="spec-item">
+            <span class="label">Date de sortie</span>
+            <span class="value">{{details.releaseDateFull}}</span>
+          </div>
+          <div class="spec-item">
+            <span class="label">Distribution</span>
+            <div class="value casting-container">
+              @for (actor of details.casting; track actor; let last = $last) {
+                <span class="actor-name" (click)="onClickGoActor(actor.slug)">
+                  {{ actor.name }}{{ !last ? ', ' : '' }}
+                </span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
