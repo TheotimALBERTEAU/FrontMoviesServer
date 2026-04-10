@@ -87,14 +87,17 @@ export class SerieListPage implements OnInit {
   }
 
   generateDynamicOptions() {
+    const types = new Set<string>();
     const genres = new Set<string>();
     const years = new Set<number>();
 
     this.allSeries.forEach(s => {
+      if (s.type) types.add(s.type);
       if (s.genre) s.genre.forEach((g: string) => genres.add(g));
       if (s.year) years.add(Number(s.year));
     });
 
+    this.dynamicOptions.types = Array.from(types).sort();
     this.dynamicOptions.genres = Array.from(genres).sort();
     const uniqueYears = Array.from(years).sort((a, b) => b - a);
     const yearLabels = uniqueYears.map(y => y >= 2000 ? y.toString() : 'Ancien');
@@ -138,6 +141,7 @@ export class SerieListPage implements OnInit {
   applyFilters() {
     let result = [...this.allSeries];
 
+    if (this.activeFilters.type) result = result.filter(m => m.type === this.activeFilters.type);
     if (this.activeFilters.genre.length) {
       result = result.filter(s => this.activeFilters.genre.some(g => s.genre.includes(g)));
     }
