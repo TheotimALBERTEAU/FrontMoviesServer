@@ -16,6 +16,10 @@ export class Sidebar {
     this.router.navigate(['/movies']);
   }
 
+  onClickGoSeries(): void {
+    this.router.navigate(['/series']);
+  }
+
   onClickGoActors(): void {
     this.router.navigate(['/actors']);
   }
