@@ -54,6 +54,18 @@ export class SeriePage implements OnInit {
     }
   }
 
+  loadSeason(seasonNumber: number) {
+    this.activeSeason = seasonNumber;
+    this.isSeasonDropdownOpen = false;
+
+    this.watchSerie.getSeason(this.details.slug, seasonNumber).subscribe((res: any) => {
+      if (res.code === "200") {
+        this.currentSeason = res.data;
+      }
+      this.cdr.detectChanges();
+    });
+  }
+
   playFirstEpisode() {
     console.log("Lecture de l'épisode 1");
   }
@@ -85,5 +97,9 @@ export class SeriePage implements OnInit {
   closeTrailer() {
     this.isTrailerOpen = false;
     document.body.style.overflow = 'auto';
+  }
+
+  onClickGoEpisode(episodeNumber: number) {
+    this.router.navigate(['/view', this.details.slug, this.activeSeason + "-" + episodeNumber]);
   }
 }

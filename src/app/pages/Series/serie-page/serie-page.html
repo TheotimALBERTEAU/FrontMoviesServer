@@ -70,25 +70,32 @@
 
   <div class="season-dropdown" *ngIf="isSeasonDropdownOpen">
     <div class="dropdown-scroll-content">
-      <div *ngFor="let s of details.seasons"
-           class="season-option">
-        Saison {{ activeSeason }}
-      </div>
+      @for (i of [].constructor(details.seasons); track $index) {
+        <div class="season-option" (click)="loadSeason($index + 1)">
+          Saison {{ $index + 1 }}
+        </div>
+      }
     </div>
   </div>
 </div>
 
 <div class="episodes-grid">
   @for (ep of currentSeason.episodes; track ep) {
-    <div class="episode-card">
-        <div class="ep-cover-wrapper">
-          <img [src]="ep.cover" [alt]="ep.title">
-          <div class="ep-type-tag">Série</div>
+    <div class="episode-card" (click)="onClickGoEpisode(ep.episode)">
+      <div class="ep-cover-wrapper">
+        <img [src]="ep.cover" [alt]="ep.title">
+        <div class="card-overlay"></div>
+        <div class="play-button">
+          <img src="Assets/Movies/play-button.png" alt="play-button">
         </div>
-        <div class="ep-info">
-          <h4 class="ep-title">{{ ep.title }}</h4>
+      </div>
+      <div class="ep-info">
+        <h4 class="ep-title">{{ ep.title }}</h4>
+        <div class="ep-meta-row">
           <p class="ep-meta">Saison {{ activeSeason }} Épisode {{ ep.episode }}</p>
+          <div class="ep-type-tag">{{ details.type }}</div>
         </div>
+      </div>
     </div>
   }
 </div>

@@ -194,7 +194,6 @@ export class SerieListPage implements OnInit {
 
   onClickGoSerie(slug: string) { this.seriesService.goSerie(slug); }
 
-  // Cette méthode manquait pour tes bannières de genres en haut
   onClickGoGenre(genre: string) {
     this.router.navigate(['/series'], { queryParams: { genre: genre } });
   }
