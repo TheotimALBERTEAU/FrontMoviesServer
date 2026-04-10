@@ -100,6 +100,6 @@ export class SeriePage implements OnInit {
   }
 
   onClickGoEpisode(episodeNumber: number) {
-    this.router.navigate(['/view', this.details.slug, this.activeSeason + "-" + episodeNumber]);
+    this.router.navigate(['/series', this.details.slug, this.activeSeason + "-" + episodeNumber]);
   }
 }
