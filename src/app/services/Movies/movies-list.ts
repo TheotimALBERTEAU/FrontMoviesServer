@@ -20,7 +20,7 @@ export class MoviesList {
   }
 
   goMovie(movieSlug: any) {
-    this.router.navigate(['/movies/watch' + movieSlug]);
+    this.router.navigate(['/movies/view/' + movieSlug]);
   }
 
   goGenre(genre: any) {
