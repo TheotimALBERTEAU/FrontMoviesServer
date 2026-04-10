@@ -12,6 +12,6 @@ export class WatchMovie {
   public ApiUrl: string = environment.apiUrl;
 
   getDetails(slug: string) {
-    return this.http.get<any>(`${this.ApiUrl}/movies/${slug}`);
+    return this.http.get<any>(`${this.ApiUrl}/movies/view/${slug}`);
   }
 }

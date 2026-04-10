@@ -2,7 +2,7 @@
   <div class="genre-card" *ngFor="let genre of genresButtons" (click)="onClickGoGenre(genre.label)">
     <div class="genre-text">
       <h3 class="genre-label">{{ genre.label }}</h3>
-      <p class="genre-count">{{ genre.count }} films</p>
+      <p class="genre-count">{{ genre.count }} séries</p>
     </div>
     <div class="genre-image-container">
       <img [src]="genre.cover" class="genre-cover-skewed" alt="">
@@ -86,25 +86,25 @@
   </div>
 </div>
 
-<section id="movies-grid">
-  <div class="movies-grid">
-    <div class="movie-card" *ngFor="let movie of displayedMovies">
-      <div class="movie-card-background" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoMovie(movie.slug)">
+<section id="series-grid">
+  <div class="series-grid">
+    <div class="serie-card" *ngFor="let serie of displayedSeries">
+      <div class="serie-card-background" [style.background-image]="'url(' + serie.cover + ')'" (click)="onClickGoSerie(serie.slug)">
         <div class="card-overlay"></div>
         <div class="play-button"><img src="Assets/Movies/play-button.png"></div>
       </div>
       <div class="card-content">
-        <div class="movie-details-bar"><div class="duration">{{ movie.duration }} min {{movie.year}}</div></div>
-        <h3 class="movie-title">{{ movie.title}}</h3>
-        <div class="movie-details-bar">
-          <div class="main-genre">{{ movie.genre[0] }}</div>
-          <div class="info-block type-indicator">{{ movie.type }}</div>
+        <div class="serie-details-bar"><div class="meta-info">{{ serie.seasons }} Saisons • {{serie.year}}</div></div>
+        <h3 class="serie-title">{{ serie.title}}</h3>
+        <div class="serie-details-bar">
+          <div class="main-genre">{{ serie.genre[0] }}</div>
+          <div class="info-block type-indicator">{{ serie.type || 'Série' }}</div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="pagination-container" *ngIf="filteredMovies.length > pageSize">
+  <div class="pagination-container" *ngIf="filteredSeries.length > pageSize">
     <button class="nav-btn" (click)='prevPage()' *ngIf="currentPage > 1">
       <svg class="icon-svg" viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M15 18l-8-8 8-8" />

@@ -8,11 +8,13 @@ import {GenrePage} from './pages/Movies/genre-page/genre-page';
 import {SearchPage} from './pages/Movies/search-page/search-page';
 import {ActorsListPage} from './pages/Actors/actors-list-page/actors-list-page';
 import {ActorPage} from './pages/Actors/actor-page/actor-page';
+import {SerieListPage} from './pages/Series/serie-list-page/serie-list-page';
 
 export const routes: Routes = [
   {path: '', component: HomePage},
   {path: 'movies', component: MovieListPage},
   {path: 'movies/:slug', component: MoviePage},
+  {path: 'series', component: SerieListPage},
   {path: 'login', component: LoginPage},
   {path: 'signup', component: SignupPage},
   { path: 'genre/:type', component: GenrePage },
