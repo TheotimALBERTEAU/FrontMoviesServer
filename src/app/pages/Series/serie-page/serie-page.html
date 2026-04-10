@@ -1,22 +1,16 @@
-<div class="series-container">
-  <div class="series-content-header">
+<div class="serie-container">
+  <div class="serie-desc">
     <div class="content-wrapper">
-
       <div class="poster-side">
-        <img [src]="details.cover" [alt]="details.title" class="main-poster">
-        <button class="play-button" (click)="playFirstEpisode()">
-          Regarder le premier épisode
-        </button>
+        <img [src]="details.cover" [alt]="details.title">
       </div>
 
       <div class="info-side">
         <div class="header-info">
-          <span class="series-label">Loki</span> <h1>{{details.title}}</h1>
-
+          <h2>{{details.title}}</h2>
           <div class="meta-line">
-            <span class="badge">HD</span>
+            <span>{{details.duration}} min</span>
             <span>{{details.year}}</span>
-            <span class="publish-date">Publié il y a {{details.addedTime}}</span>
           </div>
         </div>
 
@@ -26,13 +20,8 @@
             <span class="rating-value">{{details.rating}}</span>
           </div>
 
-          <div class="secondary-actions">
-            <button class="icon-btn"><i class="plus-icon"></i></button>
-            <button class="icon-btn"><i class="share-icon"></i></button>
-            <div class="like-dislike">
-              <button class="like-btn">👍 {{details.likes}}</button>
-              <button class="dislike-btn">👎</button>
-            </div>
+          <div class="trailer-container" (click)="openTrailer()" *ngIf="details.trailer !== ''">
+            <img src="Assets/Movies/trailer-icon.svg" alt="trailer-icon" class="trailer-icon">
           </div>
         </div>
 
@@ -51,7 +40,11 @@
           </div>
           <div class="spec-item">
             <span class="label">Date de sortie</span>
-            <span class="value">{{details.releaseDateFull}}</span>
+            <span class="value">{{details.year}}</span>
+          </div>
+          <div class="spec-item">
+            <span class="label">Réalisateur</span>
+            <span class="value">{{details.author}}</span>
           </div>
           <div class="spec-item">
             <span class="label">Distribution</span>
@@ -68,3 +61,52 @@
     </div>
   </div>
 </div>
+
+<div class="season-selector-container">
+  <button class="season-btn" (click)="isSeasonDropdownOpen = !isSeasonDropdownOpen">
+    Saison {{ activeSeason }}
+    <img src="Assets/Movies/filter-icon.svg" class="dropdown-icon">
+  </button>
+
+  <div class="season-dropdown" *ngIf="isSeasonDropdownOpen">
+    <div class="dropdown-scroll-content">
+      <div *ngFor="let s of details.seasons"
+           class="season-option">
+        Saison {{ activeSeason }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="episodes-grid">
+  @for (ep of currentSeason.episodes; track ep) {
+    <div class="episode-card">
+        <div class="ep-cover-wrapper">
+          <img [src]="ep.cover" [alt]="ep.title">
+          <div class="ep-type-tag">Série</div>
+        </div>
+        <div class="ep-info">
+          <h4 class="ep-title">{{ ep.title }}</h4>
+          <p class="ep-meta">Saison {{ activeSeason }} Épisode {{ ep.episode }}</p>
+        </div>
+    </div>
+  }
+</div>
+
+
+<div class="trailer-modal-overlay" *ngIf="isTrailerOpen && details.trailer !== ''" (click)="closeTrailer()">
+  <div class="trailer-wrapper" (click)="$event.stopPropagation()">
+    <button class="close-trailer" (click)="closeTrailer()">&times;</button>
+
+    <div class="video-container">
+      <iframe
+        *ngIf="safeTrailerUrl"
+        [src]="safeTrailerUrl"
+        frameborder="0"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+</div>
+

@@ -1,136 +1,298 @@
-.series-container {
-  background-color: #0f0f0f;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #000;
   color: #fff;
-  min-height: 100vh;
-  padding: 40px 5%;
+}
+
+.serie-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: black;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.serie-desc {
+  width: 95%;
+  padding: 20px 0;
 }
 
 .content-wrapper {
   display: flex;
-  gap: 50px;
+  gap: 40px;
   align-items: flex-start;
 }
 
-/* Poster & Button */
-.poster-side {
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.main-poster {
-  width: 100%;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-}
-
-.play-button {
-  background-color: #2a2a2a;
-  color: white;
-  border: none;
-  padding: 15px;
+.poster-side img {
+  width: 250px;
   border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-.play-button:hover {
-  background-color: #3f3f3f;
-}
-
-/* Infos */
 .info-side {
   flex: 1;
 }
 
-.series-label {
-  color: #aaa;
-  font-size: 0.9rem;
-}
-
-h1 {
-  font-size: 3rem;
-  margin: 10px 0;
+.header-info h2 {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: #fff;
 }
 
 .meta-line {
   display: flex;
   align-items: center;
   gap: 15px;
-  color: #888;
-  margin-bottom: 20px;
+  color: #999;
+  font-size: 0.85rem;
+  margin-bottom: 25px;
 }
 
-.badge {
-  border: 1px solid #555;
-  padding: 2px 5px;
-  font-size: 0.7rem;
-  border-radius: 3px;
+.synopsis {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #777;
+  margin-bottom: 30px;
+}
+
+.specs-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid #222;
+  padding-top: 20px;
+}
+
+.spec-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.label {
+  color: #777;
+  min-width: 140px;
+  flex-shrink: 0;
+}
+
+.value {
+  color: #fff;
+  line-height: 1.4;
+}
+
+.genre-container {
+  color: #fff;
+  line-height: 1.6;
+  font-weight: 400;
+  display: block;
+}
+
+.genre-item {
+  display: inline;
+  padding-right: 0.5rem;
+  cursor: pointer;
+}
+
+.genre-item:hover {
+  text-decoration: underline;
+}
+
+.casting-container {
+  line-height: 1.6;
+  font-weight: 400;
+  font-size: 0.9rem;
+  display: block;
+}
+
+.actor-name {
+  padding-right: 0.4rem;
+  flex-shrink: 0;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.actor-name:hover {
+  text-decoration: underline;
 }
 
 .actions-line {
   display: flex;
   align-items: center;
-  gap: 25px;
-  margin-bottom: 30px;
-}
-
-.secondary-actions {
-  display: flex;
   gap: 15px;
-  align-items: center;
+  margin-bottom: 25px;
 }
 
-.like-dislike {
+.rating-circle-container {
+  --size: 2.8rem;
+  --thickness: 0.3rem;
+  --main-color: #f7b733;
+  --bg-color: #392d0f;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  position: relative;
+  background-color: #392d0f;
+}
+
+.rating-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background:
+    conic-gradient(
+      var(--main-color) calc(var(--percentage) * 3.6deg),
+      var(--bg-color) calc(var(--percentage) * 3.6deg)
+    );
+  mask: radial-gradient(
+    transparent calc(var(--size) / 2 - var(--thickness)),
+    black calc(var(--size) / 2 - var(--thickness) + 0.5px)
+  );
+}
+
+.rating-value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #f7b733;
+  font-family: Arial, sans-serif;
+  line-height: 1;
+  z-index: 10;
+}
+
+.trailer-container {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
   display: flex;
-  background: #222;
-  border-radius: 20px;
-  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
-.like-btn, .dislike-btn {
+.trailer-container:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.trailer-icon {
+  width: 1.4rem;
+  height: 1.4rem;
+  object-fit: contain;
+}
+
+/* Modal Trailer */
+.trailer-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trailer-wrapper {
+  position: relative;
+  width: 70%;
+  height: 70%;
+  background: black;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+}
+
+.video-container {
+  width: 100%;
+  height: 100%;
+}
+
+.video-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.close-trailer {
+  position: absolute;
+  top: 15px;
+  right: 20px;
   background: none;
   border: none;
   color: white;
-  padding: 8px 15px;
+  font-size: 2.5rem;
   cursor: pointer;
+  z-index: 10001;
+  line-height: 1;
+  transition: transform 0.2s;
 }
 
-.like-btn:hover, .dislike-btn:hover {
-  background: #333;
+.close-trailer:hover {
+  transform: scale(1.2);
+  color: #f7b733;
 }
 
-.synopsis {
-  font-size: 1.1rem;
-  line-height: 1.5;
-  margin-bottom: 40px;
-  max-width: 800px;
-}
-
-/* Specs */
-.specs-grid {
+/* Dropdown avec scroll limité */
+.season-dropdown {
+  position: absolute;
+  background: #222;
+  border-radius: 8px;
+  width: 150px;
+  max-height: 250px; /* Limite la hauteur */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+.dropdown-icon {
+  width: 14px;
+  height: 14px;
+  opacity: 0.6;
+  transition: 0.2s;}
+
+.dropdown-scroll-content {
+  overflow-y: auto;
+  scrollbar-width: none; /* Cache la scrollbar sur Firefox */
+}
+
+.dropdown-scroll-content::-webkit-scrollbar {
+  display: none; /* Cache la scrollbar sur Chrome/Safari */
+}
+
+.scroll-indicator {
+  text-align: center;
+  background: linear-gradient(transparent, #222);
+  padding: 5px;
+}
+
+/* Grille d'épisodes (Max 8 par ligne) */
+.episodes-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr); /* 8 colonnes fixes */
   gap: 15px;
+  padding: 20px;
 }
 
-.spec-item {
-  display: flex;
-  font-size: 0.95rem;
+.episode-card img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: 6px;
 }
 
-.label {
-  width: 150px;
-  color: #777;
-}
-
-.value {
-  color: #eee;
-}
-
-.actor-name:hover, .genre-item:hover {
-  text-decoration: underline;
-  cursor: pointer;
+.ep-title {
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
