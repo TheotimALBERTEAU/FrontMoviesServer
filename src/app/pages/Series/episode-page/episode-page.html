@@ -1,9 +1,9 @@
-<div class="movie-container">
-  <div class="movie-player">
+<div class="serie-container">
+  <div class="serie-player">
     <video #videoPlayer [src]="episode.link" controls></video>
   </div>
 
-  <div class="movie-desc">
+  <div class="serie-desc">
     <div class="content-wrapper">
       <div class="poster-side">
         <img [src]="episode.cover" [alt]="episode.title">
@@ -24,9 +24,9 @@
             <span class="rating-value">{{episode.rating}}</span>
           </div>
 
-          <!---<div class="trailer-container" (click)="openTrailer()" *ngIf="episode.trailer !== ''">
+          <div class="trailer-container" (click)="openTrailer()" *ngIf="episode.trailer !== ''">
             <img src="Assets/Movies/trailer-icon.svg" alt="trailer-icon" class="trailer-icon">
-          </div>--->
+          </div>
         </div>
 
         <p class="synopsis">{{episode.synopsis}}</p>
@@ -36,7 +36,7 @@
             <span class="label">Genre</span>
             <div class="value genre-container">
               @for (genre of episode.genre; track genre; let last = $last) {
-                <span class="genre-item">
+                <span class="genre-item" (click)="onClickGoGenre(genre)">
                   {{ genre }}{{ !last ? ',' : ''}}
                 </span>
               }
@@ -54,7 +54,7 @@
             <span class="label">Distribution</span>
             <div class="value casting-container">
               @for (actor of episode.casting; track actor; let last = $last) {
-                <span class="actor-name">
+                <span class="actor-name" (click)="onClickGoActor(actor.slug)">
                   {{ actor.name }}{{ !last ? ', ' : '' }}
                 </span>
               }
@@ -65,7 +65,7 @@
     </div>
   </div>
 </div>
-<!---
+
 <div class="trailer-modal-overlay" *ngIf="isTrailerOpen && episode.trailer !== ''" (click)="closeTrailer()">
   <div class="trailer-wrapper" (click)="$event.stopPropagation()">
     <button class="close-trailer" (click)="closeTrailer()">&times;</button>
@@ -81,4 +81,3 @@
     </div>
   </div>
 </div>
---->
