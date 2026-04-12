@@ -18,4 +18,8 @@ export class WatchSerie {
   getSeason(slug: string, seasonNumber: number) {
     return this.http.get<any>(`${this.ApiUrl}/series/view/${slug}/${seasonNumber}`);
   }
+
+  getEpisode(slug: string, seasonNumber: number, episodeNumber: number) {
+    return this.http.get<any>(`${this.ApiUrl}/series/view/${slug}/${seasonNumber}/${episodeNumber}`);
+  }
 }

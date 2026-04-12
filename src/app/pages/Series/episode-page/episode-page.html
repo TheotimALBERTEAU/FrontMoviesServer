@@ -1,1 +1,84 @@
-<p>episode-page works!</p>
+<div class="movie-container">
+  <div class="movie-player">
+    <video #videoPlayer [src]="episode.link" controls></video>
+  </div>
+
+  <div class="movie-desc">
+    <div class="content-wrapper">
+      <div class="poster-side">
+        <img [src]="episode.cover" [alt]="episode.title">
+      </div>
+
+      <div class="info-side">
+        <div class="header-info">
+          <h2>{{episode.title}}</h2>
+          <div class="meta-line">
+            <span>{{episode.duration}} min</span>
+            <span>{{episode.year}}</span>
+          </div>
+        </div>
+
+        <div class="actions-line">
+          <div class="rating-circle-container" [style.--percentage]="episode.rating * 10">
+            <div class="rating-circle"></div>
+            <span class="rating-value">{{episode.rating}}</span>
+          </div>
+
+          <!---<div class="trailer-container" (click)="openTrailer()" *ngIf="episode.trailer !== ''">
+            <img src="Assets/Movies/trailer-icon.svg" alt="trailer-icon" class="trailer-icon">
+          </div>--->
+        </div>
+
+        <p class="synopsis">{{episode.synopsis}}</p>
+
+        <div class="specs-grid">
+          <div class="spec-item">
+            <span class="label">Genre</span>
+            <div class="value genre-container">
+              @for (genre of episode.genre; track genre; let last = $last) {
+                <span class="genre-item">
+                  {{ genre }}{{ !last ? ',' : ''}}
+                </span>
+              }
+            </div>
+          </div>
+          <div class="spec-item">
+            <span class="label">Date de sortie</span>
+            <span class="value">{{episode.year}}</span>
+          </div>
+          <div class="spec-item">
+            <span class="label">Réalisateur</span>
+            <span class="value">{{episode.author}}</span>
+          </div>
+          <div class="spec-item">
+            <span class="label">Distribution</span>
+            <div class="value casting-container">
+              @for (actor of episode.casting; track actor; let last = $last) {
+                <span class="actor-name">
+                  {{ actor.name }}{{ !last ? ', ' : '' }}
+                </span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!---
+<div class="trailer-modal-overlay" *ngIf="isTrailerOpen && episode.trailer !== ''" (click)="closeTrailer()">
+  <div class="trailer-wrapper" (click)="$event.stopPropagation()">
+    <button class="close-trailer" (click)="closeTrailer()">&times;</button>
+
+    <div class="video-container">
+      <iframe
+        *ngIf="safeTrailerUrl"
+        [src]="safeTrailerUrl"
+        frameborder="0"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+</div>
+--->
