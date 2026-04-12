@@ -23,6 +23,10 @@ export class MoviesList {
     this.router.navigate(['/movies/' + movieSlug]);
   }
 
+  goSerie(movieSlug: any) {
+    this.router.navigate(['/series/' + movieSlug]);
+  }
+
   goGenre(genre: any) {
     this.router.navigate(['/genre/' + genre]);
   }

@@ -12,7 +12,9 @@ import { MoviesList} from '../../../services/Movies/movies-list';
 })
 export class GenrePage implements OnInit {
   moviesByGenre: any[] = [];
-  displayedMovies: any[] = [];
+  seriesByGenre: any[] = [];
+  allContent: any[] = [];
+  displayedContent: any[] = [];
   genreTitle: string = '';
 
   currentPage: number = 1;
@@ -27,22 +29,29 @@ export class GenrePage implements OnInit {
     this.route.params.subscribe(params => {
       this.genreTitle = params['type'];
       this.currentPage = 1;
-      this.loadMovies();
+      this.loadAllContent()
     });
   }
 
-  loadMovies() {
-    this.genreService.getMoviesByGenre(this.genreTitle).subscribe(res => {
-      this.moviesByGenre = res.data;
-      this.updateDisplay();
-      this.cdr.detectChanges();
-    });
+  loadAllContent() {
+    this.genreService.getMoviesByGenre(this.genreTitle).subscribe(resMovies => {
+      this.moviesByGenre = resMovies.data;
+
+      this.genreService.getSeriesByGenre(this.genreTitle).subscribe(resSeries => {
+        this.seriesByGenre = resSeries.data;
+
+        this.allContent = [...this.moviesByGenre, ...this.seriesByGenre];
+
+        this.updateDisplay();
+        this.cdr.detectChanges();
+      })
+    })
   }
 
   updateDisplay() {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.displayedMovies = this.moviesByGenre.slice(start, end);
+    this.displayedContent = this.allContent.slice(start, end);
   }
 
   nextPage() {
@@ -58,10 +67,16 @@ export class GenrePage implements OnInit {
   }
 
   hasNext() {
-    return this.currentPage * this.pageSize < this.moviesByGenre.length;
+    return this.currentPage * this.pageSize < this.allContent.length;
   }
 
-  onClickGoMovie(slug: any) {
-    this.moviesService.goMovie(slug);
+  onClickGoContent(item: any) {
+    if (item.type === 'Série') {
+      this.moviesService.goSerie(item.slug)
+    }
+    else
+    {
+      this.moviesService.goMovie(item.slug);
+    }
   }
 }

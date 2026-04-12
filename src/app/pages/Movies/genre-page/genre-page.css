@@ -132,7 +132,6 @@
 }
 
 .type-indicator {
-  text-transform: uppercase;
   margin-left: auto;
   background: #333;
   color: rgba(204, 204, 204, 0.5);

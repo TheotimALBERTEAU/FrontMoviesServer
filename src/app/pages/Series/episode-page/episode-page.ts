@@ -28,8 +28,11 @@ export class EpisodePage implements OnInit {
 
   ngOnInit() {
     const slug = this.activatedRoute.snapshot.paramMap.get('slug');
-    const seasonNum = this.activatedRoute.snapshot.paramMap.get('season') || '1';
-    const episodeNum = this.activatedRoute.snapshot.paramMap.get('episode') || '1';
+    const seasonEpisode = this.activatedRoute.snapshot.paramMap.get('season-:episode') || '1-1';
+
+    const parts = seasonEpisode.split('-');
+    const seasonNum = parts[0];
+    const episodeNum = parts[1];
 
     if (slug) {
       this.watchSerie.getEpisode(slug, parseInt(seasonNum), parseInt(episodeNum)).subscribe({

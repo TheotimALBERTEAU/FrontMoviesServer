@@ -15,6 +15,10 @@ export class GenreService {
     return this.http.get(`${this.apiUrl}/movies/${genre}`);
   }
 
+  getSeriesByGenre(genre: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/series/${genre}`);
+  }
+
   getGenreMetadata(genreName: string): Observable<any> {
     return this.getMoviesByGenre(genreName).pipe(
       map(res => {
