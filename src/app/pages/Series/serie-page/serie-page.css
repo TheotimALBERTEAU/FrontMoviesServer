@@ -29,10 +29,44 @@ body {
   align-items: flex-start;
 }
 
+.left-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 250px;
+}
+
 .poster-side img {
   width: 250px;
   border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.first-episode-button button {
+  width: 100%;
+  padding: 12px 0;
+  background-color: #242424;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.first-episode-button button:hover {
+  background-color: #333333;
+}
+
+.first-episode-button button:active {
+  transform: scale(0.98);
+}
+
+.first-episode-button img {
 }
 
 .info-side {

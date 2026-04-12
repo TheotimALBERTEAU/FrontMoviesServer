@@ -1,8 +1,14 @@
 <div class="serie-container">
   <div class="serie-desc">
     <div class="content-wrapper">
-      <div class="poster-side">
-        <img [src]="details.cover" [alt]="details.title">
+      <div class="left-section">
+        <div class="poster-side">
+          <img [src]="details.cover" [alt]="details.title">
+        </div>
+
+        <div class="first-episode-button">
+          <button (click)="playFirstEpisode()">Regarde le premier épisode</button>
+        </div>
       </div>
 
       <div class="info-side">

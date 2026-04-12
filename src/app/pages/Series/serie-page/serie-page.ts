@@ -67,7 +67,7 @@ export class SeriePage implements OnInit {
   }
 
   playFirstEpisode() {
-    console.log("Lecture de l'épisode 1");
+    this.router.navigate([`/series/${this.details.slug}/1-1`]);
   }
 
   onClickGoGenre(genre: string) {
