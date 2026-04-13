@@ -1,4 +1,98 @@
-/* Copie intégrale de ton movie-list-page.css */
+.filters-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 2rem;
+  position: relative;
+  z-index: 100;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+}
+
+.filter-label {
+  color: #ccc;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.active-val {
+  background: #2a2a2a;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+.filter-icon {
+  width: 14px;
+  height: 14px;
+  opacity: 0.6;
+  transition: 0.2s;
+}
+
+.sort-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+  transition: 0.2s;
+}
+
+.filter-group:hover .filter-icon {
+  opacity: 1;
+}
+
+.sort-container {
+  margin-left: auto;
+  padding: 0.5rem;
+  border-radius: 0.4rem;
+}
+
+.sort-container:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 2.5rem;
+  left: 0;
+  background: #1a1a1a;
+  border-radius: 15px;
+  padding: 20px;
+  width: 280px;
+  z-index: 200;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+  border: 1px solid #2a2a2a;
+}
+
+.genre-wide { width: 450px; }
+.right-aligned { left: auto; right: 0; width: 200px; padding: 10px 0; }
+
+.options-grid { display: flex; flex-wrap: wrap; gap: 8px; max-height: 250px; overflow-y: auto; }
+.options-grid button {
+  background: #262626;
+  color: #eee;
+  border: 1px solid transparent;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.options-grid button.selected { background: #e50914; color: white; border-color: #f00; }
+
+.dropdown-footer { border-top: 1px solid #2a2a2a; margin-top: 15px; padding-top: 15px; display: flex; flex-direction: column; gap: 8px; }
+.apply-btn { background: #333; color: white; border: none; padding: 10px; border-radius: 20px; cursor: pointer; font-weight: 600; }
+.apply-btn:hover { background: #444; }
+.clear-btn { background: none; border: none; color: #777; cursor: pointer; font-size: 0.8rem; }
+
+.sort-option { padding: 12px 20px; color: #ccc; font-size: 0.9rem; transition: 0.2s; }
+.sort-option:hover { background: #222; color: white; }
+.separator { height: 1px; background: #2a2a2a; margin: 5px 0; }
 
 .title {
   color: white;
