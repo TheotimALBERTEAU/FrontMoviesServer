@@ -261,7 +261,6 @@
 .slider-wrapper {
   position: relative;
   width: 100%;
-  overflow: hidden;
 }
 
 .title {
@@ -275,16 +274,35 @@
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  gap: 1rem;
+  gap: 12px; /* Gap fixe */
   padding: 0 0 1rem 0;
-  margin: 0 2rem;
+  margin: 0 2rem; /* Espace pour les boutons */
   scroll-behavior: smooth;
   scrollbar-width: none;
 }
 
+.progressed-movie-card {
+  /* 7.5 cartes visibles : 100% / 7.5 = 13.33% */
+  /* On soustrait le gap pour que l'alignement soit parfait */
+  flex: 0 0 calc(13.333% - 12px);
+  min-width: calc(13.333% - 12px);
+}
+
+.progressed-movie-card-background {
+  display: flex;
+  height: 7vw;
+  border-radius: 6px; /* Plus moderne */
+  overflow: hidden;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  justify-content: center;
+  align-items: center;
+}
+
 .nav-btn {
   position: absolute;
-  top: 4rem;
+  top: 5.5rem;
   width: 2rem;
   height: 4.5rem;
   z-index: 3;
@@ -317,26 +335,6 @@
 .next {
   right: 0;
   border-radius: 20px;
-}
-
-.progressed-movies-grid::-webkit-scrollbar {
-  display: none;
-}
-
-.progressed-movie-card {
-  flex: 0 0 12vw
-}
-
-.progressed-movie-card-background {
-  display: flex;
-  height: 7vw;
-  border-radius: 10px;
-  overflow: hidden;
-  position: relative;
-  background-size: cover;
-  background-position: center;
-  justify-content: center;
-  align-items: center;
 }
 
 .progressed-movie-card:hover .play-button {

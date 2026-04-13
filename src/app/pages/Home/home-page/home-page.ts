@@ -109,32 +109,37 @@ export class HomePage implements OnInit, OnDestroy {
   canScrollLeft = false;
   canScrollRight = false;
 
-  checkButtons() {
+  scroll(direction: number) {
     if (!this.slider || !this.slider.nativeElement) return;
 
-    const el = this.slider.nativeElement;
-    this.canScrollLeft = el.scrollLeft > 2;
-    const atTheEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 5;
-    this.canScrollRight = !atTheEnd;
-
-    this.cdr.detectChanges();
-  }
-
-  scroll(direction: number) {
     const el = this.slider.nativeElement;
     const firstCard = el.querySelector('.progressed-movie-card');
 
     if (firstCard) {
       const cardWidth = firstCard.getBoundingClientRect().width;
-      const gap = parseFloat(getComputedStyle(el).gap) || 16;
-      const scrollAmount = cardWidth + gap;
+      const gap = 12;
+      const scrollUnit = cardWidth + gap;
 
-      el.scrollLeft += (scrollAmount * direction);
-      if (direction > 0) this.canScrollLeft = true;
-      setTimeout(() => {
-        this.checkButtons();
-      }, 400);
+      el.scrollBy({
+        left: scrollUnit * direction,
+        behavior: 'smooth'
+      });
+
+      setTimeout(() => this.checkButtons(), 500);
     }
+  }
+
+  checkButtons() {
+    if (!this.slider || !this.slider.nativeElement) return;
+
+    const el = this.slider.nativeElement;
+
+    this.canScrollLeft = el.scrollLeft > 5;
+
+    const atTheEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 10;
+    this.canScrollRight = !atTheEnd;
+
+    this.cdr.detectChanges();
   }
 
   @HostListener('window:resize')
