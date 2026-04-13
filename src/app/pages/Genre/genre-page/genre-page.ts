@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { GenreService } from '../../../services/Movies/genre-service';
+import { GenreService } from '../../../services/Genre/genre-service';
 import { CommonModule } from '@angular/common';
 import { MoviesList} from '../../../services/Movies/movies-list';
 

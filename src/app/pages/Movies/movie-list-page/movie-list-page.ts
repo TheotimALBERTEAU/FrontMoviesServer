@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, ElementRef, HostListener, OnInit} from '@angular/core';
 import { MoviesList } from '../../../services/Movies/movies-list';
 import { CommonModule } from '@angular/common';
-import { GenreService } from '../../../services/Movies/genre-service';
+import { GenreService } from '../../../services/Genre/genre-service';
 import { forkJoin } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 

@@ -8,11 +8,10 @@ import {environment} from '../../../environments/environment';
   providedIn: 'root'
 })
 export class SeriesList {
-  public ApiUrl: string = environment.apiUrl; // Ajuste l'URL selon ton API
+  public ApiUrl: string = environment.apiUrl;
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  // Récupère toutes les séries
   getSeries(): Observable<any> {
     return this.http.get<any>(`${this.ApiUrl}/series`);
   }

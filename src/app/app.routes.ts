@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
-import {HomePage} from './pages/Movies/home-page/home-page';
+import {HomePage} from './pages/Home/home-page/home-page';
 import {MoviePage} from './pages/Movies/movie-page/movie-page';
 import {LoginPage} from './pages/Users/login-page/login-page';
 import {SignupPage} from './pages/Users/signup-page/signup-page';
 import {MovieListPage} from './pages/Movies/movie-list-page/movie-list-page';
-import {GenrePage} from './pages/Movies/genre-page/genre-page';
-import {SearchPage} from './pages/Movies/search-page/search-page';
+import {GenrePage} from './pages/Genre/genre-page/genre-page';
+import {SearchPage} from './pages/Search/search-page/search-page';
 import {ActorsListPage} from './pages/Actors/actors-list-page/actors-list-page';
 import {ActorPage} from './pages/Actors/actor-page/actor-page';
 import {SerieListPage} from './pages/Series/serie-list-page/serie-list-page';

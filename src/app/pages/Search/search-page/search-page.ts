@@ -5,6 +5,7 @@ import { ChangeDetectorRef} from '@angular/core';
 import {ActorsList} from '../../../services/Actors/actors-list';
 import {forkJoin} from 'rxjs';
 import {CommonModule} from '@angular/common';
+import {Search} from '../../../services/Search/search';
 
 @Component({
   selector: 'app-search-page',
@@ -21,7 +22,8 @@ export class SearchPage implements OnInit {
     private moviesService: MoviesList,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private actorsService: ActorsList
+    private actorsService: ActorsList,
+    private searchService: Search,
   ) {}
 
   ngOnInit() {
@@ -30,8 +32,8 @@ export class SearchPage implements OnInit {
 
       if (this.query) {
         forkJoin({
-          movies: this.moviesService.searchMovies(this.query),
-          actors: this.actorsService.searchActors(this.query)
+          movies: this.searchService.searchMovies(this.query),
+          actors: this.searchService.searchActors(this.query)
         }).subscribe({
           next: (res) => {
             this.resultsMoviesList = res.movies.code === "200" ? res.movies.data : [];

@@ -30,12 +30,4 @@ export class MoviesList {
   goGenre(genre: any) {
     this.router.navigate(['/genre/' + genre]);
   }
-
-  getMoviesProgresses(userId: any) {
-    return this.http.get<any>(`${this.ApiUrl}/users/show-progress/${userId}`, { withCredentials: true });
-  }
-
-  searchMovies(query: string): Observable<any> {
-    return this.http.get(`${this.ApiUrl}/movies/search?q=${query}`);
-  }
 }

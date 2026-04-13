@@ -8,6 +8,7 @@ import { SidebarService } from './services/sidebar';
 import {Sidebar} from './sidebar/sidebar';
 import {ActorsList} from './services/Actors/actors-list';
 import {forkJoin} from 'rxjs';
+import {Search} from './services/Search/search';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +32,8 @@ export class App implements OnInit {
               private cdr: ChangeDetectorRef,
               public moviesService: MoviesList,
               public sidebarService: SidebarService,
-              public actorsService: ActorsList) {
+              public actorsService: ActorsList,
+              public searchService: Search) {
   }
 
   ngOnInit() {
@@ -76,8 +78,8 @@ export class App implements OnInit {
       this.isLoading = true;
 
       forkJoin({
-        movies: this.moviesService.searchMovies(this.searchQuery),
-        actors: this.actorsService.searchActors(this.searchQuery)
+        movies: this.searchService.searchMovies(this.searchQuery),
+        actors: this.searchService.searchActors(this.searchQuery)
       }).subscribe({
         next: (res) => {
           this.results = res.movies.code === "200" ? res.movies.data : [];

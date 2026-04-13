@@ -2,8 +2,10 @@ import {Component, ChangeDetectorRef, ViewChild, ElementRef, HostListener, OnIni
 import {MoviesList} from '../../../services/Movies/movies-list';
 import {Auth} from '../../../services/Users/auth'
 import { CommonModule } from '@angular/common';
-import {GenreService} from '../../../services/Movies/genre-service';
+import {GenreService} from '../../../services/Genre/genre-service';
 import {forkJoin, interval, Subscription} from 'rxjs';
+import {Search} from '../../../services/Search/search';
+import {MoviesProgresses} from '../../../services/Home/movies-progresses';
 
 @Component({
   selector: 'app-home-page',
@@ -15,6 +17,7 @@ import {forkJoin, interval, Subscription} from 'rxjs';
 export class HomePage implements OnInit, OnDestroy {
   constructor(private moviesService: MoviesList,
               private genreService: GenreService,
+              private homeService: MoviesProgresses,
               public authService: Auth,
               private cdr: ChangeDetectorRef) {}
 
@@ -82,7 +85,7 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   loadMovies(userId: string) {
-    this.moviesService.getMoviesProgresses(userId).subscribe((res: any) => {
+    this.homeService.getMoviesProgresses(userId).subscribe((res: any) => {
       if (res && res.code === "200") {
         this.progressedMovies = res.data;
       }
