@@ -27,6 +27,14 @@ export class MoviesList {
     this.router.navigate(['/series/' + movieSlug]);
   }
 
+  goMedia(media: any) {
+    if (media.type === "Série") {
+      this.router.navigate(['/series/' + media.slug]);
+    } else {
+      this.router.navigate(['/movies/' + media.slug]);
+    }
+  }
+
   goGenre(genre: any) {
     this.router.navigate(['/genre/' + genre]);
   }

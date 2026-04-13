@@ -10,14 +10,14 @@
     </div>
     <div class="search-loader" *ngIf="isLoading"></div>
 
-    <div class="search-results-container" *ngIf="results.length > 0 || actorsResults.length > 0">
-      <div class="result-container" *ngIf="results.length > 0">
+    <div class="search-results-container" *ngIf="allResults.length > 0 || actorsResults.length > 0">
+      <div class="result-container" *ngIf="allResults.length > 0">
         <p class="results-label">Résultats</p>
-        <div class="result-item" *ngFor="let movie of results" (click)="moviesService.goMovie(movie.slug); closeSearch()">
-          <img [src]="movie.cover" class="result-poster">
+        <div class="result-item" *ngFor="let media of allResults" (click)="moviesService.goMedia(media); closeSearch()">
+          <img [src]="media.cover" class="result-poster">
           <div class="result-info">
-            <p class="result-title">{{ movie.title }}</p>
-            <p class="result-desc">{{ movie.synopsis | slice:0:80 }}...</p>
+            <p class="result-title">{{ media.title }}</p>
+            <p class="result-desc">{{ media.synopsis | slice:0:80 }}...</p>
           </div>
         </div>
       </div>

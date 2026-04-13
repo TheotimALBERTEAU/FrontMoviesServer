@@ -23,8 +23,10 @@ export class App implements OnInit {
   public isSearchOpen = false;
   public isProfileMenuOpen = false;
   public searchQuery = '';
-  public results: any[] = [];
+  public moviesResults: any[] = [];
+  public seriesResults: any[] = [];
   public actorsResults: any[] = [];
+  public allResults: any[] = [];
   public isLoading = false;
 
   constructor(private router: Router,
@@ -68,7 +70,8 @@ export class App implements OnInit {
   closeSearch() {
     this.isSearchOpen = false;
     this.searchQuery = '';
-    this.results = [];
+    this.moviesResults = [];
+    this.seriesResults = [];
     this.actorsResults = [];
     this.cdr.detectChanges();
   }
@@ -79,12 +82,16 @@ export class App implements OnInit {
 
       forkJoin({
         movies: this.searchService.searchMovies(this.searchQuery),
+        series: this.searchService.searchSeries(this.searchQuery),
         actors: this.searchService.searchActors(this.searchQuery)
       }).subscribe({
         next: (res) => {
-          this.results = res.movies.code === "200" ? res.movies.data : [];
-          this.actorsResults = res.actors.code === "200" ? res.actors.data : [];
-          console.log(this.actorsResults);
+          const movies = res.movies.code === "200" ? res.movies.data : [];
+          const series = res.series.code === "200" ? res.series.data : [];
+          const actors = res.actors.code === "200" ? res.actors.data : [];
+
+          this.allResults = [...series, ...movies].slice(0, 8);
+          this.actorsResults = actors.slice(0, 4);
 
           this.isLoading = false;
           this.cdr.detectChanges();
@@ -96,8 +103,10 @@ export class App implements OnInit {
         }
       });
     } else {
-      this.results = [];
+      this.moviesResults = [];
+      this.seriesResults = [];
       this.actorsResults = [];
+      this.allResults = [];
       this.isLoading = false;
       this.cdr.detectChanges();
     }
