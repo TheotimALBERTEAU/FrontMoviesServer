@@ -160,7 +160,7 @@ export class GenrePage implements OnInit {
     if (this.activeFilters.sort === 'random') {
       result.sort(() => Math.random() - 0.5);
     } else if (this.activeFilters.sort === 'created_at') {
-      result.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      result.sort((a, b) => {return b._id.toString().localeCompare(a._id.toString());});
     } else if (this.activeFilters.sort === 'release_year') {
       result.sort((a, b) => Number(b.year) - Number(a.year));
     } else if (this.activeFilters.sort === 'top_rated') {

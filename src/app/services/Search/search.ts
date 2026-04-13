@@ -16,6 +16,10 @@ export class Search {
     return this.http.get(`${this.ApiUrl}/movies/search?q=${query}`);
   }
 
+  searchSeries(query: string): Observable<any> {
+    return this.http.get(`${this.ApiUrl}/series/search?q=${query}`);
+  }
+
   searchActors(query: string): Observable<any> {
     return this.http.get(`${this.ApiUrl}/actors/search?q=${query}`);
   }

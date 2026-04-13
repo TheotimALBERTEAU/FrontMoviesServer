@@ -160,7 +160,7 @@ export class MovieListPage implements OnInit {
       result = result.sort(() => Math.random() - 0.5);
     }
     else if (this.activeFilters.sort === 'created_at') {
-      result = result.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      result =  result.sort((a, b) => {return b._id.toString().localeCompare(a._id.toString());});
     }
     else if (this.activeFilters.sort === 'release_year') {
       result = result.sort((a, b) => Number(b.year) - Number(a.year));
