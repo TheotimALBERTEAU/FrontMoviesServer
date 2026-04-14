@@ -45,7 +45,7 @@
       </button>
     </div>
 
-    <div class="hero-indicators">
+    <div class="hero-indicators" *ngIf="heroMovies.length > 1">
       @for (movie of heroMovies; track $index) {
         <div class="indicator-track" [class.active]="$index === currentIndex">
           <div class="indicator-fill"

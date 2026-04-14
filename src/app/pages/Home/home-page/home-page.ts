@@ -41,8 +41,13 @@ export class HomePage implements OnInit, OnDestroy {
       this.cdr.detectChanges()
     });
     this.moviesService.getMovies().subscribe(res => {
-      this.heroMovies = res.data.slice(0, 2);
-      this.startTimer();
+      if (res && res.data) {
+        const shuffled = [...res.data].sort(() => 0.5 - Math.random());
+        const count = Math.floor(Math.random() * 3) + 1;
+        this.heroMovies = shuffled.slice(0, count);
+
+        this.startTimer();
+      }
     });
     const requests = categories.map(name => this.genreService.getGenreMetadata(name));
     forkJoin(requests).subscribe(results => {
