@@ -261,6 +261,7 @@
 .slider-wrapper {
   position: relative;
   width: 100%;
+  margin-bottom: 2rem;
 }
 
 .title {
@@ -270,34 +271,147 @@
   margin: 0 0 1rem 2rem;
 }
 
+/* Grille défilante */
 .progressed-movies-grid {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  gap: 12px; /* Gap fixe */
+  gap: 12px;
   padding: 0 0 1rem 0;
-  margin: 0 2rem; /* Espace pour les boutons */
+  margin: 0 2rem;
   scroll-behavior: smooth;
-  scrollbar-width: none;
+  scrollbar-width: none; /* Firefox */
 }
 
+.progressed-movies-grid::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* Carte individuelle */
 .progressed-movie-card {
-  /* 7.5 cartes visibles : 100% / 7.5 = 13.33% */
-  /* On soustrait le gap pour que l'alignement soit parfait */
   flex: 0 0 calc(13.333% - 12px);
   min-width: calc(13.333% - 12px);
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
 .progressed-movie-card-background {
   display: flex;
-  height: 7vw;
-  border-radius: 6px; /* Plus moderne */
+  height: 6vw;
+  border-radius: 6px;
   overflow: hidden;
   position: relative;
   background-size: cover;
   background-position: center;
   justify-content: center;
   align-items: center;
+}
+
+/* Overlay et Bouton Play */
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  transition: background 0.3s;
+}
+
+.play-button {
+  position: absolute;
+  opacity: 0;
+  z-index: 2;
+  transition: opacity 0.2s;
+}
+
+.play-button img {
+  width: 2.5vw;
+  height: auto;
+}
+
+.progressed-movie-card:hover .play-button {
+  opacity: 1;
+}
+
+.progressed-movie-card:hover .card-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+}
+
+/* Barre de progression */
+.empty-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0.25rem;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #e50914; /* Rouge Netflix */
+}
+
+/* Contenu textuel */
+.card-content {
+  padding: 8px 0;
+}
+
+.movie-title {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.episode-name-subtitle {
+  color: #b3b3b3;
+  font-size: 0.75rem;
+  margin: 2px 0 6px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Badges et détails */
+.movie-details-bar {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.series-badge {
+  color: #e50914;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border: 1px solid #e50914;
+  padding: 1px 4px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.info-block {
+  background: #2f2f2f;
+  color: #e5e5e5;
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+.type-indicator {
+  margin-left: auto;
+  background: rgba(128, 128, 128, 0.1);
+  color: #808080;
+  text-transform: uppercase;
 }
 
 .nav-btn {
@@ -335,36 +449,6 @@
 .next {
   right: 0;
   border-radius: 20px;
-}
-
-.progressed-movie-card:hover .play-button {
-  opacity: 1;
-}
-
-.progressed-movie-card:hover .card-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 0.5) 80%,
-    rgba(0, 0, 0, 0.3) 100%
-  );
-}
-
-.empty-progress-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 0.3rem;
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-.progress-bar {
-  height: 100%;
-  background-color: red;
 }
 
 .movies-grid {
@@ -451,7 +535,15 @@
 
 .movie-details-bar {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  min-height: 20px;
+}
+
+.episode-text-simple {
+  color: #707a8a;
+  font-size: 0.85rem;
+  font-weight: 400;
+  margin-right: 8px;
 }
 
 .info-block {

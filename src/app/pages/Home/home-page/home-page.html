@@ -74,16 +74,18 @@
 
 @if (authService.isLoggedIn() && progressedMovies.length > 0) {
   <div class="slider-wrapper">
-    <h3 class="title"> Reprenez votre lecture : </h3>
+    <h3 class="title">Reprenez votre lecture :</h3>
 
     @if (canScrollLeft) {
       <button class="nav-btn prev" (click)="scroll(-1)">‹</button>
     }
 
     <section #slider id="progressed-movies-grid" class="progressed-movies-grid" (scroll)="checkButtons()">
-      @for (item of progressedMovies; track item.movieId) {
+      @for (item of progressedMovies; track item._id) {
         <div class="progressed-movie-card">
-          <div class="progressed-movie-card-background" [style.background-image]="'url(' + item.movieId.cover + ')'" (click)="onClickGoMovie(item.movieId.slug)">
+          <div class="progressed-movie-card-background"
+               [style.background-image]="'url(' + item.mediaId.cover + ')'"
+               (click)="onClickResume(item)">
 
             <div class="card-overlay"></div>
 
@@ -91,18 +93,26 @@
               <img src="../../../../Assets/Movies/play-button.png" alt="play-button">
             </div>
 
-
             <div class="empty-progress-bar">
-              <div class="progress-bar" [style.width.%]="(item.currentTime / (item.movieId.duration * 60)) * 100"></div>
+              <div class="progress-bar"
+                   [style.width.%]="(item.currentTime / (item.mediaId.duration * 60)) * 100">
+              </div>
             </div>
           </div>
 
           <div class="card-content">
-            <h3 class="movie-title">{{ item.movieId.title }}</h3>
+            <h3 class="movie-title">{{ item.mediaId.title }}</h3>
 
             <div class="movie-details-bar">
-              <div class="info-block main-genre">{{ item.movieId.genre[0] }}</div>
-              <div class="info-block type-indicator">{{ item.movieId.type }}</div>
+              @if (item.seasonNumber && item.episodeNumber) {
+                <span class="episode-text-simple">
+                  Saison {{ item.seasonNumber }} Épisode {{ item.episodeNumber }}
+                </span>
+              }@else {
+                <div class="episode-text-simple">{{ item.mediaId.genre[0] }}</div>
+              }
+
+              <div class="info-block type-indicator">{{ item.mediaId.type }}</div>
             </div>
           </div>
         </div>
@@ -112,7 +122,6 @@
     @if (canScrollRight) {
       <button class="nav-btn next" (click)="scroll(1)">›</button>
     }
-
   </div>
 }
 

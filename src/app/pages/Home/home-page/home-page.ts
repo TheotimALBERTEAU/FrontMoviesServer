@@ -123,6 +123,17 @@ export class HomePage implements OnInit, OnDestroy {
     this.moviesService.goGenre(genre.toLowerCase())
   }
 
+  onClickResume(item: any) {
+    const media = item.mediaId;
+    if (!media) return;
+
+    if (item.mediaType === 'Series') {
+      this.router.navigate(['/series', media.slug, media.seasonNumber + "-" + media.episodeNumber]);
+    } else {
+      this.router.navigate(['/movies', media.slug]);
+    }
+  }
+
   scroll(direction: number) {
     if (!this.slider || !this.slider.nativeElement) return;
 
