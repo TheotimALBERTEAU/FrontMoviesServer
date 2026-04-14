@@ -22,7 +22,7 @@ export class MovieListPage implements OnInit {
   public pageSize = 32;
 
   public openFilter: string | null = null;
-  public activeFilters = { type: '', genre: [] as string[], release: '', vote_average: '', sort: 'created_at' };
+  public activeFilters = { type: '', genre: [] as string[], release: '', vote_average: '', sort: 'random' };
 
   public dynamicOptions = {
     types: [] as string[],

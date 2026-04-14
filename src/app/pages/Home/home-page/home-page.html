@@ -115,3 +115,34 @@
 
   </div>
 }
+
+<div class="slider-wrapper latest-section">
+  <div class="title-header">
+    <h3 class="title">Nouveaux films sur Hessflix</h3>
+    <span class="voir-plus" (click)="onClickGoMoviePage()">Voir plus ›</span>
+  </div>
+
+  <button class="nav-btn prev" *ngIf="canScrollLeftLatest" (click)="scrollLatest(-1)">‹</button>
+
+  <section #latestSlider class="movies-grid-horizontal" (scroll)="checkLatestButtons()">
+    @for (movie of latestMovies; track movie._id) {
+      <div class="movie-card-horiz" (click)="onClickGoMovie(movie.slug)">
+        <div class="movie-card-background-latest" [style.background-image]="'url(' + movie.cover + ')'">
+          <div class="genre-badge-top">{{ movie.genre[0] }}</div>
+          <div class="card-overlay"></div>
+          <div class="play-button"><img src="../../../../Assets/Movies/play-button.png"></div>
+        </div>
+        <div class="card-content-latest">
+          <h3 class="movie-title-latest">{{ movie.title }}</h3>
+          <div class="movie-meta-latest">
+            <span>{{ movie.year }}</span>
+            <span class="type-tag">{{ movie.type }}</span>
+            <span>{{ movie.duration }} min</span>
+          </div>
+        </div>
+      </div>
+    }
+  </section>
+
+  <button class="nav-btn next" *ngIf="canScrollRightLatest" (click)="scrollLatest(1)">›</button>
+</div>

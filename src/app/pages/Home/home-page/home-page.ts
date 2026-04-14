@@ -6,6 +6,7 @@ import {GenreService} from '../../../services/Genre/genre-service';
 import {forkJoin, interval, Subscription} from 'rxjs';
 import {Search} from '../../../services/Search/search';
 import {MoviesProgresses} from '../../../services/Home/movies-progresses';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
@@ -19,7 +20,8 @@ export class HomePage implements OnInit, OnDestroy {
               private genreService: GenreService,
               private homeService: MoviesProgresses,
               public authService: Auth,
-              private cdr: ChangeDetectorRef) {}
+              private cdr: ChangeDetectorRef,
+              private router: Router,) {}
 
   public progressedMovies: any[] = [];
   public genresButtons: any[] = [];
@@ -28,6 +30,16 @@ export class HomePage implements OnInit, OnDestroy {
   public progress: number = 0;
   private autoPlaySub?: Subscription;
   public isPaused: boolean = false;
+
+  canScrollLeft = false;
+  canScrollRight = false;
+  public latestMovies: any[] = [];
+  public canScrollLeftLatest = false;
+  public canScrollRightLatest = false;
+  private currentLatestIndex = 0;
+
+  @ViewChild('slider') slider!: ElementRef;
+  @ViewChild('latestSlider') latestSlider!: ElementRef;
 
 
   ngOnInit() {
@@ -43,10 +55,12 @@ export class HomePage implements OnInit, OnDestroy {
     this.moviesService.getMovies().subscribe(res => {
       if (res && res.data) {
         const shuffled = [...res.data].sort(() => 0.5 - Math.random());
-        const count = Math.floor(Math.random() * 3) + 1;
-        this.heroMovies = shuffled.slice(0, count);
+        this.heroMovies = shuffled.slice(0, Math.floor(Math.random() * 3) + 1);
+
+        this.latestMovies = res.data.slice(0, 10);
 
         this.startTimer();
+        setTimeout(() => this.checkLatestButtons(), 200);
       }
     });
     const requests = categories.map(name => this.genreService.getGenreMetadata(name));
@@ -109,11 +123,6 @@ export class HomePage implements OnInit, OnDestroy {
     this.moviesService.goGenre(genre.toLowerCase())
   }
 
-  @ViewChild('slider') slider!: ElementRef;
-
-  canScrollLeft = false;
-  canScrollRight = false;
-
   scroll(direction: number) {
     if (!this.slider || !this.slider.nativeElement) return;
 
@@ -147,8 +156,38 @@ export class HomePage implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
+  scrollLatest(direction: number) {
+    if (!this.latestSlider) return;
+    const el = this.latestSlider.nativeElement;
+    const card = el.querySelector('.movie-card-horiz');
+    if (!card) return;
+
+    const scrollUnit = card.getBoundingClientRect().width + 12;
+    this.currentLatestIndex += direction;
+
+    const maxIndex = Math.max(0, this.latestMovies.length - 8);
+    if (this.currentLatestIndex > maxIndex) this.currentLatestIndex = maxIndex;
+    if (this.currentLatestIndex < 0) this.currentLatestIndex = 0;
+
+    el.scrollTo({ left: this.currentLatestIndex * scrollUnit, behavior: 'smooth' });
+    setTimeout(() => this.checkLatestButtons(), 500);
+  }
+
+  checkLatestButtons() {
+    if (!this.latestSlider) return;
+    const el = this.latestSlider.nativeElement;
+    this.canScrollLeftLatest = el.scrollLeft > 5;
+    this.canScrollRightLatest = el.scrollLeft + el.clientWidth < el.scrollWidth - 10;
+    this.cdr.detectChanges();
+  }
+
+  onClickGoMoviePage() {
+    this.router.navigate(['/movies']);
+  }
+
   @HostListener('window:resize')
   onResize() {
     this.checkButtons();
+    this.checkLatestButtons()
   }
 }

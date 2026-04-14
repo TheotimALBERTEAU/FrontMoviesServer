@@ -473,3 +473,106 @@
   background: #333;
   color: rgba(204, 204, 204, 0.5);
 }
+
+/* Header */
+.title-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2rem 2rem 1rem 2rem;
+}
+
+.voir-plus {
+  color: #808080;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+
+.voir-plus:hover { color: white; }
+
+/* Grid */
+.movies-grid-horizontal {
+  display: flex;
+  overflow-x: auto;
+  gap: 13px;
+  padding-bottom: 1rem;
+  margin: 0 2rem;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+}
+
+.movies-grid-horizontal::-webkit-scrollbar { display: none; }
+
+.movie-card-horiz {
+  flex: 0 0 calc(12.5% - 12px); /* 8 films exacts */
+  min-width: calc(12.5% - 12px);
+  scroll-snap-align: start;
+  cursor: pointer;
+}
+
+/* Image & Badge */
+.movie-card-background-latest {
+  width: 100%;
+  height: 18vw; /* Format Affiche */
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.genre-badge-top {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #e50914;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.6rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  z-index: 5;
+}
+
+/* Content */
+.card-content-latest {
+  padding-top: 10px;
+}
+
+.movie-title-latest {
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.movie-meta-latest {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: #a3a3a3;
+}
+
+.type-tag {
+  border: 1px solid #404040;
+  padding: 0 4px;
+  border-radius: 3px;
+  font-size: 0.6rem;
+}
+
+/* Hover Buttons (Uniquement sur hover de la section) */
+.latest-section .nav-btn {
+  top: 40%;
+  opacity: 0;
+}
+
+.latest-section:hover .nav-btn {
+  opacity: 1;
+}
