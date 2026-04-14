@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {WatchMovie} from '../../../services/Movies/watch-movie';
@@ -17,7 +17,7 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
   templateUrl: './movie-page.html',
   styleUrl: './movie-page.css',
 })
-export class MoviePage {
+export class MoviePage implements OnInit, AfterViewInit {
 
   constructor(private http: HttpClient,
               private activatedRoute: ActivatedRoute,
@@ -54,11 +54,17 @@ export class MoviePage {
     }
   }
 
+  ngAfterViewInit() {
+    if (this.movieProgress > 0 && this.videoPlayer) {
+      this.applyProgressToVideo();
+    }
+  }
+
   private loadMovieProgress() {
     const user = this.authService.currentUser;
 
     if (user && user.progress && this.details) {
-      const record = user.progress.find((p: any) => p.movieId._id === this.details._id);
+      const record = user.progress.find((p: any) => p.mediaId._id === this.details._id);
 
       if (record) {
         this.movieProgress = record.currentTime;
@@ -94,13 +100,12 @@ export class MoviePage {
     if (this.progressInterval) {
       clearInterval(this.progressInterval);
     }
+    this.saveProgress();
   }
 
   @HostListener('window:beforeunload')
   @HostListener('window:popstate')
-  onPageExit() {
-    this.saveProgress();
-  }
+
 
   ngOnDestroy() {
     this.stopProgressTimer();
@@ -112,11 +117,14 @@ export class MoviePage {
 
     const video = this.videoPlayer.nativeElement;
     const currentTime = Math.floor(video.currentTime);
-    const duration = Math.floor(video.duration);
+    console.log(currentTime);
 
-    const finalTime = (currentTime / duration > 0.95) ? 0 : currentTime;
+    const mediaId = this.details._id;
+    const mediaType = "Movies";
+    const seasonNumber = null;
+    const episodeNumber = null;
 
-    this.authService.updateProgress(this.details._id, finalTime)
+    this.authService.updateProgress(mediaId, mediaType, seasonNumber, episodeNumber, currentTime);
   }
 
   protected readonly last = last;

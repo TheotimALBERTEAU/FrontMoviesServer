@@ -1,6 +1,12 @@
 <div class="movie-container">
   <div class="movie-player">
-    <video #videoPlayer [src]="details.link" controls></video>
+    <video #videoPlayer
+           [src]="details.link"
+           controls
+           (loadedmetadata)="onMetadataLoaded()"
+           (play)="startProgressTimer()"
+           (pause)="stopProgressTimer()">
+    </video>
   </div>
 
   <div class="movie-desc">

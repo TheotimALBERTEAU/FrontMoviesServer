@@ -52,11 +52,14 @@ export class Auth {
     );
   }
 
-  updateProgress(movieId: string, currentTime: number): void {
+  updateProgress(mediaId: string, mediaType: string, seasonNumber: number|null, episodeNumber: number|null, currentTime: number): void {
 
     const body = {
       userId: this.currentUser.id,
-      movieId: movieId,
+      mediaId: mediaId,
+      mediaType: mediaType,
+      seasonNumber: seasonNumber,
+      episodeNumber: episodeNumber,
       currentTime: currentTime
     };
 
