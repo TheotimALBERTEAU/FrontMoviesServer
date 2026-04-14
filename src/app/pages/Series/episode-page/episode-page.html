@@ -1,6 +1,13 @@
 <div class="serie-container">
   <div class="serie-player">
-    <video #videoPlayer [src]="episode.link" controls></video>
+    <video
+      #videoPlayer
+      [src]="episode.link"
+      controls
+      (loadedmetadata)="onMetadataLoaded()"
+      (play)="startProgressTimer()"
+      (pause)="stopProgressTimer(); saveProgress()">
+    </video>
   </div>
 
   <div class="serie-desc">

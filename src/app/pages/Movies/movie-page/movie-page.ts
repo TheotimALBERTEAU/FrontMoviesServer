@@ -100,7 +100,6 @@ export class MoviePage implements OnInit, AfterViewInit {
     if (this.progressInterval) {
       clearInterval(this.progressInterval);
     }
-    this.saveProgress();
   }
 
   @HostListener('window:beforeunload')
