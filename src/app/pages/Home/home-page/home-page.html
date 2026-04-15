@@ -133,22 +133,24 @@
 
   <button class="nav-btn prev" *ngIf="canScrollLeftMovies" (click)="scrollHoriz(-1, 'movies')">‹</button>
 
-  <section #moviesSlider class="movies-grid-horizontal" (scroll)="checkButtons()">
+  <section #moviesSlider class="media-grid-horizontal" (scroll)="checkButtons()">
     @for (movie of latestMovies; track movie._id) {
-      <div class="movie-card-horiz" (click)="onClickGoMovie(movie.slug)">
-        <div class="movie-card-background-latest" [style.background-image]="'url(' + movie.cover + ')'">
-          <div class="genre-badge-top">{{ movie.genre[0] }}</div>
+      <div class="media-card-horiz" (click)="onClickGoMovie(movie.slug)">
+        <div class="media-card-background-latest" [style.background-image]="'url(' + movie.cover + ')'">
           <div class="card-overlay"></div>
           <div class="play-button">
             <img src="../../../../Assets/Movies/play-button.png" alt="play">
           </div>
         </div>
+
         <div class="card-content-latest">
-          <h3 class="movie-title-latest">{{ movie.title }}</h3>
-          <div class="movie-meta-latest">
-            <span>{{ movie.year }}</span>
+          <div class="media-meta-latest">
+            <span class="duration">{{ movie.duration }} min • {{ movie.year }}</span>
+          </div>
+          <h3 class="media-title-latest">{{ movie.title }}</h3>
+          <div class="media-meta-latest">
+            <span class="main-genre">{{ movie.genre[0] }}</span>
             <span class="type-tag">{{ movie.type }}</span>
-            <span>{{ movie.duration }} min</span>
           </div>
         </div>
       </div>
@@ -166,22 +168,24 @@
 
   <button class="nav-btn prev" *ngIf="canScrollLeftSeries" (click)="scrollHoriz(-1, 'series')">‹</button>
 
-  <section #seriesSlider class="movies-grid-horizontal" (scroll)="checkButtons()">
+  <section #seriesSlider class="media-grid-horizontal" (scroll)="checkButtons()">
     @for (serie of latestSeries; track serie._id) {
-      <div class="movie-card-horiz" (click)="onClickGoSerie(serie.slug)">
-        <div class="movie-card-background-latest" [style.background-image]="'url(' + serie.cover + ')'">
-          <div class="genre-badge-top">{{ serie.genre[0] }}</div>
+      <div class="media-card-horiz" (click)="onClickGoSerie(serie.slug)">
+        <div class="media-card-background-latest" [style.background-image]="'url(' + serie.cover + ')'">
           <div class="card-overlay"></div>
           <div class="play-button">
             <img src="../../../../Assets/Movies/play-button.png" alt="play">
           </div>
         </div>
+
         <div class="card-content-latest">
-          <h3 class="movie-title-latest">{{ serie.title }}</h3>
-          <div class="movie-meta-latest">
-            <span>{{ serie.year }}</span>
+          <div class="media-meta-latest">
+            <span class="duration">{{ serie.seasons }} Saisons • {{ serie.year }}</span>
+          </div>
+          <h3 class="media-title-latest">{{ serie.title }}</h3>
+          <div class="media-meta-latest">
+            <span class="main-genre">{{ serie.genre[0] }}</span>
             <span class="type-tag">{{ serie.type }}</span>
-            <span>{{ serie.duration }} min</span>
           </div>
         </div>
       </div>

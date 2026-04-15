@@ -128,7 +128,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   scrollHoriz(direction: number, type: 'movies' | 'series') {
     const el = type === 'movies' ? this.moviesSlider.nativeElement : this.seriesSlider.nativeElement;
-    const card = el.querySelector('.movie-card-horiz');
+    const card = el.querySelector('.media-card-horiz');
     if (!card) return;
 
     const scrollAmount = card.getBoundingClientRect().width + 12;
@@ -142,24 +142,26 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   checkButtons() {
+    const check = (el: HTMLElement) => {
+      const canLeft = el.scrollLeft > 5;
+      const canRight = el.scrollLeft + el.clientWidth < el.scrollWidth - 10;
+      return { canLeft, canRight };
+    };
     if (this.slider?.nativeElement) {
-      const el = this.slider.nativeElement;
-      this.canScrollLeft = el.scrollLeft > 5;
-      this.canScrollRight = el.scrollLeft + el.clientWidth < el.scrollWidth - 10;
+      const res = check(this.slider.nativeElement);
+      this.canScrollLeft = res.canLeft;
+      this.canScrollRight = res.canRight;
     }
-
     if (this.moviesSlider?.nativeElement) {
-      const el = this.moviesSlider.nativeElement;
-      this.canScrollLeftMovies = el.scrollLeft > 5;
-      this.canScrollRightMovies = el.scrollLeft + el.clientWidth < el.scrollWidth - 10;
+      const res = check(this.moviesSlider.nativeElement);
+      this.canScrollLeftMovies = res.canLeft;
+      this.canScrollRightMovies = res.canRight;
     }
-
     if (this.seriesSlider?.nativeElement) {
-      const el = this.seriesSlider.nativeElement;
-      this.canScrollLeftSeries = el.scrollLeft > 5;
-      this.canScrollRightSeries = el.scrollLeft + el.clientWidth < el.scrollWidth - 10;
+      const res = check(this.seriesSlider.nativeElement);
+      this.canScrollLeftSeries = res.canLeft;
+      this.canScrollRightSeries = res.canRight;
     }
-
     this.cdr.detectChanges();
   }
 
