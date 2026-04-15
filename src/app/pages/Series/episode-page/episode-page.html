@@ -1,13 +1,20 @@
 <div class="serie-container">
-  <div class="serie-player">
-    <video
-      #videoPlayer
-      [src]="episode.link"
-      controls
-      (loadedmetadata)="onMetadataLoaded()"
-      (play)="startProgressTimer()"
-      (pause)="stopProgressTimer(); saveProgress()">
-    </video>
+  <div class="player-section-wrapper">
+    <div class="serie-player">
+      <video #videoPlayer [src]="episode.link" controls (loadedmetadata)="onMetadataLoaded()"
+             (play)="startProgressTimer()" (pause)="stopProgressTimer(); saveProgress()">
+      </video>
+    </div>
+
+    <div class="player-nav-controls">
+      <button class="nav-btn-ep" (click)="changeEpisode(-1)" *ngIf="episodeNum !== '1'">
+        <span>‹</span> Précédent
+      </button>
+      <div class="spacer" *ngIf="episodeNum === '1'"></div>
+      <button class="nav-btn-ep" (click)="changeEpisode(1)" *ngIf="parseInt(episodeNum) != seasonEpisodes.length">
+        Suivant <span>›</span>
+      </button>
+    </div>
   </div>
 
   <div class="serie-desc">
@@ -17,6 +24,10 @@
       </div>
 
       <div class="info-side">
+        <div class="series-breadcrumb" (click)="router.navigate(['/series', episode.slug])">
+          #{{ episode.serieTitle }}
+        </div>
+
         <div class="header-info">
           <h2>{{episode.title}}</h2>
           <div class="meta-line">
@@ -30,9 +41,8 @@
             <div class="rating-circle"></div>
             <span class="rating-value">{{episode.rating}}</span>
           </div>
-
-          <div class="trailer-container" (click)="openTrailer()" *ngIf="episode.trailer !== ''">
-            <img src="Assets/Movies/trailer-icon.svg" alt="trailer-icon" class="trailer-icon">
+          <div class="trailer-container" (click)="openTrailer()" *ngIf="episode.trailer">
+            <img src="Assets/Movies/trailer-icon.svg" alt="trailer" class="trailer-icon">
           </div>
         </div>
 
@@ -54,10 +64,6 @@
             <span class="value">{{episode.year}}</span>
           </div>
           <div class="spec-item">
-            <span class="label">Réalisateur</span>
-            <span class="value">{{episode.author}}</span>
-          </div>
-          <div class="spec-item">
             <span class="label">Distribution</span>
             <div class="value casting-container">
               @for (actor of episode.casting; track actor; let last = $last) {
@@ -69,22 +75,47 @@
           </div>
         </div>
       </div>
+
+      <div class="episodes-side">
+        <div class="episodes-header-mini">
+          <div class="season-selector-wrapper">
+            <div class="season-text-selector" (click)="isSeasonDropdownOpen = !isSeasonDropdownOpen">
+              <img src="Assets/Movies/filter-icon.svg" alt="filter" class="filter-icon-mini">
+              <span>Saison {{ seasonNum }}</span>
+            </div>
+
+            <div class="season-dropdown" *ngIf="isSeasonDropdownOpen">
+              @for (s of [].constructor(totalSeasons); track $index) {
+                <div class="season-option"
+                     [class.active]="($index + 1).toString() === seasonNum"
+                     (click)="changeSeason($index + 1)">
+                  Saison {{ $index + 1 }}
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="episodes-list-sidebar">
+          @for (ep of seasonEpisodes; track ep.episode) {
+            <div class="episode-row-mini"
+                 [class.active-ep]="ep.episode == episodeNum && seasonNum === activeSeasonNum"
+                 (click)="router.navigate(['/series', episode.slug, seasonNum + '-' + ep.episode])">
+              <span class="ep-num">{{ ep.episode }}</span>
+              <span class="ep-name">{{ ep.title }}</span>
+            </div>
+          }
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="trailer-modal-overlay" *ngIf="isTrailerOpen && episode.trailer !== ''" (click)="closeTrailer()">
+<div class="trailer-modal-overlay" *ngIf="isTrailerOpen" (click)="closeTrailer()">
   <div class="trailer-wrapper" (click)="$event.stopPropagation()">
     <button class="close-trailer" (click)="closeTrailer()">&times;</button>
-
     <div class="video-container">
-      <iframe
-        *ngIf="safeTrailerUrl"
-        [src]="safeTrailerUrl"
-        frameborder="0"
-        allow="autoplay; encrypted-media; picture-in-picture"
-        allowfullscreen>
-      </iframe>
+      <iframe *ngIf="safeTrailerUrl" [src]="safeTrailerUrl" frameborder="0" allow="autoplay; encrypted-media"></iframe>
     </div>
   </div>
 </div>

@@ -31,7 +31,7 @@ export class EpisodePage implements OnInit, AfterViewInit, OnDestroy {
               private activatedRoute: ActivatedRoute,
               private authService: Auth,
               private cdr: ChangeDetectorRef,
-              private router: Router,
+              public router: Router,
               private sanitizer: DomSanitizer) {
   }
 
@@ -42,28 +42,65 @@ export class EpisodePage implements OnInit, AfterViewInit, OnDestroy {
   public safeTrailerUrl: SafeResourceUrl | undefined;
   public seasonNum: string = "";
   public episodeNum: string = "";
+  public userProgress: any[] = [];
+  public seasonEpisodes: any[] = [];
+  public isSeasonDropdownOpen = false;
+  public totalSeasons = 0;
+  public activeSeasonNum: string = "";
 
   ngOnInit() {
-    const slug = this.activatedRoute.snapshot.paramMap.get('slug');
-    const seasonEpisode = this.activatedRoute.snapshot.paramMap.get('season-:episode') || '1-1';
+    this.activatedRoute.paramMap.subscribe(params => {
+      const slug = params.get('slug');
+      const seasonEpisode = params.get('season-:episode') || '1-1';
+      const parts = seasonEpisode.split('-');
+      this.seasonNum = parts[0];
+      this.activeSeasonNum = parts[0];
+      this.episodeNum = parts[1];
 
-    const parts = seasonEpisode.split('-');
-    this.seasonNum = parts[0];
-    this.episodeNum = parts[1];
+      if (slug) {
+        this.loadData(slug);
+      }
+    });
+  }
+
+  private loadData(slug: string) {
+    this.watchSerie.getEpisode(slug, parseInt(this.seasonNum), parseInt(this.episodeNum)).subscribe({
+      next: (data: any) => {
+        this.episode = data.data;
+        this.totalSeasons = this.episode.totalSeasons;
+
+        this.watchSerie.getSeason(slug, parseInt(this.seasonNum)).subscribe((res: any) => {
+          this.seasonEpisodes = res.data.episodes;
+          this.cdr.detectChanges();
+        });
+
+        this.authService.getUserProgress().subscribe({
+          next: () => {
+            this.userProgress = this.authService.currentUser?.progress || [];
+            this.loadEpisodeProgress();
+          }
+        });
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  changeEpisode(delta: number) {
+    const nextEp = parseInt(this.episodeNum) + delta;
+    this.router.navigate([`/series/${this.episode.slug}/${this.seasonNum}-${nextEp}`]);
+    this.cdr.detectChanges();
+  }
+
+  changeSeason(num: number) {
+    this.isSeasonDropdownOpen = false;
+    this.seasonNum = num.toString();
+    const slug = this.episode.slug;
 
     if (slug) {
-      this.watchSerie.getEpisode(slug, parseInt(this.seasonNum), parseInt(this.episodeNum)).subscribe({
-        next: (data: any) => {
-          console.log("data : ", data);
-          this.episode = data.data;
-          this.authService.getUserProgress().subscribe({
-            next: () => {
-              this.loadEpisodeProgress();
-            }
-          });
-          this.cdr.detectChanges();
-        }
-      })
+      this.watchSerie.getSeason(slug, num).subscribe((res: any) => {
+        this.seasonEpisodes = res.data.episodes;
+        this.cdr.detectChanges();
+      });
     }
   }
 
@@ -122,7 +159,6 @@ export class EpisodePage implements OnInit, AfterViewInit, OnDestroy {
   @HostListener('window:beforeunload')
   @HostListener('window:popstate')
 
-
   ngOnDestroy() {
     this.stopProgressTimer();
     this.saveProgress();
@@ -169,4 +205,6 @@ export class EpisodePage implements OnInit, AfterViewInit, OnDestroy {
   onClickGoActor(actorSlug: any) {
     this.router.navigate(['/actor/', actorSlug]);
   }
+
+  protected readonly parseInt = parseInt;
 }
