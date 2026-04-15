@@ -54,6 +54,7 @@ export class EpisodePage implements OnInit, AfterViewInit, OnDestroy {
     if (slug) {
       this.watchSerie.getEpisode(slug, parseInt(this.seasonNum), parseInt(this.episodeNum)).subscribe({
         next: (data: any) => {
+          console.log("data : ", data);
           this.episode = data.data;
           this.authService.getUserProgress().subscribe({
             next: () => {
@@ -75,16 +76,19 @@ export class EpisodePage implements OnInit, AfterViewInit, OnDestroy {
   private loadEpisodeProgress() {
     const user = this.authService.currentUser;
     if (user && user.progress && this.episode) {
-      // Pour une série, on cherche par mediaId (ID de la série) + saison + épisode
-      const record = user.progress.find((p: any) =>
-        p.mediaId === this.episode.seriesId &&
-        p.seasonNumber === this.episode.seasonNumber &&
-        p.episodeNumber === this.episode.episodeNumber
-      );
+      console.log("id:", this.episode._id, "seasonNumber:", this.seasonNum, "episodeNumber:", this.episodeNum);
+      const record = user.progress.find((p: any) => {
+        const progressMediaId = p.mediaId._id ? p.mediaId._id.toString() : p.mediaId.toString();
+
+        return progressMediaId === this.episode._id &&
+          Number(p.seasonNumber) === Number(this.seasonNum) &&
+          Number(p.episodeNumber) === Number(this.episodeNum);
+      });
+      console.log(record);
 
       if (record) {
         this.movieProgress = record.currentTime;
-        this.cdr.detectChanges(); // Force le rendu pour lier le ViewChild
+        this.cdr.detectChanges();
         this.applyProgressToVideo();
       }
     }
