@@ -73,6 +73,7 @@ export class App implements OnInit {
     this.moviesResults = [];
     this.seriesResults = [];
     this.actorsResults = [];
+    this.allResults = [];
     this.cdr.detectChanges();
   }
 
