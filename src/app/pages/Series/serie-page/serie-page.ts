@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import {WatchSerie} from '../../../services/Series/watch-serie';
 import {last} from 'rxjs';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {Auth} from '../../../services/Users/auth';
 
 @Component({
   selector: 'app-serie-page',
@@ -19,6 +20,7 @@ export class SeriePage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private watchSerie: WatchSerie,
     private moviesService: MoviesList,
+    private authService: Auth,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private sanitizer: DomSanitizer
@@ -32,6 +34,8 @@ export class SeriePage implements OnInit {
   public currentSeason: any = {};
   public isSeasonDropdownOpen: boolean = false;
 
+  public userProgress: any[] = [];
+
   ngOnInit() {
     const slug = this.activatedRoute.snapshot.paramMap.get('slug');
     if (slug) {
@@ -39,7 +43,10 @@ export class SeriePage implements OnInit {
         next: (data) => {
           if (data.code === "200" && data.data) {
             this.details = data.data;
-            this.cdr.detectChanges();
+            this.authService.getUserProgress().subscribe(() => {
+              this.userProgress = this.authService.currentUser.progress;
+              this.cdr.detectChanges();
+            });
           }
         }
       });
@@ -52,6 +59,36 @@ export class SeriePage implements OnInit {
         }
       })
     }
+  }
+
+  getEpisodeProgress(episodeNum: number): number {
+    if (!this.userProgress || !this.details) return 0;
+
+    const seriesProgress = this.userProgress.filter(p =>
+      (p.mediaId._id === this.details._id || p.mediaId === this.details._id) &&
+      p.mediaType === 'Series'
+    );
+
+    if (seriesProgress.length === 0) return 0;
+
+    const lastTracked = seriesProgress.reduce((prev, current) => {
+      if (current.seasonNumber > prev.seasonNumber) return current;
+      if (current.seasonNumber === prev.seasonNumber && current.episodeNumber > prev.episodeNumber) return current;
+      return prev;
+    });
+
+    if (this.activeSeason < lastTracked.seasonNumber) return 100;
+    if (this.activeSeason === lastTracked.seasonNumber && episodeNum < lastTracked.episodeNumber) return 100;
+
+    if (this.activeSeason === lastTracked.seasonNumber && episodeNum === lastTracked.episodeNumber) {
+      const epData = this.currentSeason.episodes.find((e: any) => e.episode === episodeNum);
+      if (epData && epData.duration) {
+        const percentage = (lastTracked.currentTime / (epData.duration * 60)) * 100;
+        return Math.min(percentage, 100);
+      }
+    }
+
+    return 0;
   }
 
   loadSeason(seasonNumber: number) {

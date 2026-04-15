@@ -90,11 +90,20 @@
     <div class="episode-card" (click)="onClickGoEpisode(ep.episode)">
       <div class="ep-cover-wrapper">
         <img [src]="ep.cover" [alt]="ep.title">
+
         <div class="card-overlay"></div>
+
         <div class="play-button">
           <img src="Assets/Movies/play-button.png" alt="play-button">
         </div>
+
+        @if (getEpisodeProgress(ep.episode) > 0) {
+          <div class="empty-progress-bar">
+            <div class="progress-bar" [style.width.%]="getEpisodeProgress(ep.episode)"></div>
+          </div>
+        }
       </div>
+
       <div class="ep-info">
         <h4 class="ep-title">{{ ep.title }}</h4>
         <div class="ep-meta-row">
@@ -105,7 +114,6 @@
     </div>
   }
 </div>
-
 
 <div class="trailer-modal-overlay" *ngIf="isTrailerOpen && details.trailer !== ''" (click)="closeTrailer()">
   <div class="trailer-wrapper" (click)="$event.stopPropagation()">
