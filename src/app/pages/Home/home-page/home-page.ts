@@ -7,6 +7,7 @@ import {forkJoin, interval, Subscription} from 'rxjs';
 import {Search} from '../../../services/Search/search';
 import {MoviesProgresses} from '../../../services/Home/movies-progresses';
 import {Router} from '@angular/router';
+import {SeriesList} from '../../../services/Series/series-list';
 
 @Component({
   selector: 'app-home-page',
@@ -17,6 +18,7 @@ import {Router} from '@angular/router';
 })
 export class HomePage implements OnInit, OnDestroy {
   constructor(private moviesService: MoviesList,
+              private seriesService: SeriesList,
               private genreService: GenreService,
               private homeService: MoviesProgresses,
               public authService: Auth,
@@ -31,15 +33,22 @@ export class HomePage implements OnInit, OnDestroy {
   private autoPlaySub?: Subscription;
   public isPaused: boolean = false;
 
+  // Slider "Reprendre la lecture"
+  @ViewChild('slider') slider!: ElementRef;
   canScrollLeft = false;
   canScrollRight = false;
-  public latestMovies: any[] = [];
-  public canScrollLeftLatest = false;
-  public canScrollRightLatest = false;
-  private currentLatestIndex = 0;
 
-  @ViewChild('slider') slider!: ElementRef;
-  @ViewChild('latestSlider') latestSlider!: ElementRef;
+  // Slider Nouveaux Films
+  @ViewChild('moviesSlider') moviesSlider!: ElementRef;
+  public latestMovies: any[] = [];
+  public canScrollLeftMovies = false;
+  public canScrollRightMovies = false;
+
+  // Slider Nouvelles Séries
+  @ViewChild('seriesSlider') seriesSlider!: ElementRef;
+  public latestSeries: any[] = [];
+  public canScrollLeftSeries = false;
+  public canScrollRightSeries = false;
 
 
   ngOnInit() {
@@ -52,27 +61,29 @@ export class HomePage implements OnInit, OnDestroy {
       }
       this.cdr.detectChanges()
     });
+
     this.moviesService.getMovies().subscribe(res => {
       if (res && res.data) {
         const shuffled = [...res.data].sort(() => 0.5 - Math.random());
         this.heroMovies = shuffled.slice(0, Math.floor(Math.random() * 3) + 1);
-
         this.latestMovies = res.data.slice(0, 10);
-
         this.startTimer();
-        setTimeout(() => this.checkLatestButtons(), 200);
+        setTimeout(() => this.checkButtons(), 200);
       }
     });
+
+    this.seriesService.getSeries().subscribe(res => {
+      if (res && res.data) {
+        this.latestSeries = res.data.slice(0, 10);
+        setTimeout(() => this.checkButtons(), 200);
+      }
+    });
+
     const requests = categories.map(name => this.genreService.getGenreMetadata(name));
     forkJoin(requests).subscribe(results => {
       this.genresButtons = results;
       this.cdr.detectChanges();
     });
-  }
-
-  togglePause(event: Event) {
-    event.stopPropagation();
-    this.isPaused = !this.isPaused;
   }
 
   startTimer() {
@@ -99,8 +110,57 @@ export class HomePage implements OnInit, OnDestroy {
     this.startTimer();
   }
 
-  ngOnDestroy() {
-    if (this.autoPlaySub) this.autoPlaySub.unsubscribe();
+  togglePause(event: Event) {
+    event.stopPropagation();
+    this.isPaused = !this.isPaused;
+  }
+
+  scroll(direction: number) {
+    if (!this.slider?.nativeElement) return;
+    const el = this.slider.nativeElement;
+    const firstCard = el.querySelector('.progressed-movie-card');
+    if (firstCard) {
+      const scrollUnit = (firstCard.getBoundingClientRect().width + 12) * 2;
+      el.scrollBy({ left: scrollUnit * direction, behavior: 'smooth' });
+      setTimeout(() => this.checkButtons(), 500);
+    }
+  }
+
+  scrollHoriz(direction: number, type: 'movies' | 'series') {
+    const el = type === 'movies' ? this.moviesSlider.nativeElement : this.seriesSlider.nativeElement;
+    const card = el.querySelector('.movie-card-horiz');
+    if (!card) return;
+
+    const scrollAmount = card.getBoundingClientRect().width + 12;
+
+    el.scrollBy({
+      left: scrollAmount * direction,
+      behavior: 'smooth'
+    });
+
+    setTimeout(() => this.checkButtons(), 500);
+  }
+
+  checkButtons() {
+    if (this.slider?.nativeElement) {
+      const el = this.slider.nativeElement;
+      this.canScrollLeft = el.scrollLeft > 5;
+      this.canScrollRight = el.scrollLeft + el.clientWidth < el.scrollWidth - 10;
+    }
+
+    if (this.moviesSlider?.nativeElement) {
+      const el = this.moviesSlider.nativeElement;
+      this.canScrollLeftMovies = el.scrollLeft > 5;
+      this.canScrollRightMovies = el.scrollLeft + el.clientWidth < el.scrollWidth - 10;
+    }
+
+    if (this.seriesSlider?.nativeElement) {
+      const el = this.seriesSlider.nativeElement;
+      this.canScrollLeftSeries = el.scrollLeft > 5;
+      this.canScrollRightSeries = el.scrollLeft + el.clientWidth < el.scrollWidth - 10;
+    }
+
+    this.cdr.detectChanges();
   }
 
   loadMovies(userId: string) {
@@ -108,15 +168,17 @@ export class HomePage implements OnInit, OnDestroy {
       if (res && res.code === "200") {
         this.progressedMovies = res.data;
       }
-      setTimeout(() => {
-        this.checkButtons();
-      }, 50);
+      setTimeout(() => this.checkButtons(), 50);
       this.cdr.detectChanges();
     });
   }
 
   onClickGoMovie(slug: any) {
     this.moviesService.goMovie(slug);
+  }
+
+  onClickGoSerie(slug: any) {
+    this.seriesService.goSerie(slug);
   }
 
   onClickGoGenre(genre: any) {
@@ -126,7 +188,6 @@ export class HomePage implements OnInit, OnDestroy {
   onClickResume(item: any) {
     const media = item.mediaId;
     if (!media) return;
-
     if (item.mediaType === 'Series') {
       this.router.navigate(['/series', media.slug, media.seasonNumber + "-" + media.episodeNumber]);
     } else {
@@ -134,71 +195,20 @@ export class HomePage implements OnInit, OnDestroy {
     }
   }
 
-  scroll(direction: number) {
-    if (!this.slider || !this.slider.nativeElement) return;
-
-    const el = this.slider.nativeElement;
-    const firstCard = el.querySelector('.progressed-movie-card');
-
-    if (firstCard) {
-      const cardWidth = firstCard.getBoundingClientRect().width;
-      const gap = 12;
-      const scrollUnit = cardWidth + gap;
-
-      el.scrollBy({
-        left: scrollUnit * direction,
-        behavior: 'smooth'
-      });
-
-      setTimeout(() => this.checkButtons(), 500);
-    }
-  }
-
-  checkButtons() {
-    if (!this.slider || !this.slider.nativeElement) return;
-
-    const el = this.slider.nativeElement;
-
-    this.canScrollLeft = el.scrollLeft > 5;
-
-    const atTheEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 10;
-    this.canScrollRight = !atTheEnd;
-
-    this.cdr.detectChanges();
-  }
-
-  scrollLatest(direction: number) {
-    if (!this.latestSlider) return;
-    const el = this.latestSlider.nativeElement;
-    const card = el.querySelector('.movie-card-horiz');
-    if (!card) return;
-
-    const scrollUnit = card.getBoundingClientRect().width + 12;
-    this.currentLatestIndex += direction;
-
-    const maxIndex = Math.max(0, this.latestMovies.length - 8);
-    if (this.currentLatestIndex > maxIndex) this.currentLatestIndex = maxIndex;
-    if (this.currentLatestIndex < 0) this.currentLatestIndex = 0;
-
-    el.scrollTo({ left: this.currentLatestIndex * scrollUnit, behavior: 'smooth' });
-    setTimeout(() => this.checkLatestButtons(), 500);
-  }
-
-  checkLatestButtons() {
-    if (!this.latestSlider) return;
-    const el = this.latestSlider.nativeElement;
-    this.canScrollLeftLatest = el.scrollLeft > 5;
-    this.canScrollRightLatest = el.scrollLeft + el.clientWidth < el.scrollWidth - 10;
-    this.cdr.detectChanges();
-  }
-
   onClickGoMoviePage() {
     this.router.navigate(['/movies']);
+  }
+
+  onClickGoSeriePage() {
+    this.router.navigate(['/series']);
+  }
+
+  ngOnDestroy() {
+    if (this.autoPlaySub) this.autoPlaySub.unsubscribe();
   }
 
   @HostListener('window:resize')
   onResize() {
     this.checkButtons();
-    this.checkLatestButtons()
   }
 }

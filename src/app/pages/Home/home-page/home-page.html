@@ -131,15 +131,17 @@
     <span class="voir-plus" (click)="onClickGoMoviePage()">Voir plus ›</span>
   </div>
 
-  <button class="nav-btn prev" *ngIf="canScrollLeftLatest" (click)="scrollLatest(-1)">‹</button>
+  <button class="nav-btn prev" *ngIf="canScrollLeftMovies" (click)="scrollHoriz(-1, 'movies')">‹</button>
 
-  <section #latestSlider class="movies-grid-horizontal" (scroll)="checkLatestButtons()">
+  <section #moviesSlider class="movies-grid-horizontal" (scroll)="checkButtons()">
     @for (movie of latestMovies; track movie._id) {
       <div class="movie-card-horiz" (click)="onClickGoMovie(movie.slug)">
         <div class="movie-card-background-latest" [style.background-image]="'url(' + movie.cover + ')'">
           <div class="genre-badge-top">{{ movie.genre[0] }}</div>
           <div class="card-overlay"></div>
-          <div class="play-button"><img src="../../../../Assets/Movies/play-button.png"></div>
+          <div class="play-button">
+            <img src="../../../../Assets/Movies/play-button.png" alt="play">
+          </div>
         </div>
         <div class="card-content-latest">
           <h3 class="movie-title-latest">{{ movie.title }}</h3>
@@ -153,5 +155,38 @@
     }
   </section>
 
-  <button class="nav-btn next" *ngIf="canScrollRightLatest" (click)="scrollLatest(1)">›</button>
+  <button class="nav-btn next" *ngIf="canScrollRightMovies" (click)="scrollHoriz(1, 'movies')">›</button>
+</div>
+
+<div class="slider-wrapper latest-section">
+  <div class="title-header">
+    <h3 class="title">Nouvelles Séries sur Hessflix</h3>
+    <span class="voir-plus" (click)="onClickGoSeriePage()">Voir plus ›</span>
+  </div>
+
+  <button class="nav-btn prev" *ngIf="canScrollLeftSeries" (click)="scrollHoriz(-1, 'series')">‹</button>
+
+  <section #seriesSlider class="movies-grid-horizontal" (scroll)="checkButtons()">
+    @for (serie of latestSeries; track serie._id) {
+      <div class="movie-card-horiz" (click)="onClickGoSerie(serie.slug)">
+        <div class="movie-card-background-latest" [style.background-image]="'url(' + serie.cover + ')'">
+          <div class="genre-badge-top">{{ serie.genre[0] }}</div>
+          <div class="card-overlay"></div>
+          <div class="play-button">
+            <img src="../../../../Assets/Movies/play-button.png" alt="play">
+          </div>
+        </div>
+        <div class="card-content-latest">
+          <h3 class="movie-title-latest">{{ serie.title }}</h3>
+          <div class="movie-meta-latest">
+            <span>{{ serie.year }}</span>
+            <span class="type-tag">{{ serie.type }}</span>
+            <span>{{ serie.duration }} min</span>
+          </div>
+        </div>
+      </div>
+    }
+  </section>
+
+  <button class="nav-btn next" *ngIf="canScrollRightSeries" (click)="scrollHoriz(1, 'series')">›</button>
 </div>
