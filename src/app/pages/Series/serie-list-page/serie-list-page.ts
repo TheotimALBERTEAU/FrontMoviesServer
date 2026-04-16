@@ -71,7 +71,7 @@ export class SerieListPage implements OnInit {
             this.activeFilters.genre = genreParam ? genreParam.split(',') : [];
             this.activeFilters.release = params['release'] || '';
             this.activeFilters.vote_average = params['vote_average'] || '';
-            this.activeFilters.sort = params['sort'] || 'created_at';
+            this.activeFilters.sort = params['sort'] || 'random';
 
             this.applyFilters();
           });
