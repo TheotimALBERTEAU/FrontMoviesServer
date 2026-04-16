@@ -14,6 +14,7 @@ import {EpisodePage as SeriesEpisodePage} from './pages/Series/episode-page/epis
 import {AnimeListPage} from './pages/Animes/anime-list-page/anime-list-page';
 import {AnimePage} from './pages/Animes/anime-page/anime-page';
 import {EpisodePage as AnimesEpisodePage} from './pages/Animes/episode-page/episode-page';
+import {ProfilePage} from './pages/Users/profile-page/profile-page';
 
 export const routes: Routes = [
   {path: '', component: HomePage},
@@ -27,6 +28,7 @@ export const routes: Routes = [
   {path: 'animes/:slug/:season-:episode', component: AnimesEpisodePage},
   {path: 'login', component: LoginPage},
   {path: 'signup', component: SignupPage},
+  {path: 'profile', component: ProfilePage},
   { path: 'genre/:type', component: GenrePage },
   { path: 'search/:query', component: SearchPage },
   { path: 'actors', component: ActorsListPage},

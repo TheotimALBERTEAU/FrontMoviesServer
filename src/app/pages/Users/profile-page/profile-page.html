@@ -1,1 +1,51 @@
-<p>profile-page works!</p>
+<div class="profile-container" *ngIf="authService.currentUser">
+  <header class="profile-header">
+    <div class="banner"
+         [style.background-color]="getBannerColor()"
+         [style.background-image]="getBannerImage()">
+    </div>
+
+    <div class="user-info-overlay">
+      <div class="avatar-wrapper">
+        <div class="avatar-circle" [style.background-color]="getBannerColor()">
+          @if (authService.currentUser?.profileSettings?.profilePic) {
+            <img [src]="authService.currentUser.profileSettings.profilePic" class="avatar-img">
+          }
+          @else {
+            <span>{{ authService.currentUser?.pseudo?.charAt(0).toUpperCase() }}</span>
+          }
+        </div>
+      </div>
+      <h1 class="profile-username">{{ authService.currentUser?.pseudo }}</h1>
+    </div>
+  </header>
+
+  <nav class="profile-tabs">
+    <button [class.active]="activeTab === 'favorites'" (click)="setTab('favorites')">Favoris</button>
+    <button [class.active]="activeTab === 'history'" (click)="setTab('history')">Historique</button>
+  </nav>
+
+  <main class="tab-content">
+    <div class="minimal-grid" *ngIf="displayedItems.length > 0; else emptyState">
+      <div class="mini-card" *ngFor="let item of displayedItems">
+        <div class="img-container">
+          <img [src]="item.mediaId?.cover" [alt]="item.mediaId?.title">
+          <div class="mini-overlay">
+            <i class="fas fa-play"></i>
+          </div>
+        </div>
+        <p class="mini-title">{{ item.mediaId?.title }}</p>
+      </div>
+    </div>
+
+    <ng-template #emptyState>
+      <div class="empty-msg">Aucun contenu trouvé ici.</div>
+    </ng-template>
+
+    <div class="pagination-simple" *ngIf="currentPage > 1 || hasNext()">
+      <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1">‹ Précédent</button>
+      <span>Page {{currentPage}}</span>
+      <button (click)="currentPage = currentPage + 1" [disabled]="!hasNext()">Suivant ›</button>
+    </div>
+  </main>
+</div>
