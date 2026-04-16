@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { GenreService } from '../../../services/Genre/genre-service';
 import { forkJoin } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import {Favorites} from '../../../services/Favorites/favorites';
+import {Auth} from '../../../services/Users/auth';
 
 @Component({
   selector: 'app-movie-list-page',
@@ -39,6 +41,8 @@ export class MovieListPage implements OnInit {
     'za': 'Nom Z-A'
   };
 
+  public userId: string | null = null;
+
   constructor(
     private moviesService: MoviesList,
     private cdr: ChangeDetectorRef,
@@ -46,6 +50,8 @@ export class MovieListPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private eRef: ElementRef,
+    public favService: Favorites,
+    private authService: Auth,
   ) {}
 
   @HostListener('document:click', ['$event'])
@@ -57,6 +63,7 @@ export class MovieListPage implements OnInit {
 
   ngOnInit() {
     const categories = ['Action', 'Animation', 'Comédie', 'Crime', 'Horreur'];
+    this.userId = this.authService.getUserId();
 
     this.moviesService.getMovies().subscribe({
       next: data => {
@@ -78,6 +85,10 @@ export class MovieListPage implements OnInit {
         }
       }
     });
+
+    if (this.userId) {
+      this.favService.loadFavorites(this.userId);
+    }
 
     const requests = categories.map(name => this.genreService.getGenreMetadata(name));
     forkJoin(requests).subscribe(results => {
@@ -185,6 +196,20 @@ export class MovieListPage implements OnInit {
     this.displayedMovies = this.filteredMovies.slice(start, start + this.pageSize);
     this.cdr.detectChanges();
     if (this.currentPage > 1) window.scrollTo({ top: 400, behavior: 'smooth' });
+  }
+
+  toggleFav(event: Event, movie: any) {
+    event.stopPropagation();
+    if (!this.userId) return;
+
+    this.favService.toggleFavorite(this.userId, movie._id, movie.type).subscribe(res => {
+      if (res.isFavorite) {
+        this.favService.favoriteIds.add(movie._id);
+      } else {
+        this.favService.favoriteIds.delete(movie._id);
+      }
+      this.cdr.detectChanges();
+    });
   }
 
   nextPage() { if (this.hasNext()) { this.currentPage++; this.updateDisplay(); } }
