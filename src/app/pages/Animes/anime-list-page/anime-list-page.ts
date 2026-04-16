@@ -66,7 +66,7 @@ export class AnimeListPage implements OnInit {
           this.generateDynamicOptions();
 
           this.route.queryParams.subscribe(params => {
-            this.activeFilters.type = params['type'] || 'Série';
+            this.activeFilters.type = params['type'] || 'Animé';
             const genreParam = params['genre'];
             this.activeFilters.genre = genreParam ? genreParam.split(',') : [];
             this.activeFilters.release = params['release'] || '';
