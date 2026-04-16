@@ -2,7 +2,7 @@ import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MoviesList } from '../../../services/Movies/movies-list';
 import { CommonModule } from '@angular/common';
-import {WatchSerie} from '../../../services/Series/watch-serie';
+import {WatchAnime} from '../../../services/Animes/watch-anime';
 import {last} from 'rxjs';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {Auth} from '../../../services/Users/auth';
@@ -11,14 +11,14 @@ import {Auth} from '../../../services/Users/auth';
   selector: 'app-anime-page',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './serie-page.html',
-  styleUrl: './serie-page.css'
+  templateUrl: './anime-page.html',
+  styleUrl: './anime-page.css'
 })
-export class SeriePage implements OnInit {
+export class AnimePage implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private watchSerie: WatchSerie,
+    private watchAnime: WatchAnime,
     private moviesService: MoviesList,
     private authService: Auth,
     private router: Router,
@@ -39,7 +39,7 @@ export class SeriePage implements OnInit {
   ngOnInit() {
     const slug = this.activatedRoute.snapshot.paramMap.get('slug');
     if (slug) {
-      this.watchSerie.getDetails(slug).subscribe({
+      this.watchAnime.getDetails(slug).subscribe({
         next: (data) => {
           if (data.code === "200" && data.data) {
             this.details = data.data;
@@ -50,7 +50,7 @@ export class SeriePage implements OnInit {
           }
         }
       });
-      this.watchSerie.getSeason(slug, this.activeSeason).subscribe({
+      this.watchAnime.getSeason(slug, this.activeSeason).subscribe({
         next: (data) => {
           if (data.code === "200" && data.data) {
             this.currentSeason = data.data;
@@ -64,14 +64,14 @@ export class SeriePage implements OnInit {
   getEpisodeProgress(episodeNum: number): number {
     if (!this.userProgress || !this.details) return 0;
 
-    const seriesProgress = this.userProgress.filter(p =>
+    const animesProgress = this.userProgress.filter(p =>
       (p.mediaId._id === this.details._id || p.mediaId === this.details._id) &&
-      p.mediaType === 'Series'
+      p.mediaType === 'Animes'
     );
 
-    if (seriesProgress.length === 0) return 0;
+    if (animesProgress.length === 0) return 0;
 
-    const lastTracked = seriesProgress.reduce((prev, current) => {
+    const lastTracked = animesProgress.reduce((prev, current) => {
       if (current.seasonNumber > prev.seasonNumber) return current;
       if (current.seasonNumber === prev.seasonNumber && current.episodeNumber > prev.episodeNumber) return current;
       return prev;
@@ -95,7 +95,7 @@ export class SeriePage implements OnInit {
     this.activeSeason = seasonNumber;
     this.isSeasonDropdownOpen = false;
 
-    this.watchSerie.getSeason(this.details.slug, seasonNumber).subscribe((res: any) => {
+    this.watchAnime.getSeason(this.details.slug, seasonNumber).subscribe((res: any) => {
       if (res.code === "200") {
         this.currentSeason = res.data;
       }
@@ -104,7 +104,7 @@ export class SeriePage implements OnInit {
   }
 
   playFirstEpisode() {
-    this.router.navigate([`/series/${this.details.slug}/1-1`]);
+    this.router.navigate([`/animes/${this.details.slug}/1-1`]);
   }
 
   onClickGoGenre(genre: string) {
@@ -137,6 +137,6 @@ export class SeriePage implements OnInit {
   }
 
   onClickGoEpisode(episodeNumber: number) {
-    this.router.navigate(['/series', this.details.slug, this.activeSeason + "-" + episodeNumber]);
+    this.router.navigate(['/animes', this.details.slug, this.activeSeason + "-" + episodeNumber]);
   }
 }

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit } from '@angular/core';
-import { SeriesList } from '../../../services/Series/series-list';
+import { AnimesList } from '../../../services/Animes/animes-list';
 import { CommonModule } from '@angular/common';
 import { GenreService } from '../../../services/Genre/genre-service';
 import { forkJoin } from 'rxjs';
@@ -9,13 +9,13 @@ import { ActivatedRoute, Router } from '@angular/router';
   selector: 'app-anime-list-page',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './serie-list-page.html',
-  styleUrl: './serie-list-page.css',
+  templateUrl: './anime-list-page.html',
+  styleUrl: './anime-list-page.css',
 })
-export class SerieListPage implements OnInit {
-  public allSeries: any[] = [];
-  public filteredSeries: any[] = [];
-  public displayedSeries: any[] = [];
+export class AnimeListPage implements OnInit {
+  public allAnimes: any[] = [];
+  public filteredAnimes: any[] = [];
+  public displayedAnimes: any[] = [];
   public genresButtons: any[] = [];
 
   public currentPage = 1;
@@ -40,7 +40,7 @@ export class SerieListPage implements OnInit {
   };
 
   constructor(
-    private seriesService: SeriesList,
+    private animesService: AnimesList,
     private cdr: ChangeDetectorRef,
     private genreService: GenreService,
     private route: ActivatedRoute,
@@ -59,10 +59,10 @@ export class SerieListPage implements OnInit {
   ngOnInit() {
     const categories = ['Action', 'Animation', 'Comédie', 'Crime', 'Horreur'];
 
-    this.seriesService.getSeries().subscribe({
+    this.animesService.getAnimes().subscribe({
       next: data => {
         if (data.code === "200") {
-          this.allSeries = data.data;
+          this.allAnimes = data.data;
           this.generateDynamicOptions();
 
           this.route.queryParams.subscribe(params => {
@@ -91,7 +91,7 @@ export class SerieListPage implements OnInit {
     const genres = new Set<string>();
     const years = new Set<number>();
 
-    this.allSeries.forEach(s => {
+    this.allAnimes.forEach(s => {
       if (s.type) types.add(s.type);
       if (s.genre) s.genre.forEach((g: string) => genres.add(g));
       if (s.year) years.add(Number(s.year));
@@ -134,12 +134,12 @@ export class SerieListPage implements OnInit {
       vote_average: this.activeFilters.vote_average || null,
       sort: this.activeFilters.sort
     };
-    this.router.navigate(['/series'], { queryParams });
+    this.router.navigate(['/animes'], { queryParams });
     this.openFilter = null;
   }
 
   applyFilters() {
-    let result = [...this.allSeries];
+    let result = [...this.allAnimes];
 
     if (this.activeFilters.type) result = result.filter(m => m.type === this.activeFilters.type);
     if (this.activeFilters.genre.length) {
@@ -174,14 +174,14 @@ export class SerieListPage implements OnInit {
       result = result.sort((a, b) => b.title.localeCompare(a.title));
     }
 
-    this.filteredSeries = result;
+    this.filteredAnimes = result;
     this.currentPage = 1;
     this.updateDisplay();
   }
 
   updateDisplay() {
     const start = (this.currentPage - 1) * this.pageSize;
-    this.displayedSeries = this.filteredSeries.slice(start, start + this.pageSize);
+    this.displayedAnimes = this.filteredAnimes.slice(start, start + this.pageSize);
     this.cdr.detectChanges();
     if (this.currentPage > 1) window.scrollTo({ top: 400, behavior: 'smooth' });
   }
@@ -190,11 +190,11 @@ export class SerieListPage implements OnInit {
 
   nextPage() { if (this.hasNext()) { this.currentPage++; this.updateDisplay(); } }
   prevPage() { if (this.currentPage > 1) { this.currentPage--; this.updateDisplay(); } }
-  hasNext(): boolean { return (this.currentPage * this.pageSize) < this.filteredSeries.length; }
+  hasNext(): boolean { return (this.currentPage * this.pageSize) < this.filteredAnimes.length; }
 
-  onClickGoSerie(slug: string) { this.seriesService.goSerie(slug); }
+  onClickGoAnime(slug: string) { this.animesService.goAnime(slug); }
 
   onClickGoGenre(genre: string) {
-    this.router.navigate(['/series'], { queryParams: { genre: genre } });
+    this.router.navigate(['/animes'], { queryParams: { genre: genre } });
   }
 }

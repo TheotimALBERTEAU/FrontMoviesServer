@@ -1,0 +1,525 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #000;
+  color: #fff;
+}
+
+.anime-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: black;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.anime-desc {
+  width: 95%;
+  padding: 20px 0;
+}
+
+.content-wrapper {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.left-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 250px;
+}
+
+.poster-side img {
+  width: 250px;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.first-episode-button button {
+  width: 100%;
+  padding: 12px 0;
+  background-color: #242424;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.first-episode-button button:hover {
+  background-color: #333333;
+}
+
+.first-episode-button button:active {
+  transform: scale(0.98);
+}
+
+.first-episode-button img {
+}
+
+.info-side {
+  flex: 1;
+}
+
+.header-info h2 {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.meta-line {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: #999;
+  font-size: 0.85rem;
+  margin-bottom: 25px;
+}
+
+.synopsis {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #777;
+  margin-bottom: 30px;
+}
+
+.specs-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid #222;
+  padding-top: 20px;
+}
+
+.spec-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.label {
+  color: #777;
+  min-width: 140px;
+  flex-shrink: 0;
+}
+
+.value {
+  color: #fff;
+  line-height: 1.4;
+}
+
+.genre-container {
+  color: #fff;
+  line-height: 1.6;
+  font-weight: 400;
+  display: block;
+}
+
+.genre-item {
+  display: inline;
+  padding-right: 0.5rem;
+  cursor: pointer;
+}
+
+.genre-item:hover {
+  text-decoration: underline;
+}
+
+.casting-container {
+  line-height: 1.6;
+  font-weight: 400;
+  font-size: 0.9rem;
+  display: block;
+}
+
+.actor-name {
+  padding-right: 0.4rem;
+  flex-shrink: 0;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.actor-name:hover {
+  text-decoration: underline;
+}
+
+.actions-line {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.rating-circle-container {
+  --size: 2.8rem;
+  --thickness: 0.3rem;
+  --main-color: #f7b733;
+  --bg-color: #392d0f;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  position: relative;
+  background-color: #392d0f;
+}
+
+.rating-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background:
+    conic-gradient(
+      var(--main-color) calc(var(--percentage) * 3.6deg),
+      var(--bg-color) calc(var(--percentage) * 3.6deg)
+    );
+  mask: radial-gradient(
+    transparent calc(var(--size) / 2 - var(--thickness)),
+    black calc(var(--size) / 2 - var(--thickness) + 0.5px)
+  );
+}
+
+.rating-value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #f7b733;
+  font-family: Arial, sans-serif;
+  line-height: 1;
+  z-index: 10;
+}
+
+.trailer-container {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.trailer-container:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.trailer-icon {
+  width: 1.4rem;
+  height: 1.4rem;
+  object-fit: contain;
+}
+
+/* --- CONTENEUR SÉLECTEUR DE SAISON --- */
+.season-selector-container {
+  position: relative;
+  padding: 20px 2rem;
+  display: inline-block;
+}
+
+.season-btn {
+  background: #1a1a1a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.season-btn:hover {
+  background: #252525;
+}
+
+.dropdown-icon {
+  width: 12px;
+  height: 12px;
+  filter: invert(1); /* Si l'icône originale est noire */
+  opacity: 0.7;
+}
+
+/* --- DROPDOWN MENU --- */
+.season-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 2rem;
+  margin-top: 5px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  z-index: 1000;
+  min-width: 140px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.dropdown-scroll-content {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Scrollbar discrète pour le dropdown */
+.dropdown-scroll-content::-webkit-scrollbar {
+  width: 4px;
+}
+.dropdown-scroll-content::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 10px;
+}
+
+.season-option {
+  padding: 12px 20px;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.season-option:hover {
+  background: #e50914;
+  color: white;
+}
+
+/* --- GRILLE DES ÉPISODES (8 PAR LIGNE) --- */
+.episodes-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 1rem;
+  padding: 0 2rem 2rem 2rem;
+}
+
+.episode-card {
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.ep-cover-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.ep-cover-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.empty-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0.25rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #e50914;
+  transition: width 0.3s ease;
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  transition: background 0.3s ease;
+  z-index: 1;
+}
+
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  opacity: 0;
+  z-index: 2;
+}
+
+.play-button img {
+  width: 2.5vw;
+  height: auto;
+}
+
+.episode-card:hover .card-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.5) 80%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+}
+
+.episode-card:hover .play-button {
+  opacity: 1;
+}
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  z-index: 2;
+  transition: opacity 0.2s;
+}
+.play-button img {
+  width: 3vw;
+  height: auto;
+}
+
+.ep-type-tag {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.ep-info {
+  margin-top: 10px;
+}
+
+.ep-title {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ep-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ep-meta {
+  color: #777;
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.ep-type-tag {
+  background: #2a2a2a;
+  color: #bbb;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: capitalize;
+}
+
+/* Modal Trailer */
+.trailer-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trailer-wrapper {
+  position: relative;
+  width: 70%;
+  height: 70%;
+  background: black;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+}
+
+.video-container {
+  width: 100%;
+  height: 100%;
+}
+
+.video-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.close-trailer {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2.5rem;
+  cursor: pointer;
+  z-index: 10001;
+  line-height: 1;
+  transition: transform 0.2s;
+}
+
+.close-trailer:hover {
+  transform: scale(1.2);
+  color: #f7b733;
+}
+
+/* Dropdown avec scroll limité */
+.season-dropdown {
+  position: absolute;
+  background: #222;
+  border-radius: 8px;
+  width: 150px;
+  max-height: 250px; /* Limite la hauteur */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-icon {
+  width: 14px;
+  height: 14px;
+  opacity: 0.6;
+  transition: 0.2s;}
+
+.dropdown-scroll-content {
+  overflow-y: auto;
+  scrollbar-width: none; /* Cache la scrollbar sur Firefox */
+}
+
+.dropdown-scroll-content::-webkit-scrollbar {
+  display: none; /* Cache la scrollbar sur Chrome/Safari */
+}
+
+.scroll-indicator {
+  text-align: center;
+  background: linear-gradient(transparent, #222);
+  padding: 5px;
+}

@@ -10,15 +10,21 @@ import {ActorsListPage} from './pages/Actors/actors-list-page/actors-list-page';
 import {ActorPage} from './pages/Actors/actor-page/actor-page';
 import {SerieListPage} from './pages/Series/serie-list-page/serie-list-page';
 import {SeriePage} from './pages/Series/serie-page/serie-page';
-import {EpisodePage} from './pages/Series/episode-page/episode-page';
+import {EpisodePage as SeriesEpisodePage} from './pages/Series/episode-page/episode-page';
+import {AnimeListPage} from './pages/Animes/anime-list-page/anime-list-page';
+import {AnimePage} from './pages/Animes/anime-page/anime-page';
+import {EpisodePage as AnimesEpisodePage} from './pages/Animes/episode-page/episode-page';
 
 export const routes: Routes = [
   {path: '', component: HomePage},
   {path: 'movies', component: MovieListPage},
   {path: 'movies/:slug', component: MoviePage},
-  {path: 'series', component: SerieListPage},
-  {path: 'series/:slug', component: SeriePage},
-  {path: 'series/:slug/:season-:episode', component: EpisodePage},
+  {path: 'series', component: AnimeListPage},
+  {path: 'series/:slug', component: AnimePage},
+  {path: 'series/:slug/:season-:episode', component: SeriesEpisodePage},
+  {path: 'animes', component: SerieListPage},
+  {path: 'animes/:slug', component: SeriePage},
+  {path: 'animes/:slug/:season-:episode', component: AnimesEpisodePage},
   {path: 'login', component: LoginPage},
   {path: 'signup', component: SignupPage},
   { path: 'genre/:type', component: GenrePage },

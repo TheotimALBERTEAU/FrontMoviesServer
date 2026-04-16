@@ -1,0 +1,121 @@
+<div class="anime-container">
+  <div class="player-section-wrapper">
+    <div class="anime-player">
+      <video #videoPlayer [src]="episode.link" controls (loadedmetadata)="onMetadataLoaded()"
+             (play)="startProgressTimer()" (pause)="stopProgressTimer(); saveProgress()">
+      </video>
+    </div>
+
+    <div class="player-nav-controls">
+      <button class="nav-btn-ep" (click)="changeEpisode(-1)" *ngIf="episodeNum !== '1'">
+        <span>‹</span> Précédent
+      </button>
+      <div class="spacer" *ngIf="episodeNum === '1'"></div>
+      <button class="nav-btn-ep" (click)="changeEpisode(1)" *ngIf="parseInt(episodeNum) != seasonEpisodes.length">
+        Suivant <span>›</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="anime-desc">
+    <div class="content-wrapper">
+      <div class="poster-side">
+        <img [src]="episode.cover" [alt]="episode.title">
+      </div>
+
+      <div class="info-side">
+        <div class="animes-breadcrumb" (click)="router.navigate(['/animes', episode.slug])">
+          #{{ episode.animeTitle }}
+        </div>
+
+        <div class="header-info">
+          <h2>{{episode.title}}</h2>
+          <div class="meta-line">
+            <span>{{episode.duration}} min</span>
+            <span>{{episode.year}}</span>
+          </div>
+        </div>
+
+        <div class="actions-line">
+          <div class="rating-circle-container" [style.--percentage]="episode.rating * 10">
+            <div class="rating-circle"></div>
+            <span class="rating-value">{{episode.rating}}</span>
+          </div>
+          <div class="trailer-container" (click)="openTrailer()" *ngIf="episode.trailer">
+            <img src="Assets/Movies/trailer-icon.svg" alt="trailer" class="trailer-icon">
+          </div>
+        </div>
+
+        <p class="synopsis">{{episode.synopsis}}</p>
+
+        <div class="specs-grid">
+          <div class="spec-item">
+            <span class="label">Genre</span>
+            <div class="value genre-container">
+              @for (genre of episode.genre; track genre; let last = $last) {
+                <span class="genre-item" (click)="onClickGoGenre(genre)">
+                  {{ genre }}{{ !last ? ',' : ''}}
+                </span>
+              }
+            </div>
+          </div>
+          <div class="spec-item">
+            <span class="label">Date de sortie</span>
+            <span class="value">{{episode.year}}</span>
+          </div>
+          <div class="spec-item">
+            <span class="label">Distribution</span>
+            <div class="value casting-container">
+              @for (actor of episode.casting; track actor; let last = $last) {
+                <span class="actor-name" (click)="onClickGoActor(actor.slug)">
+                  {{ actor.name }}{{ !last ? ', ' : '' }}
+                </span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="episodes-side">
+        <div class="episodes-header-mini">
+          <div class="season-selector-wrapper">
+            <div class="season-text-selector" (click)="isSeasonDropdownOpen = !isSeasonDropdownOpen">
+              <img src="Assets/Movies/filter-icon.svg" alt="filter" class="filter-icon-mini">
+              <span>Saison {{ seasonNum }}</span>
+            </div>
+
+            <div class="season-dropdown" *ngIf="isSeasonDropdownOpen">
+              @for (s of [].constructor(totalSeasons); track $index) {
+                <div class="season-option"
+                     [class.active]="($index + 1).toString() === seasonNum"
+                     (click)="changeSeason($index + 1)">
+                  Saison {{ $index + 1 }}
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="episodes-list-sidebar">
+          @for (ep of seasonEpisodes; track ep.episode) {
+            <div class="episode-row-mini"
+                 [class.active-ep]="ep.episode == episodeNum && seasonNum === activeSeasonNum"
+                 (click)="router.navigate(['/animes', episode.slug, seasonNum + '-' + ep.episode])">
+              <span class="ep-num">{{ ep.episode }}</span>
+              <span class="ep-name">{{ ep.title }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="trailer-modal-overlay" *ngIf="isTrailerOpen" (click)="closeTrailer()">
+  <div class="trailer-wrapper" (click)="$event.stopPropagation()">
+    <button class="close-trailer" (click)="closeTrailer()">&times;</button>
+    <div class="video-container">
+      <iframe *ngIf="safeTrailerUrl" [src]="safeTrailerUrl" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+    </div>
+  </div>
+</div>
