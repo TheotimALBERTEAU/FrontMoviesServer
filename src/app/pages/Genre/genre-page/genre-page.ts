@@ -75,9 +75,10 @@ export class GenrePage implements OnInit {
     // On récupère les deux sources en même temps
     forkJoin({
       movies: this.genreService.getMoviesByGenre(this.genreTitle),
-      series: this.genreService.getSeriesByGenre(this.genreTitle)
-    }).subscribe(({ movies, series }) => {
-      this.allContent = [...movies.data, ...series.data];
+      series: this.genreService.getSeriesByGenre(this.genreTitle),
+      animes: this.genreService.getAnimesByGenre(this.genreTitle)
+    }).subscribe(({ movies, series, animes }) => {
+      this.allContent = [...movies.data, ...series.data, ...animes.data];
 
       this.generateDynamicOptions();
       this.applyFilters(); // Initialise l'affichage
