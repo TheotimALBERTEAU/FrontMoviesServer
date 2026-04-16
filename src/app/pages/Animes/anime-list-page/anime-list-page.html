@@ -88,8 +88,8 @@
 
 <section id="animes-grid">
   <div class="animes-grid">
-    <div class="anime-card" *ngFor="let anime of displayedSeries">
-      <div class="anime-card-background" [style.background-image]="'url(' + anime.cover + ')'" (click)="onClickGoSerie(anime.slug)">
+    <div class="anime-card" *ngFor="let anime of displayedAnimes">
+      <div class="anime-card-background" [style.background-image]="'url(' + anime.cover + ')'" (click)="onClickGoAnime(anime.slug)">
         <div class="card-overlay"></div>
         <div class="play-button"><img src="Assets/Movies/play-button.png"></div>
       </div>
@@ -104,7 +104,7 @@
     </div>
   </div>
 
-  <div class="pagination-container" *ngIf="filteredSeries.length > pageSize">
+  <div class="pagination-container" *ngIf="filteredAnimes.length > pageSize">
     <button class="nav-btn" (click)='prevPage()' *ngIf="currentPage > 1">
       <svg class="icon-svg" viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M15 18l-8-8 8-8" />
