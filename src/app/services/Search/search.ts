@@ -20,6 +20,10 @@ export class Search {
     return this.http.get(`${this.ApiUrl}/series/search?q=${query}`);
   }
 
+  searchAnimes(query: string): Observable<any> {
+    return this.http.get(`${this.ApiUrl}/animes/search?q=${query}`);
+  }
+
   searchActors(query: string): Observable<any> {
     return this.http.get(`${this.ApiUrl}/actors/search?q=${query}`);
   }

@@ -25,6 +25,7 @@ export class App implements OnInit {
   public searchQuery = '';
   public moviesResults: any[] = [];
   public seriesResults: any[] = [];
+  public animesResults: any[] = [];
   public actorsResults: any[] = [];
   public allResults: any[] = [];
   public isLoading = false;
@@ -72,6 +73,7 @@ export class App implements OnInit {
     this.searchQuery = '';
     this.moviesResults = [];
     this.seriesResults = [];
+    this.animesResults = [];
     this.actorsResults = [];
     this.allResults = [];
     this.cdr.detectChanges();
@@ -84,14 +86,16 @@ export class App implements OnInit {
       forkJoin({
         movies: this.searchService.searchMovies(this.searchQuery),
         series: this.searchService.searchSeries(this.searchQuery),
+        animes: this.searchService.searchAnimes(this.searchQuery),
         actors: this.searchService.searchActors(this.searchQuery)
       }).subscribe({
         next: (res) => {
           const movies = res.movies.code === "200" ? res.movies.data : [];
           const series = res.series.code === "200" ? res.series.data : [];
+          const animes = res.animes.code === "200" ? res.animes.data : [];
           const actors = res.actors.code === "200" ? res.actors.data : [];
 
-          this.allResults = [...series, ...movies].slice(0, 8);
+          this.allResults = [...animes, ...series, ...movies].slice(0, 8);
           this.actorsResults = actors.slice(0, 4);
 
           this.isLoading = false;
@@ -106,6 +110,7 @@ export class App implements OnInit {
     } else {
       this.moviesResults = [];
       this.seriesResults = [];
+      this.animesResults = [];
       this.actorsResults = [];
       this.allResults = [];
       this.isLoading = false;

@@ -8,6 +8,7 @@ import {Search} from '../../../services/Search/search';
 import {MoviesProgresses} from '../../../services/Home/movies-progresses';
 import {Router} from '@angular/router';
 import {SeriesList} from '../../../services/Series/series-list';
+import {AnimesList} from '../../../services/Animes/animes-list';
 
 @Component({
   selector: 'app-home-page',
@@ -19,6 +20,7 @@ import {SeriesList} from '../../../services/Series/series-list';
 export class HomePage implements OnInit, OnDestroy {
   constructor(private moviesService: MoviesList,
               private seriesService: SeriesList,
+              private animesService: AnimesList,
               private genreService: GenreService,
               private homeService: MoviesProgresses,
               public authService: Auth,
@@ -50,6 +52,11 @@ export class HomePage implements OnInit, OnDestroy {
   public canScrollLeftSeries = false;
   public canScrollRightSeries = false;
 
+  @ViewChild('animesSlider') animesSlider!: ElementRef;
+  public latestAnimes: any[] = [];
+  public canScrollLeftAnimes = false;
+  public canScrollRightAnimes = false;
+
 
   ngOnInit() {
     const categories = ['Action', 'Animation', 'Comédie', 'Crime', 'Horreur'];
@@ -70,6 +77,7 @@ export class HomePage implements OnInit, OnDestroy {
         this.startTimer();
         setTimeout(() => this.checkButtons(), 200);
       }
+      this.cdr.detectChanges()
     });
 
     this.seriesService.getSeries().subscribe(res => {
@@ -77,6 +85,15 @@ export class HomePage implements OnInit, OnDestroy {
         this.latestSeries = res.data.slice(0, 10);
         setTimeout(() => this.checkButtons(), 200);
       }
+      this.cdr.detectChanges()
+    });
+
+    this.animesService.getAnimes().subscribe(res => {
+      if (res && res.data) {
+        this.latestAnimes = res.data.slice(0, 10);
+        setTimeout(() => this.checkButtons(), 200);
+      }
+      this.cdr.detectChanges()
     });
 
     const requests = categories.map(name => this.genreService.getGenreMetadata(name));
@@ -126,18 +143,22 @@ export class HomePage implements OnInit, OnDestroy {
     }
   }
 
-  scrollHoriz(direction: number, type: 'movies' | 'series') {
-    const el = type === 'movies' ? this.moviesSlider.nativeElement : this.seriesSlider.nativeElement;
+  scrollHoriz(direction: number, type: 'movies' | 'series' | 'animes') {
+    let el: HTMLElement;
+    if (type === 'movies') {
+      el = this.moviesSlider.nativeElement;
+    } else if (type === 'series') {
+      el = this.seriesSlider.nativeElement;
+    } else {
+      el = this.animesSlider.nativeElement;
+    }
     const card = el.querySelector('.media-card-horiz');
     if (!card) return;
-
     const scrollAmount = card.getBoundingClientRect().width + 12;
-
     el.scrollBy({
       left: scrollAmount * direction,
       behavior: 'smooth'
     });
-
     setTimeout(() => this.checkButtons(), 500);
   }
 
@@ -162,6 +183,11 @@ export class HomePage implements OnInit, OnDestroy {
       this.canScrollLeftSeries = res.canLeft;
       this.canScrollRightSeries = res.canRight;
     }
+    if (this.animesSlider?.nativeElement) {
+      const res = check(this.animesSlider.nativeElement);
+      this.canScrollLeftAnimes = res.canLeft;
+      this.canScrollRightAnimes= res.canRight;
+    }
     this.cdr.detectChanges();
   }
 
@@ -183,6 +209,10 @@ export class HomePage implements OnInit, OnDestroy {
     this.seriesService.goSerie(slug);
   }
 
+  onClickGoAnime(slug: any) {
+    this.animesService.goAnime(slug);
+  }
+
   onClickGoGenre(genre: any) {
     this.moviesService.goGenre(genre.toLowerCase())
   }
@@ -192,6 +222,8 @@ export class HomePage implements OnInit, OnDestroy {
     if (!media) return;
     if (item.mediaType === 'Series') {
       this.router.navigate(['/series', media.slug, media.seasonNumber + "-" + media.episodeNumber]);
+    } else if (item.mediaType === 'Animes') {
+      this.router.navigate(['/animes', media.slug, media.seasonNumber + "-" + media.episodeNumber]);
     } else {
       this.router.navigate(['/movies', media.slug]);
     }
@@ -203,6 +235,10 @@ export class HomePage implements OnInit, OnDestroy {
 
   onClickGoSeriePage() {
     this.router.navigate(['/series']);
+  }
+
+  onClickGoAnimePage() {
+    this.router.navigate(['/animes']);
   }
 
   ngOnDestroy() {

@@ -7,6 +7,7 @@ import {forkJoin} from 'rxjs';
 import {CommonModule} from '@angular/common';
 import {Search} from '../../../services/Search/search';
 import {SeriesList} from '../../../services/Series/series-list';
+import {AnimesList} from '../../../services/Animes/animes-list';
 
 @Component({
   selector: 'app-search-page',
@@ -22,7 +23,7 @@ export class SearchPage implements OnInit {
 
   // Système de Filtres
   public openFilter: string | null = null;
-  public activeFilters = { type: '', genre: [] as string[], release: '', vote_average: '', sort: 'created_at' };
+  public activeFilters = { type: '', genre: [] as string[], release: '', vote_average: '', sort: 'random' };
 
   public dynamicOptions = {
     types: ['Film', 'Série'],
@@ -42,6 +43,7 @@ export class SearchPage implements OnInit {
   constructor(
     private moviesService: MoviesList,
     private seriesService: SeriesList,
+    private animesService: AnimesList,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private actorsService: ActorsList,
@@ -70,13 +72,15 @@ export class SearchPage implements OnInit {
     forkJoin({
       movies: this.searchService.searchMovies(this.query),
       series: this.searchService.searchSeries(this.query),
+      animes: this.searchService.searchAnimes(this.query),
       actors: this.searchService.searchActors(this.query)
     }).subscribe({
       next: (res) => {
         const movies = res.movies.code === "200" ? res.movies.data : [];
         const series = res.series.code === "200" ? res.series.data : [];
+        const animes = res.animes.code === "200" ? res.animes.data : [];
 
-        this.allMediaContent = [...movies, ...series];
+        this.allMediaContent = [...movies, ...series, ...animes];
         this.resultsActorsList = res.actors.code === "200" ? res.actors.data : [];
 
         this.generateDynamicOptions();
@@ -118,7 +122,7 @@ export class SearchPage implements OnInit {
   }
 
   resetFilters() {
-    this.activeFilters = { type: '', genre: [], release: '', vote_average: '', sort: 'created_at' };
+    this.activeFilters = { type: '', genre: [], release: '', vote_average: '', sort: 'random' };
   }
 
   submitFilters() {
