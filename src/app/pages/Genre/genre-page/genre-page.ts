@@ -4,6 +4,8 @@ import { GenreService } from '../../../services/Genre/genre-service';
 import { CommonModule } from '@angular/common';
 import { MoviesList } from '../../../services/Movies/movies-list';
 import { forkJoin } from 'rxjs';
+import {Favorites} from '../../../services/Favorites/favorites';
+import {Auth} from '../../../services/Users/auth';
 
 @Component({
   selector: 'app-genre-page',
@@ -40,16 +42,18 @@ export class GenrePage implements OnInit {
     'za': 'Nom Z-A'
   };
 
+  public userId: string | null = null;
+
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private genreService: GenreService,
     private moviesService: MoviesList,
     private cdr: ChangeDetectorRef,
-    private eRef: ElementRef
+    private eRef: ElementRef,
+  public favService: Favorites,
+  public authService: Auth,
   ) {}
 
-  // Ferme les dropdowns si on clique ailleurs
   @HostListener('document:click', ['$event'])
   clickout(event: any) {
     if (!this.eRef.nativeElement.querySelector('.filters-toolbar')?.contains(event.target)) {
@@ -58,6 +62,14 @@ export class GenrePage implements OnInit {
   }
 
   ngOnInit() {
+    this.authService.checkAuth().subscribe(() => {
+      this.userId = this.authService.getUserId();
+      if (this.userId) {
+        this.favService.loadFavorites(this.userId);
+      }
+      this.cdr.detectChanges();
+    });
+
     this.route.params.subscribe(params => {
       const rawGenre = params['type'];
 
@@ -99,6 +111,27 @@ export class GenrePage implements OnInit {
     const uniqueYears = Array.from(years).sort((a, b) => b - a);
     this.dynamicOptions.years = uniqueYears.map(y => y >= 2000 ? y.toString() : 'Ancien');
     this.dynamicOptions.years = Array.from(new Set(this.dynamicOptions.years));
+  }
+
+  toggleFav(event: Event, movie: any) {
+    event.stopPropagation();
+    if (!this.userId) return;
+
+    const typeMap: { [key: string]: 'Movies' | 'Series' | 'Animes' } = {
+      'Film': 'Movies',
+      'Série': 'Series',
+      'Animé': 'Animes'
+    };
+    const apiType = typeMap[movie.type] || 'Movies';
+
+    this.favService.toggleFavorite(this.userId, movie._id, apiType).subscribe(res => {
+      if (res.isFavorite) {
+        this.favService.favoriteIds.add(movie._id);
+      } else {
+        this.favService.favoriteIds.delete(movie._id);
+      }
+      this.cdr.detectChanges();
+    });
   }
 
   toggleFilterValue(key: 'type' | 'release' | 'vote_average', value: string) {

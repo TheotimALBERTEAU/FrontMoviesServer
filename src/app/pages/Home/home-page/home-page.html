@@ -14,7 +14,13 @@
 
       <p class="hero-synopsis">{{ heroMovies[currentIndex].synopsis }}</p>
 
-      <button class="btn-watch">Regarder maintenant</button>
+      <div class="hero-actions">
+        <button class="btn-watch">Regarder maintenant</button>
+        <button class="btn-fav-hero" (click)="toggleFav($event, heroMovies[currentIndex])" *ngIf="userId">
+          <i [class]="favService.isFavorite(heroMovies[currentIndex]._id) ? 'fas fa-heart' : 'far fa-heart'"></i>
+          {{ favService.isFavorite(heroMovies[currentIndex]._id) ? 'Retirer des favoris' : 'Ajouter aux favoris' }}
+        </button>
+      </div>
     </div>
 
     <button class="btn-pause" (click)="togglePause($event)">
@@ -138,6 +144,14 @@
       <div class="media-card-horiz" (click)="onClickGoMovie(movie.slug)">
         <div class="media-card-background-latest" [style.background-image]="'url(' + movie.cover + ')'">
           <div class="card-overlay"></div>
+
+          <div class="fav-button"
+               *ngIf="userId"
+               [class.is-fav]="favService.isFavorite(movie._id)"
+               (click)="toggleFav($event, movie)">
+            <i [class]="favService.isFavorite(movie._id) ? 'fas fa-heart active' : 'far fa-heart'"></i>
+          </div>
+
           <div class="play-button">
             <img src="../../../../Assets/Movies/play-button.png" alt="play">
           </div>
@@ -173,6 +187,14 @@
       <div class="media-card-horiz" (click)="onClickGoSerie(serie.slug)">
         <div class="media-card-background-latest" [style.background-image]="'url(' + serie.cover + ')'">
           <div class="card-overlay"></div>
+
+          <div class="fav-button"
+               *ngIf="userId"
+               [class.is-fav]="favService.isFavorite(serie._id)"
+               (click)="toggleFav($event, serie)">
+            <i [class]="favService.isFavorite(serie._id) ? 'fas fa-heart active' : 'far fa-heart'"></i>
+          </div>
+
           <div class="play-button">
             <img src="../../../../Assets/Movies/play-button.png" alt="play">
           </div>
@@ -208,6 +230,14 @@
       <div class="media-card-horiz" (click)="onClickGoAnime(anime.slug)">
         <div class="media-card-background-latest" [style.background-image]="'url(' + anime.cover + ')'">
           <div class="card-overlay"></div>
+
+          <div class="fav-button"
+               *ngIf="userId"
+               [class.is-fav]="favService.isFavorite(anime._id)"
+               (click)="toggleFav($event, anime)">
+            <i [class]="favService.isFavorite(anime._id) ? 'fas fa-heart active' : 'far fa-heart'"></i>
+          </div>
+
           <div class="play-button">
             <img src="../../../../Assets/Movies/play-button.png" alt="play">
           </div>

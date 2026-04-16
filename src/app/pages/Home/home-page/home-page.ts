@@ -9,6 +9,7 @@ import {MoviesProgresses} from '../../../services/Home/movies-progresses';
 import {Router} from '@angular/router';
 import {SeriesList} from '../../../services/Series/series-list';
 import {AnimesList} from '../../../services/Animes/animes-list';
+import {Favorites} from '../../../services/Favorites/favorites';
 
 @Component({
   selector: 'app-home-page',
@@ -24,6 +25,7 @@ export class HomePage implements OnInit, OnDestroy {
               private genreService: GenreService,
               private homeService: MoviesProgresses,
               public authService: Auth,
+              public favService: Favorites,
               private cdr: ChangeDetectorRef,
               private router: Router,) {}
 
@@ -34,6 +36,7 @@ export class HomePage implements OnInit, OnDestroy {
   public progress: number = 0;
   private autoPlaySub?: Subscription;
   public isPaused: boolean = false;
+  public userId: string | null = null;
 
   // Slider "Reprendre la lecture"
   @ViewChild('slider') slider!: ElementRef;
@@ -62,11 +65,12 @@ export class HomePage implements OnInit, OnDestroy {
     const categories = ['Action', 'Animation', 'Comédie', 'Crime', 'Horreur'];
 
     this.authService.checkAuth().subscribe(() => {
-      const userId = this.authService.getUserId();
-      if (userId) {
-        this.loadMovies(userId);
+      this.userId = this.authService.getUserId();
+      if (this.userId) {
+        this.loadMovies(this.userId);
+        this.favService.loadFavorites(this.userId);
       }
-      this.cdr.detectChanges()
+      this.cdr.detectChanges();
     });
 
     this.moviesService.getMovies().subscribe(res => {
@@ -125,6 +129,30 @@ export class HomePage implements OnInit, OnDestroy {
   prevSlide() {
     this.currentIndex = (this.currentIndex - 1 + this.heroMovies.length) % this.heroMovies.length;
     this.startTimer();
+  }
+
+  toggleFav(event: Event, media: any) {
+    event.stopPropagation();
+    if (!this.userId) return;
+
+    let type = media.type;
+
+    const typeMap: { [key: string]: 'Movies' | 'Series' | 'Animes' } = {
+      'Film': 'Movies',
+      'Série': 'Series',
+      'Animé': 'Animes',
+    };
+
+    const apiType = typeMap[type] || 'Movies';
+
+    this.favService.toggleFavorite(this.userId, media._id, apiType).subscribe(res => {
+      if (res.isFavorite) {
+        this.favService.favoriteIds.add(media._id);
+      } else {
+        this.favService.favoriteIds.delete(media._id);
+      }
+      this.cdr.detectChanges();
+    });
   }
 
   togglePause(event: Event) {

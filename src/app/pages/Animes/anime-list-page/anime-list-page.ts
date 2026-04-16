@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { GenreService } from '../../../services/Genre/genre-service';
 import { forkJoin } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import {Favorites} from '../../../services/Favorites/favorites';
+import {Auth} from '../../../services/Users/auth';
 
 @Component({
   selector: 'app-anime-list-page',
@@ -39,6 +41,8 @@ export class AnimeListPage implements OnInit {
     'za': 'Nom Z-A'
   };
 
+  public userId: string | null = null;
+
   constructor(
     private animesService: AnimesList,
     private cdr: ChangeDetectorRef,
@@ -46,6 +50,8 @@ export class AnimeListPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private eRef: ElementRef,
+    public favService: Favorites,
+    public authService: Auth,
   ) {}
 
   @HostListener('document:click', ['$event'])
@@ -58,6 +64,15 @@ export class AnimeListPage implements OnInit {
 
   ngOnInit() {
     const categories = ['Action', 'Animation', 'Comédie', 'Crime', 'Horreur'];
+
+    this.authService.checkAuth().subscribe(() => {
+      this.userId = this.authService.getUserId();
+      if (this.userId) {
+        this.favService.loadFavorites(this.userId);
+        console.log(this.userId)
+      }
+      this.cdr.detectChanges();
+    });
 
     this.animesService.getAnimes().subscribe({
       next: data => {
@@ -102,6 +117,27 @@ export class AnimeListPage implements OnInit {
     const uniqueYears = Array.from(years).sort((a, b) => b - a);
     const yearLabels = uniqueYears.map(y => y >= 2000 ? y.toString() : 'Ancien');
     this.dynamicOptions.years = Array.from(new Set(yearLabels));
+  }
+
+  toggleFav(event: Event, movie: any) {
+    event.stopPropagation();
+    if (!this.userId) return;
+
+    const typeMap: { [key: string]: 'Movies' | 'Series' | 'Animes' } = {
+      'Film': 'Movies',
+      'Série': 'Series',
+      'Animé': 'Animes'
+    };
+    const apiType = typeMap[movie.type] || 'Movies';
+
+    this.favService.toggleFavorite(this.userId, movie._id, apiType).subscribe(res => {
+      if (res.isFavorite) {
+        this.favService.favoriteIds.add(movie._id);
+      } else {
+        this.favService.favoriteIds.delete(movie._id);
+      }
+      this.cdr.detectChanges();
+    });
   }
 
   toggleFilterValue(key: 'type' | 'release' | 'vote_average', value: string) {

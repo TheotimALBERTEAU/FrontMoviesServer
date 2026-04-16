@@ -91,6 +91,14 @@
     <div class="serie-card" *ngFor="let serie of displayedSeries">
       <div class="serie-card-background" [style.background-image]="'url(' + serie.cover + ')'" (click)="onClickGoSerie(serie.slug)">
         <div class="card-overlay"></div>
+
+        <div class="fav-button"
+             *ngIf="userId"
+             [class.is-fav]="favService.isFavorite(serie._id)"
+             (click)="toggleFav($event, serie)">
+          <i [class]="favService.isFavorite(serie._id) ? 'fas fa-heart active' : 'far fa-heart'"></i>
+        </div>
+
         <div class="play-button"><img src="Assets/Movies/play-button.png"></div>
       </div>
       <div class="card-content">

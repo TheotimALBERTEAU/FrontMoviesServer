@@ -244,6 +244,45 @@
   );
 }
 
+.fav-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.6);
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  opacity: 0;
+  visibility: hidden;
+}
+
+.serie-card:hover .fav-button,
+.fav-button.is-fav {
+  opacity: 1;
+  visibility: visible;
+}
+
+.fav-button i {
+  color: white;
+  font-size: 1.1rem;
+}
+
+.fav-button i.active {
+  color: #e50914;
+}
+
+.fav-button:hover {
+  transform: scale(1.1);
+  background: rgba(0, 0, 0, 0.9);
+}
+
 .play-button {
   position: absolute;
   opacity: 0;

@@ -51,7 +51,7 @@ export class MovieListPage implements OnInit {
     private router: Router,
     private eRef: ElementRef,
     public favService: Favorites,
-    private authService: Auth,
+    public authService: Auth,
   ) {}
 
   @HostListener('document:click', ['$event'])
@@ -63,7 +63,14 @@ export class MovieListPage implements OnInit {
 
   ngOnInit() {
     const categories = ['Action', 'Animation', 'Comédie', 'Crime', 'Horreur'];
-    this.userId = this.authService.getUserId();
+
+    this.authService.checkAuth().subscribe(() => {
+      this.userId = this.authService.getUserId();
+      if (this.userId) {
+        this.favService.loadFavorites(this.userId);
+      }
+      this.cdr.detectChanges();
+    });
 
     this.moviesService.getMovies().subscribe({
       next: data => {
@@ -114,6 +121,27 @@ export class MovieListPage implements OnInit {
     const uniqueYears = Array.from(years).sort((a, b) => b - a);
     const yearLabels = uniqueYears.map(y => y >= 2000 ? y.toString() : 'Ancien');
     this.dynamicOptions.years = Array.from(new Set(yearLabels));
+  }
+
+  toggleFav(event: Event, movie: any) {
+    event.stopPropagation();
+    if (!this.userId) return;
+
+    const typeMap: { [key: string]: 'Movies' | 'Series' | 'Animes' } = {
+      'Film': 'Movies',
+      'Série': 'Series',
+      'Animé': 'Animes'
+    };
+    const apiType = typeMap[movie.type] || 'Movies';
+
+    this.favService.toggleFavorite(this.userId, movie._id, apiType).subscribe(res => {
+      if (res.isFavorite) {
+        this.favService.favoriteIds.add(movie._id);
+      } else {
+        this.favService.favoriteIds.delete(movie._id);
+      }
+      this.cdr.detectChanges();
+    });
   }
 
   toggleFilterValue(key: 'type' | 'release' | 'vote_average', value: string) {
@@ -198,23 +226,11 @@ export class MovieListPage implements OnInit {
     if (this.currentPage > 1) window.scrollTo({ top: 400, behavior: 'smooth' });
   }
 
-  toggleFav(event: Event, movie: any) {
-    event.stopPropagation();
-    if (!this.userId) return;
-
-    this.favService.toggleFavorite(this.userId, movie._id, movie.type).subscribe(res => {
-      if (res.isFavorite) {
-        this.favService.favoriteIds.add(movie._id);
-      } else {
-        this.favService.favoriteIds.delete(movie._id);
-      }
-      this.cdr.detectChanges();
-    });
-  }
-
   nextPage() { if (this.hasNext()) { this.currentPage++; this.updateDisplay(); } }
   prevPage() { if (this.currentPage > 1) { this.currentPage--; this.updateDisplay(); } }
   hasNext(): boolean { return (this.currentPage * this.pageSize) < this.filteredMovies.length; }
   onClickGoMovie(slug: any) { this.moviesService.goMovie(slug); }
-  onClickGoGenre(genre: any) { this.moviesService.goGenre(genre.toLowerCase()); }
+  onClickGoGenre(genre: any) {
+    this.router.navigate(['/movies'], { queryParams: { genre: genre } });
+  }
 }

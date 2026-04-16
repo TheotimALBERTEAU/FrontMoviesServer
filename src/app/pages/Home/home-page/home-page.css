@@ -85,6 +85,41 @@
   transition: transform 0.2s, background 0.2s;
 }
 
+
+
+/* --- Bouton dans la Hero --- */
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn-fav-hero {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-fav-hero:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.btn-fav-hero i {
+  font-size: 1.2rem;
+}
+
+.btn-fav-hero i.fas {
+  color: #e50914;
+}
+
 .hero-nav {
   position: absolute;
   right: 3%;
@@ -316,6 +351,41 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.2);
   transition: background 0.3s;
+}
+
+/* --- Bouton dans les Sliders --- */
+.fav-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.6);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Visible au hover ou si c'est un favori */
+.media-card-horiz:hover .fav-button,
+.fav-button.is-fav {
+  opacity: 1;
+  visibility: visible;
+}
+
+.fav-button i {
+  color: white;
+  font-size: 1.1rem;
+}
+
+.fav-button i.active {
+  color: #e50914;
 }
 
 .play-button {

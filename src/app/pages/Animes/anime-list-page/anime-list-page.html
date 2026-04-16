@@ -91,6 +91,14 @@
     <div class="anime-card" *ngFor="let anime of displayedAnimes">
       <div class="anime-card-background" [style.background-image]="'url(' + anime.cover + ')'" (click)="onClickGoAnime(anime.slug)">
         <div class="card-overlay"></div>
+
+        <div class="fav-button"
+             *ngIf="userId"
+             [class.is-fav]="favService.isFavorite(anime._id)"
+             (click)="toggleFav($event, anime)">
+          <i [class]="favService.isFavorite(anime._id) ? 'fas fa-heart active' : 'far fa-heart'"></i>
+        </div>
+
         <div class="play-button"><img src="Assets/Movies/play-button.png"></div>
       </div>
       <div class="card-content">

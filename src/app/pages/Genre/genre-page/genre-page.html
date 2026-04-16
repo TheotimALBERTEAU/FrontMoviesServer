@@ -82,6 +82,14 @@
       <div class="movie-card">
         <div class="movie-card-background" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoContent(movie)">
           <div class="card-overlay"></div>
+
+          <div class="fav-button"
+               *ngIf="userId"
+               [class.is-fav]="favService.isFavorite(movie._id)"
+               (click)="toggleFav($event, movie)">
+            <i [class]="favService.isFavorite(movie._id) ? 'fas fa-heart active' : 'far fa-heart'"></i>
+          </div>
+
           <div class="play-button">
             <img src="../../../../Assets/Movies/play-button.png" alt="play-button">
           </div>
