@@ -301,9 +301,12 @@ body {
   grid-template-columns: repeat(8, 1fr);
   gap: 1rem;
   padding: 0 2rem 2rem 2rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .episode-card {
+  min-width: 0;
   width: 100%;
   cursor: pointer;
   transition: transform 0.2s;
@@ -311,8 +314,10 @@ body {
 
 .ep-cover-wrapper {
   position: relative;
-  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 16 / 9;
   border-radius: 8px;
+  overflow: hidden;
 }
 
 .ep-cover-wrapper img {

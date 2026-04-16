@@ -45,8 +45,8 @@ export class AnimePage implements OnInit {
             this.details = data.data;
             this.authService.getUserProgress().subscribe(() => {
               this.userProgress = this.authService.currentUser.progress;
-              this.cdr.detectChanges();
             });
+            this.cdr.detectChanges();
           }
         }
       });
@@ -99,8 +99,8 @@ export class AnimePage implements OnInit {
       if (res.code === "200") {
         this.currentSeason = res.data;
       }
-      this.cdr.detectChanges();
     });
+    this.cdr.detectChanges();
   }
 
   playFirstEpisode() {

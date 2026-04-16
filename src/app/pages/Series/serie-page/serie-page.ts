@@ -45,8 +45,8 @@ export class SeriePage implements OnInit {
             this.details = data.data;
             this.authService.getUserProgress().subscribe(() => {
               this.userProgress = this.authService.currentUser.progress;
-              this.cdr.detectChanges();
             });
+            this.cdr.detectChanges();
           }
         }
       });
