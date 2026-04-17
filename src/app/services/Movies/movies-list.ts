@@ -28,7 +28,6 @@ export class MoviesList {
   }
 
   goMedia(media: any) {
-    console.log(media);
     if (media.type === "Série") {
       this.router.navigate(['/series/' + media.slug]);
     } else if (media.type === "Animé") {

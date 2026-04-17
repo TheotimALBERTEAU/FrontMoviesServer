@@ -9,6 +9,7 @@ import {Sidebar} from './sidebar/sidebar';
 import {ActorsList} from './services/Actors/actors-list';
 import {forkJoin} from 'rxjs';
 import {Search} from './services/Search/search';
+import {Profile} from './services/Users/profile';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +33,7 @@ export class App implements OnInit {
 
   constructor(private router: Router,
               public authService: Auth,
+              private profileService: Profile,
               private cdr: ChangeDetectorRef,
               public moviesService: MoviesList,
               public sidebarService: SidebarService,
@@ -116,6 +118,29 @@ export class App implements OnInit {
       this.isLoading = false;
       this.cdr.detectChanges();
     }
+  }
+
+  onClickAddToHistory(item: any) {
+    console.log(item)
+    const userId = this.authService.getUserId();
+    if (!userId || !item._id) return;
+
+    // Mapping pour convertir tes types français en types Backend
+    const typeMapping: { [key: string]: string } = {
+      'Film': 'Movies',
+      'Série': 'Series',
+      'Animé': 'Animes'
+    };
+
+    const mediaType = typeMapping[item.type] || item.type;
+
+    this.profileService.addToHistory(userId, item._id, mediaType).subscribe({
+      next: (data: any) => {
+        if (data.code === "200") {
+          console.log('Historique mis à jour avec le type :', mediaType);
+        }
+      }
+    });
   }
 
   OnClickGoHome() { this.router.navigate(['/']); }

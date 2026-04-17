@@ -85,7 +85,7 @@
         <div class="media-card">
           <div class="media-card-background"
                [style.background-image]="'url(' + media.cover + ')'"
-               (click)="onClickGoMedia(media)">
+               (click)="onClickGoMedia(media); onClickAddToHistory(media)">
             <div class="card-overlay"></div>
             <div class="play-button">
               <img src="../../../../Assets/Movies/play-button.png" alt="play-button">

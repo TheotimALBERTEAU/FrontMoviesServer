@@ -8,6 +8,8 @@ import {CommonModule} from '@angular/common';
 import {Search} from '../../../services/Search/search';
 import {SeriesList} from '../../../services/Series/series-list';
 import {AnimesList} from '../../../services/Animes/animes-list';
+import {Auth} from '../../../services/Users/auth';
+import {Profile} from '../../../services/Users/profile';
 
 @Component({
   selector: 'app-search-page',
@@ -43,6 +45,8 @@ export class SearchPage implements OnInit {
   constructor(
     private moviesService: MoviesList,
     private seriesService: SeriesList,
+    public authService: Auth,
+    private profileService: Profile,
     private animesService: AnimesList,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
@@ -169,8 +173,37 @@ export class SearchPage implements OnInit {
     this.cdr.detectChanges();
   }
 
+  onClickAddToHistory(item: any) {
+    console.log(item)
+    const userId = this.authService.getUserId();
+    if (!userId || !item._id) return;
+
+    // Mapping pour convertir tes types français en types Backend
+    const typeMapping: { [key: string]: string } = {
+      'Film': 'Movies',
+      'Série': 'Series',
+      'Animé': 'Animes'
+    };
+
+    const mediaType = typeMapping[item.type] || item.type;
+
+    this.profileService.addToHistory(userId, item._id, mediaType).subscribe({
+      next: (data: any) => {
+        if (data.code === "200") {
+          console.log('Historique mis à jour avec le type :', mediaType);
+        }
+      }
+    });
+  }
+
   onClickGoMedia(media: any) {
-    media.type === "Série" ? this.seriesService.goSerie(media.slug) : this.moviesService.goMovie(media.slug);
+    if (media.type === "Série") {
+      this.seriesService.goSerie(media.slug)
+    } else if (media.type === "Animé") {
+      this.animesService.goAnime(media.slug);
+    } else {
+      this.moviesService.goMovie(media.slug);
+    }
   }
 
   onClickGoActor(actorSlug: any) {

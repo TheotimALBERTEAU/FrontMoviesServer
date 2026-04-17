@@ -13,7 +13,7 @@
     <div class="search-results-container" *ngIf="allResults.length > 0 || actorsResults.length > 0">
       <div class="result-container" *ngIf="allResults.length > 0">
         <p class="results-label">Résultats</p>
-        <div class="result-item" *ngFor="let media of allResults" (click)="moviesService.goMedia(media); closeSearch()">
+        <div class="result-item" *ngFor="let media of allResults" (click)="moviesService.goMedia(media); closeSearch(); onClickAddToHistory(media)">
           <img [src]="media.cover" class="result-poster">
           <div class="result-info">
             <p class="result-title">{{ media.title }}</p>

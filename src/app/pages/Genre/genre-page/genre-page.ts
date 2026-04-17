@@ -52,8 +52,8 @@ export class GenrePage implements OnInit {
     private profileService: Profile,
     private cdr: ChangeDetectorRef,
     private eRef: ElementRef,
-  public favService: Favorites,
-  public authService: Auth,
+    public favService: Favorites,
+    public authService: Auth,
   ) {}
 
   @HostListener('document:click', ['$event'])
