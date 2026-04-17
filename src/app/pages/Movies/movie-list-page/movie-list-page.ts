@@ -6,6 +6,7 @@ import { forkJoin } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import {Favorites} from '../../../services/Favorites/favorites';
 import {Auth} from '../../../services/Users/auth';
+import {Profile} from '../../../services/Users/profile';
 
 @Component({
   selector: 'app-movie-list-page',
@@ -52,6 +53,7 @@ export class MovieListPage implements OnInit {
     private eRef: ElementRef,
     public favService: Favorites,
     public authService: Auth,
+    private profileService: Profile,
   ) {}
 
   @HostListener('document:click', ['$event'])
@@ -224,6 +226,18 @@ export class MovieListPage implements OnInit {
     this.displayedMovies = this.filteredMovies.slice(start, start + this.pageSize);
     this.cdr.detectChanges();
     if (this.currentPage > 1) window.scrollTo({ top: 400, behavior: 'smooth' });
+  }
+
+  onClickAddToHistory(item: any) {
+    const userId = this.authService.getUserId();
+    if (!userId || !item._id) return;
+    this.profileService.addToHistory(userId, item._id, "Movies").subscribe({
+      next: (data: any) => {
+        if (data.code === "200") {
+          console.log('Movie added');
+        }
+      }
+    })
   }
 
   nextPage() { if (this.hasNext()) { this.currentPage++; this.updateDisplay(); } }

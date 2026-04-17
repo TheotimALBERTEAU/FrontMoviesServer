@@ -89,7 +89,7 @@
 <section id="animes-grid">
   <div class="animes-grid">
     <div class="anime-card" *ngFor="let anime of displayedAnimes">
-      <div class="anime-card-background" [style.background-image]="'url(' + anime.cover + ')'" (click)="onClickGoAnime(anime.slug)">
+      <div class="anime-card-background" [style.background-image]="'url(' + anime.cover + ')'" (click)="onClickGoAnime(anime.slug); onClickAddToHistory(anime)">
         <div class="card-overlay"></div>
 
         <div class="fav-button"

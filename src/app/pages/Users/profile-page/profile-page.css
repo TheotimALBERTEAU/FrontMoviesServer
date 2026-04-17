@@ -83,25 +83,31 @@
   border-bottom: 3px solid #e50914;
 }
 
-/* Grille 3 colonnes */
 .minimal-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 40px auto;
   padding: 0 20px;
 }
 
+/* Alignement HORIZONTAL (Image à gauche, texte à droite) */
 .mini-card {
+  display: flex;
+  align-items: flex-start; /* Aligne en haut */
+  gap: 15px;
   transition: transform 0.2s;
 }
 
+/* La cover carrée et petite */
 .img-container {
-  position: relative;
-  aspect-ratio: 16/9;
-  overflow: hidden;
+  flex-shrink: 0; /* Empêche l'image de rétrécir */
+  width: 80px;    /* Taille fixe pour ressembler à ta capture */
+  height: 80px;
   border-radius: 4px;
+  overflow: hidden;
+  position: relative;
   cursor: pointer;
 }
 
@@ -111,31 +117,65 @@
   object-fit: cover;
 }
 
-.mini-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
+/* Bloc texte à droite */
+.card-info {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  opacity: 0;
-  transition: 0.3s;
 }
 
-.mini-card:hover .mini-overlay { opacity: 1; }
-.mini-card:hover { transform: scale(1.03); }
+.episode-info {
+  font-size: 0.75rem;
+  color: #888;
+  margin: 0 0 2px 0;
+}
 
 .mini-title {
-  margin-top: 8px;
-  font-size: 0.85rem;
-  color: #ccc;
-  text-align: center;
+  font-size: 0.95rem;
+  color: #fff;
+  font-weight: 500;
+  margin: 0;
+  cursor: pointer;
+  display: inline-block;
 }
 
-.pagination-simple {
+/* Hover : seulement le titre est souligné */
+.mini-card:hover .mini-title {
+  text-decoration: underline;
+}
+
+.mini-status {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 4px 0 0 0;
+}
+
+/* --- DESIGN DES BOUTONS (Image 3 & 4) --- */
+/* --- DESIGN DES BOUTONS (Image 3 & 4) --- */
+.pagination-container {
   display: flex;
   justify-content: center;
+  gap: 15px; /* Un peu plus d'espace entre les deux s'ils sont présents */
+  padding: 40px 0 60px;
+}
+
+.pag-btn {
+  background-color: #242424; /* Gris foncé (Image 3) */
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 50px; /* Forme pilule parfaite */
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
   align-items: center;
-  gap: 20px;
-  padding-bottom: 50px;
+  gap: 10px;
+  transition: background-color 0.2s ease-in-out, transform 0.1s;
+}
+
+/* Hover actif (Rouge comme l'image 4) */
+.pag-btn:hover {
+  background-color: #a80000;
+  color: white;
 }

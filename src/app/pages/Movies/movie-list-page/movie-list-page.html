@@ -89,7 +89,7 @@
 <section id="movies-grid">
   <div class="movies-grid">
     <div class="movie-card" *ngFor="let movie of displayedMovies">
-      <div class="movie-card-background" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoMovie(movie.slug)">
+      <div class="movie-card-background" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoMovie(movie.slug); onClickAddToHistory(movie)">
         <div class="card-overlay"></div>
 
         <div class="fav-button"

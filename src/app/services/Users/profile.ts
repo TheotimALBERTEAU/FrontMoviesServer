@@ -12,7 +12,7 @@ export class Profile {
   constructor(private http: HttpClient) {}
 
   getUserFavorites(userId: string): Observable<any> {
-    return this.http.get(`${this.ApiUrl}/users/favorites/${userId}`, {})
+    return this.http.get(`${this.ApiUrl}/users/favorites-details/${userId}`, {})
   }
 
   getUserHistory(userId: string): Observable<any> {
@@ -21,5 +21,13 @@ export class Profile {
 
   updateProfile(data: { userId: string, bannerColor?: string, profilePic?: string }): Observable<any> {
     return this.http.patch(`${this.ApiUrl}/users/update-profile`, data);
+  }
+
+  addToHistory(userId: string, mediaId: string, mediaType: 'Movies' | 'Series' | 'Animes'): Observable<any> {
+    return this.http.post(`${this.ApiUrl}/users/history/add`, {
+      userId,
+      mediaId,
+      mediaType
+    });
   }
 }

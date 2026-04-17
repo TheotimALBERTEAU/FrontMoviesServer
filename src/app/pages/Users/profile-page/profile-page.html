@@ -27,14 +27,20 @@
 
   <main class="tab-content">
     <div class="minimal-grid" *ngIf="displayedItems.length > 0; else emptyState">
-      <div class="mini-card" *ngFor="let item of displayedItems">
+      <div class="mini-card" *ngFor="let item of displayedItems" (click)="this.moviesService.goMedia(item.mediaId); onClickAddToHistory(item.mediaId)">
         <div class="img-container">
           <img [src]="item.mediaId?.cover" [alt]="item.mediaId?.title">
           <div class="mini-overlay">
             <i class="fas fa-play"></i>
           </div>
         </div>
-        <p class="mini-title">{{ item.mediaId?.title }}</p>
+        <div class="card-info">
+          <h3 class="mini-title">{{ item.mediaId?.title }}</h3>
+          <p class="mini-status">
+            {{ activeTab === 'history' ? 'Visionné' : 'Aimé' }},
+            {{ (activeTab === 'history' ? item.watchedAt : item.addedAt) | relativeTime }}
+          </p>
+        </div>
       </div>
     </div>
 
@@ -42,10 +48,18 @@
       <div class="empty-msg">Aucun contenu trouvé ici.</div>
     </ng-template>
 
-    <div class="pagination-simple" *ngIf="currentPage > 1 || hasNext()">
-      <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1">‹ Précédent</button>
-      <span>Page {{currentPage}}</span>
-      <button (click)="currentPage = currentPage + 1" [disabled]="!hasNext()">Suivant ›</button>
+    <div class="pagination-container" *ngIf="currentPage > 1 || hasNext()">
+      <button class="pag-btn"
+              *ngIf="currentPage > 1"
+              (click)="currentPage = currentPage - 1">
+        <i class="fas fa-chevron-left"></i> Précédent
+      </button>
+
+      <button class="pag-btn"
+              *ngIf="hasNext()"
+              (click)="currentPage = currentPage + 1">
+        Suivant <i class="fas fa-chevron-right"></i>
+      </button>
     </div>
   </main>
 </div>

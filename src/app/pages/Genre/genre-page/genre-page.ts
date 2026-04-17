@@ -6,6 +6,7 @@ import { MoviesList } from '../../../services/Movies/movies-list';
 import { forkJoin } from 'rxjs';
 import {Favorites} from '../../../services/Favorites/favorites';
 import {Auth} from '../../../services/Users/auth';
+import {Profile} from '../../../services/Users/profile';
 
 @Component({
   selector: 'app-genre-page',
@@ -48,6 +49,7 @@ export class GenrePage implements OnInit {
     private route: ActivatedRoute,
     private genreService: GenreService,
     private moviesService: MoviesList,
+    private profileService: Profile,
     private cdr: ChangeDetectorRef,
     private eRef: ElementRef,
   public favService: Favorites,
@@ -214,6 +216,29 @@ export class GenrePage implements OnInit {
     const start = (this.currentPage - 1) * this.pageSize;
     this.displayedContent = this.filteredContent.slice(start, start + this.pageSize);
     this.cdr.detectChanges();
+  }
+
+  onClickAddToHistory(item: any) {
+    console.log(item)
+    const userId = this.authService.getUserId();
+    if (!userId || !item._id) return;
+
+    // Mapping pour convertir tes types français en types Backend
+    const typeMapping: { [key: string]: string } = {
+      'Film': 'Movies',
+      'Série': 'Series',
+      'Animé': 'Animes'
+    };
+
+    const mediaType = typeMapping[item.type] || item.type;
+
+    this.profileService.addToHistory(userId, item._id, mediaType).subscribe({
+      next: (data: any) => {
+        if (data.code === "200") {
+          console.log('Historique mis à jour avec le type :', mediaType);
+        }
+      }
+    });
   }
 
   nextPage() { if (this.hasNext()) { this.currentPage++; this.updateDisplay(); window.scrollTo({top:0, behavior:'smooth'}); } }

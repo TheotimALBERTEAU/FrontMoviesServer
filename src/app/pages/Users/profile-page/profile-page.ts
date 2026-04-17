@@ -3,22 +3,24 @@ import { Auth } from '../../../services/Users/auth';
 import { Profile } from '../../../services/Users/profile';
 import { Favorites } from '../../../services/Favorites/favorites';
 import { CommonModule } from '@angular/common';
+import {MoviesList} from '../../../services/Movies/movies-list';
+import {RelativeTimePipe} from '../../../pipes/relative-time-pipe';
 
 @Component({
   selector: 'app-profile-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RelativeTimePipe],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.css',
 })
 export class ProfilePage {
   public activeTab: 'favorites' | 'history' = 'favorites';
   public historyData: any[] = [];
-  public favoritesData: any[] = []; // Pour stocker les détails (covers) des favs
+  public favoritesData: any[] = [];
 
   // Pagination
   public currentPage = 1;
-  public pageSize = 24; // 3 colonnes * 8 lignes
+  public pageSize = 24;
 
   public DEFAULT_RED = '#4a0000';
 
@@ -26,6 +28,7 @@ export class ProfilePage {
     public authService: Auth,
     private profileService: Profile,
     private favService: Favorites,
+    public moviesService: MoviesList,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -40,15 +43,16 @@ export class ProfilePage {
 
   getBannerColor() {
     const settings = this.authService.currentUser?.profileSettings;
-    if (settings?.bannerColor?.startsWith('http')) {
-      return this.DEFAULT_RED;
+    if (settings?.bannerColor?.startsWith('#')) {
+      return settings.bannerColor;
     }
-    return settings?.bannerColor || this.DEFAULT_RED;
+    return this.DEFAULT_RED;
   }
 
   getBannerImage() {
     const settings = this.authService.currentUser?.profileSettings;
-    if (settings?.bannerColor?.startsWith('http')) {
+    console.log(settings);
+    if (settings?.bannerColor?.startsWith('https')) {
       return `url(${settings.bannerColor})`;
     }
     return 'none';
@@ -90,5 +94,26 @@ export class ProfilePage {
   hasNext(): boolean {
     const source = this.activeTab === 'history' ? this.historyData : this.favoritesData;
     return (this.currentPage * this.pageSize) < source.length;
+  }
+
+  onClickAddToHistory(item: any) {
+    const userId = this.authService.getUserId();
+    if (!userId || !item._id) return;
+
+    // Mapping pour convertir tes types français en types Backend
+    const typeMapping: { [key: string]: string } = {
+      'Film': 'Movies',
+      'Série': 'Series',
+      'Animé': 'Animes'
+    };
+    const mediaType = typeMapping[item.type] || item.type;
+
+    this.profileService.addToHistory(userId, item._id, mediaType).subscribe({
+      next: (data: any) => {
+        if (data.code === "200") {
+          console.log('Historique mis à jour avec le type :', mediaType);
+        }
+      }
+    });
   }
 }

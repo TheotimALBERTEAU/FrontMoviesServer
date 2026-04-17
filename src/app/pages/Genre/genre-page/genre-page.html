@@ -80,7 +80,7 @@
   <div class="movies-grid">
     @for (movie of displayedContent; track movie._id) {
       <div class="movie-card">
-        <div class="movie-card-background" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoContent(movie)">
+        <div class="movie-card-background" [style.background-image]="'url(' + movie.cover + ')'" (click)="onClickGoContent(movie); onClickAddToHistory(movie)">
           <div class="card-overlay"></div>
 
           <div class="fav-button"

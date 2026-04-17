@@ -1,7 +1,7 @@
 <section class="hero-carousel" *ngIf="heroMovies.length > 0">
   <div class="hero-slide"
        [style.background-image]="'url(' + heroMovies[currentIndex].cover + ')'"
-       (click)="onClickGoMovie(heroMovies[currentIndex].slug)">
+       (click)="onClickGoMovie(heroMovies[currentIndex].slug); onClickAddToHistory(heroMovies[currentIndex], 'Movies')">
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
@@ -91,7 +91,7 @@
         <div class="progressed-movie-card">
           <div class="progressed-movie-card-background"
                [style.background-image]="'url(' + item.mediaId.cover + ')'"
-               (click)="onClickResume(item)">
+               (click)="onClickResume(item); onClickAddToHistory(item.mediaId, item.mediaType)">
 
             <div class="card-overlay"></div>
 
@@ -141,7 +141,7 @@
 
   <section #moviesSlider class="media-grid-horizontal" (scroll)="checkButtons()">
     @for (movie of latestMovies; track movie._id) {
-      <div class="media-card-horiz" (click)="onClickGoMovie(movie.slug)">
+      <div class="media-card-horiz" (click)="onClickGoMovie(movie.slug); onClickAddToHistory(movie, 'Movies')">
         <div class="media-card-background-latest" [style.background-image]="'url(' + movie.cover + ')'">
           <div class="card-overlay"></div>
 
@@ -184,7 +184,7 @@
 
   <section #seriesSlider class="media-grid-horizontal" (scroll)="checkButtons()">
     @for (serie of latestSeries; track serie._id) {
-      <div class="media-card-horiz" (click)="onClickGoSerie(serie.slug)">
+      <div class="media-card-horiz" (click)="onClickGoSerie(serie.slug); onClickAddToHistory(serie, 'Series')">
         <div class="media-card-background-latest" [style.background-image]="'url(' + serie.cover + ')'">
           <div class="card-overlay"></div>
 
@@ -227,7 +227,7 @@
 
   <section #animesSlider class="media-grid-horizontal" (scroll)="checkButtons()">
     @for (anime of latestAnimes; track anime._id) {
-      <div class="media-card-horiz" (click)="onClickGoAnime(anime.slug)">
+      <div class="media-card-horiz" (click)="onClickGoAnime(anime.slug); onClickAddToHistory(anime, 'Animes')">
         <div class="media-card-background-latest" [style.background-image]="'url(' + anime.cover + ')'">
           <div class="card-overlay"></div>
 

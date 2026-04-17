@@ -10,6 +10,7 @@ import {Router} from '@angular/router';
 import {SeriesList} from '../../../services/Series/series-list';
 import {AnimesList} from '../../../services/Animes/animes-list';
 import {Favorites} from '../../../services/Favorites/favorites';
+import {Profile} from '../../../services/Users/profile';
 
 @Component({
   selector: 'app-home-page',
@@ -26,6 +27,7 @@ export class HomePage implements OnInit, OnDestroy {
               private homeService: MoviesProgresses,
               public authService: Auth,
               public favService: Favorites,
+              private profileService: Profile,
               private cdr: ChangeDetectorRef,
               private router: Router,) {}
 
@@ -226,6 +228,19 @@ export class HomePage implements OnInit, OnDestroy {
       }
       setTimeout(() => this.checkButtons(), 50);
       this.cdr.detectChanges();
+    });
+  }
+
+  onClickAddToHistory(item: any, mediaType: 'Movies' | 'Series' | 'Animes') {
+    const userId = this.authService.getUserId();
+    if (!userId || !item._id) return;
+
+    this.profileService.addToHistory(userId, item._id, mediaType).subscribe({
+      next: (data: any) => {
+        if (data.code === "200") {
+          console.log('Historique mis à jour avec le type :', mediaType);
+        }
+      }
     });
   }
 

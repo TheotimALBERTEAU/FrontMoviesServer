@@ -6,6 +6,7 @@ import {WatchSerie} from '../../../services/Series/watch-serie';
 import {last} from 'rxjs';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {Auth} from '../../../services/Users/auth';
+import {Profile} from '../../../services/Users/profile';
 
 @Component({
   selector: 'app-anime-page',

@@ -89,7 +89,7 @@
 <section id="series-grid">
   <div class="series-grid">
     <div class="serie-card" *ngFor="let serie of displayedSeries">
-      <div class="serie-card-background" [style.background-image]="'url(' + serie.cover + ')'" (click)="onClickGoSerie(serie.slug)">
+      <div class="serie-card-background" [style.background-image]="'url(' + serie.cover + ')'" (click)="onClickGoSerie(serie.slug); onClickAddToHistory(serie)">
         <div class="card-overlay"></div>
 
         <div class="fav-button"

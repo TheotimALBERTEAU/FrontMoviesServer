@@ -132,4 +132,8 @@ export class App implements OnInit {
       this.router.navigate(['/login']);
     });
   }
+
+  onClickGoProfilePage() {
+    this.router.navigate(['/profile']);
+  }
 }

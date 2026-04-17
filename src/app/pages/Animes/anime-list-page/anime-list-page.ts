@@ -6,6 +6,7 @@ import { forkJoin } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import {Favorites} from '../../../services/Favorites/favorites';
 import {Auth} from '../../../services/Users/auth';
+import {Profile} from '../../../services/Users/profile';
 
 @Component({
   selector: 'app-anime-list-page',
@@ -47,6 +48,7 @@ export class AnimeListPage implements OnInit {
     private animesService: AnimesList,
     private cdr: ChangeDetectorRef,
     private genreService: GenreService,
+    private profileService: Profile,
     private route: ActivatedRoute,
     private router: Router,
     private eRef: ElementRef,
@@ -220,6 +222,18 @@ export class AnimeListPage implements OnInit {
     this.displayedAnimes = this.filteredAnimes.slice(start, start + this.pageSize);
     this.cdr.detectChanges();
     if (this.currentPage > 1) window.scrollTo({ top: 400, behavior: 'smooth' });
+  }
+
+  onClickAddToHistory(item: any) {
+    const userId = this.authService.getUserId();
+    if (!userId || !item._id) return;
+    this.profileService.addToHistory(userId, item._id, "Animes").subscribe({
+      next: (data: any) => {
+        if (data.code === "200") {
+          console.log('Serie added');
+        }
+      }
+    })
   }
 
   // --- NAVIGATION (CORRIGE TS2551) ---
