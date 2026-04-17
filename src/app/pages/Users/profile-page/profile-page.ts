@@ -5,6 +5,7 @@ import { Favorites } from '../../../services/Favorites/favorites';
 import { CommonModule } from '@angular/common';
 import {MoviesList} from '../../../services/Movies/movies-list';
 import {RelativeTimePipe} from '../../../pipes/relative-time-pipe';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-profile-page',
@@ -25,6 +26,7 @@ export class ProfilePage {
   public DEFAULT_RED = '#4a0000';
 
   constructor(
+    private route: ActivatedRoute,
     public authService: Auth,
     private profileService: Profile,
     private favService: Favorites,
@@ -33,6 +35,12 @@ export class ProfilePage {
   ) {}
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['tab']) {
+        this.activeTab = params['tab'];
+      }
+    });
+
     this.authService.checkAuth().subscribe(user => {
       if (user) {
         this.loadHistory();

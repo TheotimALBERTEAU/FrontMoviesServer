@@ -74,8 +74,10 @@
           <img src="Assets/Users/HeadBar/profile-icon.svg" class="profile-icon">
         </div>
         <div class="dropdown-menu" *ngIf="isProfileMenuOpen">
+          <div class="dropdown-item" (click)="onClickGoProfilePage('favorites')">Profil</div>
+          <div class="dropdown-item" (click)="onClickGoProfilePage('favorites')">Favoris</div>
+          <div class="dropdown-item" (click)="onClickGoProfilePage('history')">Historique</div>
           <div class="dropdown-item" (click)="onLogout()">Se déconnecter</div>
-          <div class="dropdown-item" (click)="onClickGoProfilePage()">Profil</div>
         </div>
       </div>
     </div>

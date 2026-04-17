@@ -158,7 +158,8 @@ export class App implements OnInit {
     });
   }
 
-  onClickGoProfilePage() {
-    this.router.navigate(['/profile']);
+  onClickGoProfilePage(tab: 'favorites' | 'history' = 'favorites') {
+    this.router.navigate(['/profile'], { queryParams: { tab: tab } });
+    this.isProfileMenuOpen = false;
   }
 }
