@@ -1,7 +1,9 @@
+/* --- BASE EXISTANTE --- */
 .profile-container {
   background-color: black;
   min-height: 100vh;
   color: white;
+  position: relative;
 }
 
 .profile-header {
@@ -12,10 +14,10 @@
 .banner {
   height: 250px;
   width: 100%;
-  background-size: cover;       /* Indispensable pour l'image */
-  background-position: center;  /* Centre l'image de la bannière */
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .user-info-overlay {
@@ -30,22 +32,18 @@
   height: 120px;
   border-radius: 50%;
   border: 5px solid #141414;
-  display: flex;                /* Pour centrer l'initiale */
-  align-items: center;          /* Centrage vertical */
-  justify-content: center;      /* Centrage horizontal */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 3.5rem;
   font-weight: bold;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  position: relative;
+  transition: all 0.3s ease;
 }
 
 .avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.avatar-circle img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -57,7 +55,7 @@
   letter-spacing: 1px;
 }
 
-/* Tabs */
+/* --- TABS & GRILLE --- */
 .profile-tabs {
   display: flex;
   justify-content: center;
@@ -73,7 +71,6 @@
   padding: 15px 5px;
   font-size: 1rem;
   cursor: pointer;
-  transition: 0.3s;
   text-transform: uppercase;
   letter-spacing: 2px;
 }
@@ -92,23 +89,20 @@
   padding: 0 20px;
 }
 
-/* Alignement HORIZONTAL (Image à gauche, texte à droite) */
 .mini-card {
   display: flex;
-  align-items: flex-start; /* Aligne en haut */
+  align-items: flex-start;
   gap: 15px;
-  transition: transform 0.2s;
+  cursor: pointer;
 }
 
-/* La cover carrée et petite */
 .img-container {
-  flex-shrink: 0; /* Empêche l'image de rétrécir */
-  width: 80px;    /* Taille fixe pour ressembler à ta capture */
+  flex-shrink: 0;
+  width: 80px;
   height: 80px;
   border-radius: 4px;
   overflow: hidden;
   position: relative;
-  cursor: pointer;
 }
 
 .img-container img {
@@ -117,65 +111,204 @@
   object-fit: cover;
 }
 
-/* Bloc texte à droite */
-.card-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.episode-info {
-  font-size: 0.75rem;
-  color: #888;
-  margin: 0 0 2px 0;
-}
-
-.mini-title {
-  font-size: 0.95rem;
-  color: #fff;
-  font-weight: 500;
-  margin: 0;
-  cursor: pointer;
-  display: inline-block;
-}
-
-/* Hover : seulement le titre est souligné */
-.mini-card:hover .mini-title {
+.mini-title:hover {
   text-decoration: underline;
 }
 
-.mini-status {
-  font-size: 0.8rem;
-  color: #666;
-  margin: 4px 0 0 0;
+/* --- MODE ÉDITION (NOUVEAU) --- */
+
+/* Bouton Crayon */
+.edit-trigger {
+  position: fixed;
+  top: 100px;
+  right: 30px;
+  background: #e50914;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  color: white;
+  z-index: 100;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  transition: transform 0.2s;
 }
 
-/* --- DESIGN DES BOUTONS (Image 3 & 4) --- */
-/* --- DESIGN DES BOUTONS (Image 3 & 4) --- */
+.edit-trigger:hover { transform: scale(1.1); }
+.edit-trigger.active { background: #333; }
+
+/* Styles spécifiques au Header en édition */
+.editing-mode .banner,
+.editing-mode .avatar-circle {
+  cursor: pointer;
+  border: 2px dashed rgba(255,255,255,0.5) !important;
+}
+
+.editing-mode .banner:hover,
+.editing-mode .avatar-circle:hover {
+  border-color: white !important;
+  filter: brightness(1.2);
+}
+
+.edit-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+/* Panneau de réglages */
+.edit-panel {
+  max-width: 500px;
+  margin: 40px auto;
+  background: #181818;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #333;
+}
+
+.panel-header {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #e50914;
+}
+
+.panel-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-size: 0.8rem;
+  color: #888;
+  text-transform: uppercase;
+}
+
+.color-picker {
+  width: 100%;
+  height: 40px;
+  border: none;
+  cursor: pointer;
+  background: none;
+}
+
+.panel-tabs input[type="text"] {
+  background: #000;
+  border: 1px solid #333;
+  padding: 12px;
+  color: white;
+  border-radius: 4px;
+}
+
+.panel-options {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #333;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* --- SAUVEGARDE & POPUP --- */
+
+.save-trigger {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.confirm-modal {
+  background: #181818;
+  padding: 30px;
+  border-radius: 12px;
+  border: 1px solid #333;
+  text-align: center;
+  max-width: 400px;
+}
+
+.confirm-btns {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.btn-no, .btn-yes {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-no { background: #333; color: white; }
+.btn-yes { background: #e50914; color: white; }
+
+/* Pagination (Gris à Rouge) */
 .pagination-container {
   display: flex;
   justify-content: center;
-  gap: 15px; /* Un peu plus d'espace entre les deux s'ils sont présents */
+  gap: 15px;
   padding: 40px 0 60px;
 }
 
 .pag-btn {
-  background-color: #242424; /* Gris foncé (Image 3) */
+  background-color: #242424;
   color: #fff;
   border: none;
   padding: 12px 28px;
-  border-radius: 50px; /* Forme pilule parfaite */
+  border-radius: 50px;
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 10px;
-  transition: background-color 0.2s ease-in-out, transform 0.1s;
+  transition: all 0.2s ease;
 }
 
-/* Hover actif (Rouge comme l'image 4) */
 .pag-btn:hover {
   background-color: #a80000;
-  color: white;
 }

@@ -6,15 +6,16 @@ import { CommonModule } from '@angular/common';
 import {MoviesList} from '../../../services/Movies/movies-list';
 import {RelativeTimePipe} from '../../../pipes/relative-time-pipe';
 import {ActivatedRoute} from '@angular/router';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-profile-page',
   standalone: true,
-  imports: [CommonModule, RelativeTimePipe],
+  imports: [CommonModule, RelativeTimePipe, FormsModule],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.css',
 })
-export class ProfilePage {
+export class ProfilePage implements OnInit {
   public activeTab: 'favorites' | 'history' = 'favorites';
   public historyData: any[] = [];
   public favoritesData: any[] = [];
@@ -23,47 +24,80 @@ export class ProfilePage {
   public currentPage = 1;
   public pageSize = 24;
 
+  public isEditing = false;
+  public editTarget: 'avatar' | 'banner' | null = null;
+  public showInitial = true;
+  public tempColor = '#4a0000';
+  public tempUrl = '';
   public DEFAULT_RED = '#4a0000';
+
+  public showConfirmPopup = false;
 
   constructor(
     private route: ActivatedRoute,
     public authService: Auth,
     private profileService: Profile,
-    private favService: Favorites,
     public moviesService: MoviesList,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      if (params['tab']) {
-        this.activeTab = params['tab'];
-      }
+      if (params['tab']) { this.activeTab = params['tab']; }
     });
 
     this.authService.checkAuth().subscribe(user => {
       if (user) {
         this.loadHistory();
         this.loadFavoritesDetails();
+        this.tempColor = user.profileSettings?.bannerColor || this.DEFAULT_RED;
+        this.tempUrl = user.profileSettings?.profilePic || '';
+      }
+    });
+  }
+
+  toggleEdit() {
+    this.isEditing = !this.isEditing;
+    this.editTarget = null;
+    this.showConfirmPopup = false;
+  }
+
+  openSelector(target: 'avatar' | 'banner') {
+    this.editTarget = target;
+  }
+
+  async confirmUpdate() {
+    const userId = this.authService.getUserId();
+    if (!userId) return;
+
+    const finalValue = this.tempUrl.startsWith('http') ? this.tempUrl : this.tempColor;
+
+    const newSettings = {
+      userId,
+      bannerColor: this.editTarget === 'banner' ? finalValue : this.authService.currentUser?.profileSettings?.bannerColor,
+      profilePic: this.editTarget === 'avatar' ? (this.showInitial ? '' : this.tempUrl) : this.authService.currentUser?.profileSettings?.profilePic
+    };
+
+    this.profileService.updateProfile(newSettings).subscribe({
+      next: (res: any) => {
+        if (res.code === "200") {
+          this.authService.currentUser.profileSettings = newSettings;
+          this.isEditing = false;
+          this.showConfirmPopup = false;
+          this.cdr.detectChanges();
+        }
       }
     });
   }
 
   getBannerColor() {
     const settings = this.authService.currentUser?.profileSettings;
-    if (settings?.bannerColor?.startsWith('#')) {
-      return settings.bannerColor;
-    }
-    return this.DEFAULT_RED;
+    return settings?.bannerColor?.startsWith('#') ? settings.bannerColor : this.DEFAULT_RED;
   }
 
   getBannerImage() {
     const settings = this.authService.currentUser?.profileSettings;
-    console.log(settings);
-    if (settings?.bannerColor?.startsWith('https')) {
-      return `url(${settings.bannerColor})`;
-    }
-    return 'none';
+    return settings?.bannerColor?.startsWith('http') ? `url(${settings.bannerColor})` : 'none';
   }
 
   loadHistory() {

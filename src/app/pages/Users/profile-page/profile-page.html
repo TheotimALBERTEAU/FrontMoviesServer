@@ -1,65 +1,122 @@
 <div class="profile-container" *ngIf="authService.currentUser">
-  <header class="profile-header">
+
+  <button class="edit-trigger" (click)="toggleEdit()" [class.active]="isEditing">
+    <i class="fas" [ngClass]="isEditing ? 'fa-times' : 'fa-pencil-alt'"></i>
+  </button>
+
+  <header class="profile-header" [class.editing-mode]="isEditing">
     <div class="banner"
-         [style.background-color]="getBannerColor()"
-         [style.background-image]="getBannerImage()">
+         [style.background-color]="isEditing && editTarget === 'banner' ? tempColor : getBannerColor()"
+         [style.background-image]="isEditing && editTarget === 'banner' && tempUrl ? 'url('+tempUrl+')' : getBannerImage()"
+         (click)="isEditing ? openSelector('banner') : null">
+
+      <div class="edit-overlay" *ngIf="isEditing">
+        <i class="fas fa-camera"></i>
+        <span>Modifier la bannière</span>
+      </div>
     </div>
 
     <div class="user-info-overlay">
       <div class="avatar-wrapper">
-        <div class="avatar-circle" [style.background-color]="getBannerColor()">
-          @if (authService.currentUser?.profileSettings?.profilePic) {
-            <img [src]="authService.currentUser.profileSettings.profilePic" class="avatar-img">
-          }
-          @else {
-            <span>{{ authService.currentUser?.pseudo?.charAt(0).toUpperCase() }}</span>
-          }
+        <div class="avatar-circle"
+             [style.background-color]="isEditing && editTarget === 'avatar' ? tempColor : getBannerColor()"
+             (click)="isEditing ? openSelector('avatar') : null">
+
+          <div class="edit-overlay" *ngIf="isEditing">
+            <i class="fas fa-sync"></i>
+          </div>
+
+          <ng-container *ngIf="!isEditing">
+            <img *ngIf="authService.currentUser?.profileSettings?.profilePic"
+                 [src]="authService.currentUser.profileSettings.profilePic" class="avatar-img">
+            <span *ngIf="!authService.currentUser?.profileSettings?.profilePic">
+              {{ authService.currentUser?.pseudo?.charAt(0).toUpperCase() }}
+            </span>
+          </ng-container>
+
+          <ng-container *ngIf="isEditing">
+            <img *ngIf="tempUrl && !showInitial" [src]="tempUrl" class="avatar-img">
+            <span *ngIf="showInitial">{{ authService.currentUser?.pseudo?.charAt(0).toUpperCase() }}</span>
+          </ng-container>
         </div>
       </div>
-      <h1 class="profile-username">{{ authService.currentUser?.pseudo }}</h1>
+      <h1 class="profile-username" *ngIf="!isEditing">{{ authService.currentUser?.pseudo }}</h1>
     </div>
   </header>
 
-  <nav class="profile-tabs">
-    <button [class.active]="activeTab === 'favorites'" (click)="setTab('favorites')">Favoris</button>
-    <button [class.active]="activeTab === 'history'" (click)="setTab('history')">Historique</button>
-  </nav>
-
-  <main class="tab-content">
-    <div class="minimal-grid" *ngIf="displayedItems.length > 0; else emptyState">
-      <div class="mini-card" *ngFor="let item of displayedItems" (click)="this.moviesService.goMedia(item.mediaId); onClickAddToHistory(item.mediaId)">
-        <div class="img-container">
-          <img [src]="item.mediaId?.cover" [alt]="item.mediaId?.title">
-          <div class="mini-overlay">
-            <i class="fas fa-play"></i>
-          </div>
-        </div>
-        <div class="card-info">
-          <h3 class="mini-title">{{ item.mediaId?.title }}</h3>
-          <p class="mini-status">
-            {{ activeTab === 'history' ? 'Visionné' : 'Aimé' }},
-            {{ (activeTab === 'history' ? item.watchedAt : item.addedAt) | relativeTime }}
-          </p>
-        </div>
+  <div class="edit-panel" *ngIf="isEditing && editTarget">
+    <div class="panel-header">Modifier {{ editTarget === 'avatar' ? 'l\'icône' : 'la bannière' }}</div>
+    <div class="panel-tabs">
+      <div class="input-group">
+        <label>Couleur</label>
+        <input type="color" [(ngModel)]="tempColor" class="color-picker">
+      </div>
+      <div class="input-group">
+        <label>Lien Image</label>
+        <input type="text" [(ngModel)]="tempUrl" placeholder="https://image-google.com/...">
       </div>
     </div>
 
-    <ng-template #emptyState>
-      <div class="empty-msg">Aucun contenu trouvé ici.</div>
-    </ng-template>
-
-    <div class="pagination-container" *ngIf="currentPage > 1 || hasNext()">
-      <button class="pag-btn"
-              *ngIf="currentPage > 1"
-              (click)="currentPage = currentPage - 1">
-        <i class="fas fa-chevron-left"></i> Précédent
-      </button>
-
-      <button class="pag-btn"
-              *ngIf="hasNext()"
-              (click)="currentPage = currentPage + 1">
-        Suivant <i class="fas fa-chevron-right"></i>
-      </button>
+    <div class="panel-options" *ngIf="editTarget === 'avatar'">
+      <label class="checkbox-label">
+        <input type="checkbox" [(ngModel)]="showInitial"> Afficher l'initiale par-dessus
+      </label>
     </div>
-  </main>
+  </div>
+
+  <ng-container *ngIf="!isEditing">
+    <nav class="profile-tabs">
+      <button [class.active]="activeTab === 'favorites'" (click)="setTab('favorites')">Favoris</button>
+      <button [class.active]="activeTab === 'history'" (click)="setTab('history')">Historique</button>
+    </nav>
+
+    <main class="tab-content">
+      <div class="minimal-grid" *ngIf="displayedItems.length > 0; else emptyState">
+        <div class="mini-card" *ngFor="let item of displayedItems" (click)="this.moviesService.goMedia(item.mediaId); onClickAddToHistory(item.mediaId)">
+          <div class="img-container">
+            <img [src]="item.mediaId?.cover" [alt]="item.mediaId?.title">
+            <div class="mini-overlay">
+              <i class="fas fa-play"></i>
+            </div>
+          </div>
+          <div class="card-info">
+            <h3 class="mini-title">{{ item.mediaId?.title }}</h3>
+            <p class="mini-status">
+              {{ activeTab === 'history' ? 'Visionné' : 'Aimé' }},
+              {{ (activeTab === 'history' ? item.watchedAt : item.addedAt) | relativeTime }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #emptyState>
+        <div class="empty-msg">Aucun contenu trouvé ici.</div>
+      </ng-template>
+
+      <div class="pagination-container" *ngIf="currentPage > 1 || hasNext()">
+        <button class="pag-btn" *ngIf="currentPage > 1" (click)="currentPage = currentPage - 1">
+          <i class="fas fa-chevron-left"></i> Précédent
+        </button>
+        <button class="pag-btn" *ngIf="hasNext()" (click)="currentPage = currentPage + 1">
+          Suivant <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </main>
+  </ng-container>
+
+  <button class="save-trigger" *ngIf="isEditing" (click)="showConfirmPopup = true">
+    <i class="fas fa-check"></i> Sauvegarder les changements
+  </button>
+
+  <div class="confirm-overlay" *ngIf="showConfirmPopup" (click)="showConfirmPopup = false">
+    <div class="confirm-modal" (click)="$event.stopPropagation()">
+      <h3>Confirmer les modifications ?</h3>
+      <p>Votre profil sera mis à jour avec ces nouveaux réglages.</p>
+      <div class="confirm-btns">
+        <button class="btn-no" (click)="showConfirmPopup = false">Annuler</button>
+        <button class="btn-yes" (click)="confirmUpdate()">Oui, enregistrer</button>
+      </div>
+    </div>
+  </div>
+
 </div>
