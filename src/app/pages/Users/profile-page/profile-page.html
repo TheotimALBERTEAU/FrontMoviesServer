@@ -6,10 +6,9 @@
 
   <header class="profile-header" [class.editing-mode]="isEditing">
     <div class="banner"
-         [style.background-color]="isEditing && editTarget === 'banner' ? tempColor : getBannerColor()"
-         [style.background-image]="isEditing && editTarget === 'banner' && tempUrl ? 'url('+tempUrl+')' : getBannerImage()"
+         [style.background-color]="isEditing ? tempBannerColor : getBannerColor()"
+         [style.background-image]="isEditing && tempBannerUrl ? 'url('+tempBannerUrl+')' : getBannerImage()"
          (click)="isEditing ? openSelector('banner') : null">
-
       <div class="edit-overlay" *ngIf="isEditing">
         <i class="fas fa-camera"></i>
         <span>Modifier la bannière</span>
@@ -19,7 +18,8 @@
     <div class="user-info-overlay">
       <div class="avatar-wrapper">
         <div class="avatar-circle"
-             [style.background-color]="isEditing && editTarget === 'avatar' ? tempColor : getBannerColor()"
+             [style.background-color]="isEditing ? tempAvatarColor : getAvatarColor()"
+             [style.background-image]="isEditing && tempAvatarUrl ? 'url('+tempAvatarUrl+')' : getAvatarImage()"
              (click)="isEditing ? openSelector('avatar') : null">
 
           <div class="edit-overlay" *ngIf="isEditing">
@@ -27,15 +27,14 @@
           </div>
 
           <ng-container *ngIf="!isEditing">
-            <img *ngIf="authService.currentUser?.profileSettings?.profilePic"
-                 [src]="authService.currentUser.profileSettings.profilePic" class="avatar-img">
-            <span *ngIf="!authService.currentUser?.profileSettings?.profilePic">
-              {{ authService.currentUser?.pseudo?.charAt(0).toUpperCase() }}
-            </span>
+            <div class="avatar-img-bg" [style.background-image]="getAvatarImage()" *ngIf="getAvatarImage() !== 'none'"></div>
+            <span *ngIf="getAvatarImage() === 'none'">
+            {{ authService.currentUser?.pseudo?.charAt(0).toUpperCase() }}
+          </span>
           </ng-container>
 
           <ng-container *ngIf="isEditing">
-            <img *ngIf="tempUrl && !showInitial" [src]="tempUrl" class="avatar-img">
+            <img *ngIf="tempAvatarUrl && !showInitial" [src]="tempAvatarUrl" class="avatar-img">
             <span *ngIf="showInitial">{{ authService.currentUser?.pseudo?.charAt(0).toUpperCase() }}</span>
           </ng-container>
         </div>
@@ -49,17 +48,21 @@
     <div class="panel-tabs">
       <div class="input-group">
         <label>Couleur</label>
-        <input type="color" [(ngModel)]="tempColor" class="color-picker">
+        <input type="color"
+               [(ngModel)]="editTarget === 'avatar' ? tempAvatarColor : tempBannerColor"
+               class="color-picker">
       </div>
       <div class="input-group">
         <label>Lien Image</label>
-        <input type="text" [(ngModel)]="tempUrl" placeholder="https://image-google.com/...">
+        <input type="text"
+               [(ngModel)]="editTarget === 'avatar' ? tempAvatarUrl : tempBannerUrl"
+               placeholder="https://...">
       </div>
     </div>
 
     <div class="panel-options" *ngIf="editTarget === 'avatar'">
       <label class="checkbox-label">
-        <input type="checkbox" [(ngModel)]="showInitial"> Afficher l'initiale par-dessus
+        <input type="checkbox" [(ngModel)]="showInitial"> Afficher l'initiale
       </label>
     </div>
   </div>

@@ -27,10 +27,15 @@ export class ProfilePage implements OnInit {
   public isEditing = false;
   public editTarget: 'avatar' | 'banner' | null = null;
   public showInitial = true;
-  public tempColor = '#4a0000';
-  public tempUrl = '';
-  public DEFAULT_RED = '#4a0000';
 
+  // --- VARIABLES DISTINCTES ---
+  public tempBannerColor = '#4a0000';
+  public tempBannerUrl = '';
+
+  public tempAvatarColor = '#4a0000';
+  public tempAvatarUrl = '';
+
+  public DEFAULT_RED = '#4a0000';
   public showConfirmPopup = false;
 
   constructor(
@@ -50,16 +55,31 @@ export class ProfilePage implements OnInit {
       if (user) {
         this.loadHistory();
         this.loadFavoritesDetails();
-        this.tempColor = user.profileSettings?.bannerColor || this.DEFAULT_RED;
-        this.tempUrl = user.profileSettings?.profilePic || '';
+        this.initLocalSettings(user);
       }
     });
+  }
+
+  initLocalSettings(user: any) {
+    const settings = user.profileSettings;
+
+    // Setup Bannière
+    const bValue = settings?.bannerColor || this.DEFAULT_RED;
+    this.tempBannerColor = bValue.startsWith('#') ? bValue : this.DEFAULT_RED;
+    this.tempBannerUrl = bValue.startsWith('http') ? bValue : '';
+
+    // Setup Avatar
+    const aValue = settings?.profilePic || this.DEFAULT_RED;
+    this.tempAvatarColor = aValue.startsWith('#') ? aValue : this.DEFAULT_RED;
+    this.tempAvatarUrl = aValue.startsWith('http') ? aValue : '';
+    this.showInitial = !aValue.startsWith('http');
   }
 
   toggleEdit() {
     this.isEditing = !this.isEditing;
     this.editTarget = null;
     this.showConfirmPopup = false;
+    if (!this.isEditing) this.initLocalSettings(this.authService.currentUser);
   }
 
   openSelector(target: 'avatar' | 'banner') {
@@ -70,12 +90,14 @@ export class ProfilePage implements OnInit {
     const userId = this.authService.getUserId();
     if (!userId) return;
 
-    const finalValue = this.tempUrl.startsWith('http') ? this.tempUrl : this.tempColor;
+    // On calcule les valeurs finales indépendamment
+    const finalBanner = this.tempBannerUrl.startsWith('http') ? this.tempBannerUrl : this.tempBannerColor;
+    const finalAvatar = this.tempAvatarUrl.startsWith('http') ? this.tempAvatarUrl : this.tempAvatarColor;
 
     const newSettings = {
       userId,
-      bannerColor: this.editTarget === 'banner' ? finalValue : this.authService.currentUser?.profileSettings?.bannerColor,
-      profilePic: this.editTarget === 'avatar' ? (this.showInitial ? '' : this.tempUrl) : this.authService.currentUser?.profileSettings?.profilePic
+      bannerColor: finalBanner,
+      profilePic: finalAvatar
     };
 
     this.profileService.updateProfile(newSettings).subscribe({
@@ -90,14 +112,26 @@ export class ProfilePage implements OnInit {
     });
   }
 
+  // --- RENDU BANNIÈRE ---
   getBannerColor() {
-    const settings = this.authService.currentUser?.profileSettings;
-    return settings?.bannerColor?.startsWith('#') ? settings.bannerColor : this.DEFAULT_RED;
+    const val = this.authService.currentUser?.profileSettings?.bannerColor;
+    return val?.startsWith('#') ? val : this.DEFAULT_RED;
   }
 
   getBannerImage() {
-    const settings = this.authService.currentUser?.profileSettings;
-    return settings?.bannerColor?.startsWith('http') ? `url(${settings.bannerColor})` : 'none';
+    const val = this.authService.currentUser?.profileSettings?.bannerColor;
+    return val?.startsWith('http') ? `url(${val})` : 'none';
+  }
+
+  // --- RENDU AVATAR ---
+  getAvatarColor() {
+    const val = this.authService.currentUser?.profileSettings?.profilePic;
+    return val?.startsWith('#') ? val : this.DEFAULT_RED;
+  }
+
+  getAvatarImage() {
+    const val = this.authService.currentUser?.profileSettings?.profilePic;
+    return val?.startsWith('http') ? `url(${val})` : 'none';
   }
 
   loadHistory() {
